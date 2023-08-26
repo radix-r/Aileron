@@ -1,0 +1,35 @@
+[gd_scene load_steps=8 format=3 uid="uid://c0vo01kgljeyq"]
+
+[ext_resource type="PackedScene" uid="uid://54wog5qnpeg5" path="res://Scenes/ship_1.tscn" id="1_r18vh"]
+[ext_resource type="Texture2D" uid="uid://dgg7j81yawyya" path="res://Assets/Textures/aerial_rocks_02_diff_4k.png" id="2_gq36s"]
+[ext_resource type="Texture2D" uid="uid://dw3l0dm1vkivm" path="res://Assets/Textures/aerial_rocks_02_nor_gl_4k.png" id="3_7ggqk"]
+[ext_resource type="Texture2D" uid="uid://b6406imit8vgo" path="res://Assets/Textures/aerial_rocks_02_rough_4k.png" id="4_lkfpd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2fbij"]
+albedo_texture = ExtResource("2_gq36s")
+roughness_texture = ExtResource("4_lkfpd")
+normal_enabled = true
+normal_texture = ExtResource("3_7ggqk")
+uv1_scale = Vector3(3, 3, 3)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_8skdd"]
+material = SubResource("StandardMaterial3D_2fbij")
+size = Vector2(300, 300)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_0yot1"]
+
+[node name="TestScene1" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.839432, -0.245678, -0.484765, 0.133262, -0.771708, 0.621859, -0.526874, -0.586609, -0.615057, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Ship1" parent="." instance=ExtResource("1_r18vh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 106.432)
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_8skdd")
+
+[node name="Person" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_0yot1")

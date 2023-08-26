@@ -1,5 +1,6 @@
 {
 	"Ship1": {
-		"speed": 10
+		"speed": 10,
+		"rotation_speed": 0.01
 	}
 }

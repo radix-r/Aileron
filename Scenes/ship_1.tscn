@@ -9,16 +9,21 @@ points = PackedVector3Array(3.62931, 0.317469, -1.73545, -0.300825, -0.0755564, 
 [node name="Ship1" type="CharacterBody3D"]
 script = ExtResource("1_4be1u")
 
-[node name="Body" type="CharacterBody3D" parent="."]
+[node name="PitchPoint" type="Node3D" parent="."]
+
+[node name="CameraControl" type="Node3D" parent="PitchPoint"]
+
+[node name="Camera3D" type="Camera3D" parent="PitchPoint/CameraControl"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 10, 15)
+
+[node name="Body" type="CharacterBody3D" parent="PitchPoint"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
-[node name="ShipModel" type="MeshInstance3D" parent="Body"]
+[node name="ShipModel" type="MeshInstance3D" parent="PitchPoint/Body"]
 mesh = ExtResource("2_kcufi")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Body"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PitchPoint/Body"]
 shape = SubResource("ConvexPolygonShape3D_wxfr1")
 
-[node name="CameraControl" type="Node3D" parent="."]
-
-[node name="Camera3D" type="Camera3D" parent="CameraControl"]
-transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 10, 15)
+[node name="ForwardPoint" type="Node3D" parent="PitchPoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
