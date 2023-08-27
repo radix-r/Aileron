@@ -61,7 +61,8 @@ func _physics_process(delta: float) -> void:
     var input_dir = Input.get_vector("left", "right", "up", "down")
     var direction = Vector3(input_dir.x, 0, 0).normalized()
     # input_dir.y # rotation with this?
-    velocity = (forward_point.global_position - global_position).normalized() * speed
+    var forward: Vector3 = (forward_point.global_position - global_position).normalized()
+    velocity = ((velocity + forward * speed * 0.01) / 2).normalized() * speed
 #    if direction:
 #        velocity.y = direction.y * speed
 #        velocity.x = direction.x * speed
