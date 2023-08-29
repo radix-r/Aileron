@@ -24,14 +24,27 @@ extends CharacterBody3D
 #####################################
 # ONREADY VARIABLES
 #####################################
-@onready var speed: int = 0
+
+@onready var acceleration: float = 0
+@onready var speed_default: float = 0
+@onready var speed_max: float = 0
+@onready var speed_min: float = 0
 @onready var rotation_speed: float = 0
+@onready var momentum: float = 0
+@onready var camera_chase: float = 0
+
 @onready var pitch_point: Node3D = $PitchPoint
 @onready var forward_point: Node3D = $PitchPoint/ForwardPoint
+@onready var camera: Node3D = $PitchPoint/CameraControl
+
+@onready var forward: Vector3 = Vector3()
+@onready var starting_camera_position: Vector3 = Vector3()
+@onready var speed: float = 0
+
+
 #####################################
 # OVERRIDE FUNCTIONS
 #####################################
-
 
 func _unhandled_input(event: InputEvent) -> void:
     #capture mouse movements
@@ -48,29 +61,36 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _ready() -> void:
+    var unit_name = "Ship1"
     var dataDict: Dictionary = read_json_file("res://Data.json")
-    speed = dataDict["Ship1"]["speed"]
-    rotation_speed = dataDict["Ship1"]["rotation_speed"]
+    speed_default = dataDict[unit_name]["speed_default"]
+    speed_max = dataDict[unit_name]["speed_max"]
+    speed_min = dataDict[unit_name]["speed_min"]
+    rotation_speed = dataDict[unit_name]["rotation_speed"]
+    momentum = dataDict[unit_name]["momentum"]
+    camera_chase = dataDict[unit_name]["camera_chase"]
+    acceleration = dataDict[unit_name]["acceleration"]
+
+    starting_camera_position = camera.position
 
 
-func _physics_process(delta: float) -> void:
-    # Move forward
-
+func _physics_process(_delta: float) -> void:
 
     # Get input and handel turining, acel/decel
     var input_dir = Input.get_vector("left", "right", "up", "down")
-    var direction = Vector3(input_dir.x, 0, 0).normalized()
-    # input_dir.y # rotation with this?
-    var forward: Vector3 = (forward_point.global_position - global_position).normalized()
-    velocity = ((velocity + forward * speed * 0.01) / 2).normalized() * speed
-#    if direction:
-#        velocity.y = direction.y * speed
-#        velocity.x = direction.x * speed
+    # var direction = Vector3(input_dir.x, 0, input_dir.y).normalized()
+    var target_speed = (-input_dir.y * speed_max) + speed_default
+    target_speed = clamp(target_speed, speed_min, speed_max)
+    speed = move_toward(speed, target_speed, acceleration)
+
+    forward = (forward_point.global_position - global_position).normalized()
+    velocity = ((velocity * momentum + forward * speed ) / 2).normalized() * speed
+
+    # shift camera based on speed to give chase effect
+    camera.position = starting_camera_position
+    camera.position.z += camera_chase * speed
 
     move_and_slide()
-    var collision = move_and_collide(velocity * delta)
-    if collision:
-        print("Ship1 collided with ", collision.get_collider().name)
 
 
 #####################################

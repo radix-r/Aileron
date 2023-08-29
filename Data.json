@@ -1,6 +1,11 @@
 {
 	"Ship1": {
-		"speed": 10,
-		"rotation_speed": 0.01
+		"speed_default": 10,
+		"speed_max": 100,
+		"speed_min": 0,
+		"acceleration": 1,
+		"rotation_speed": 0.01,
+		"momentum": 20,
+		"camera_chase": 0.1
 	}
 }
