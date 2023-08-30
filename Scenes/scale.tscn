@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dlf6n8vcahpyf"]
+
+[ext_resource type="ArrayMesh" uid="uid://c4cpap456fy8d" path="res://Assets/Models/StoneFloor/StoneFloor_SlabOne_LOD2.obj" id="1_g6pxi"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_443pg"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="StoneFloorSlabOneLod2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
+mesh = ExtResource("1_g6pxi")
+
+[node name="Person" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_443pg")
