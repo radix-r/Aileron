@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dlf6n8vcahpyf"]
 
-[ext_resource type="ArrayMesh" uid="uid://c4cpap456fy8d" path="res://Assets/Models/StoneFloor/StoneFloor_SlabOne_LOD2.obj" id="1_g6pxi"]
+[ext_resource type="ArrayMesh" uid="uid://c4cpap456fy8d" path="res://Assets/StoneFloor/Models/StoneFloor_SlabOne_LOD2.obj" id="1_g6pxi"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_443pg"]
 

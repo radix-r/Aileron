@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://c0vo01kgljeyq"]
+[gd_scene load_steps=10 format=3 uid="uid://c0vo01kgljeyq"]
 
 [ext_resource type="PackedScene" uid="uid://54wog5qnpeg5" path="res://Scenes/ship_1.tscn" id="1_r18vh"]
 [ext_resource type="Texture2D" uid="uid://dinta0emiyeik" path="res://Assets/Textures/aerial_rocks_02_diff_4k.png" id="2_gq36s"]
 [ext_resource type="Texture2D" uid="uid://bubl1uk6cc4q2" path="res://Assets/Textures/aerial_rocks_02_nor_gl_4k.png" id="3_7ggqk"]
 [ext_resource type="Texture2D" uid="uid://baxl8f6wshgk3" path="res://Assets/Textures/aerial_rocks_02_rough_4k.png" id="4_lkfpd"]
 [ext_resource type="PackedScene" uid="uid://dg01rmwgh38gi" path="res://Scenes/tile.tscn" id="5_r0ge3"]
+[ext_resource type="PackedScene" uid="uid://cp3bd100xweat" path="res://Scenes/waypoint.tscn" id="6_87a1a"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2fbij"]
 albedo_texture = ExtResource("2_gq36s")
@@ -47,3 +48,6 @@ transform = Transform3D(913.503, -0.406832, 0, 394.067, 0.884839, -248.538, 101.
 
 [node name="Tile4" parent="." instance=ExtResource("5_r0ge3")]
 transform = Transform3D(-4.37114e-05, 1, 0, -1000, -4.37114e-08, 0, 0, 0, 1000, -402.375, 0, 0)
+
+[node name="Waypoint" parent="." instance=ExtResource("6_87a1a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200, 58, -267)
