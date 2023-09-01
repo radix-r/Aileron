@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c0vo01kgljeyq"]
+[gd_scene load_steps=15 format=3 uid="uid://c0vo01kgljeyq"]
 
 [ext_resource type="PackedScene" uid="uid://54wog5qnpeg5" path="res://Scenes/ship_1.tscn" id="1_r18vh"]
 [ext_resource type="Texture2D" uid="uid://dinta0emiyeik" path="res://Assets/Textures/aerial_rocks_02_diff_4k.png" id="2_gq36s"]
@@ -6,6 +6,21 @@
 [ext_resource type="Texture2D" uid="uid://baxl8f6wshgk3" path="res://Assets/Textures/aerial_rocks_02_rough_4k.png" id="4_lkfpd"]
 [ext_resource type="PackedScene" uid="uid://dg01rmwgh38gi" path="res://Scenes/tile.tscn" id="5_r0ge3"]
 [ext_resource type="PackedScene" uid="uid://cp3bd100xweat" path="res://Scenes/waypoint.tscn" id="6_87a1a"]
+[ext_resource type="PackedScene" uid="uid://bk8yj7qady78c" path="res://Scenes/water.tscn" id="7_wn2o5"]
+[ext_resource type="PackedScene" uid="uid://cqm8o4xo703yh" path="res://Scenes/tube.tscn" id="8_jrsyo"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f18ww"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_you74"]
+sky_material = SubResource("ProceduralSkyMaterial_f18ww")
+
+[sub_resource type="Environment" id="Environment_sjuh2"]
+background_mode = 2
+sky = SubResource("Sky_you74")
+tonemap_mode = 2
+glow_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2fbij"]
 albedo_texture = ExtResource("2_gq36s")
@@ -21,6 +36,9 @@ size = Vector2(300, 300)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0yot1"]
 
 [node name="TestScene1" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_sjuh2")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.839432, -0.245678, -0.484765, 0.133262, -0.771708, 0.621859, -0.526874, -0.586609, -0.615057, 0, 0, 0)
@@ -51,3 +69,9 @@ transform = Transform3D(-4.37114e-05, 1, 0, -1000, -4.37114e-08, 0, 0, 0, 1000, 
 
 [node name="Waypoint" parent="." instance=ExtResource("6_87a1a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200, 58, -267)
+
+[node name="Tile5" parent="." instance=ExtResource("7_wn2o5")]
+transform = Transform3D(10000, 0, 0, 0, 1, 0, 0, 0, 10000, 0, -5, 0)
+
+[node name="Tube" parent="." instance=ExtResource("8_jrsyo")]
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -230.876, 71.5437, -566.061)

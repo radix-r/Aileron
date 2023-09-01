@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://bk8yj7qady78c"]
+
+[ext_resource type="Texture2D" uid="uid://r3ru5t487tut" path="res://Assets/WaterFx/tex/wasser1.JPG" id="1_l6614"]
+[ext_resource type="ArrayMesh" uid="uid://c4cpap456fy8d" path="res://Assets/StoneFloor/Models/StoneFloor_SlabOne_LOD2.obj" id="2_od23m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gpud7"]
+albedo_texture = ExtResource("1_l6614")
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_hest3"]
+points = PackedVector3Array(44.44, 13.7236, 44.7098, -48.2216, -0.750513, -47.9518, -44.44, 13.7236, -44.1702, 48.2216, -0.750513, -47.9518, -48.2216, -0.750513, 48.4914, 48.2216, -0.750513, 48.4914, 44.44, 13.7236, -44.1702, -44.44, 13.7236, 44.7098)
+
+[node name="Water" type="StaticBody3D"]
+
+[node name="StoneFloorSlabOneLod2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_gpud7")
+mesh = ExtResource("2_od23m")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_hest3")
