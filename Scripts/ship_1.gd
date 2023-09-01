@@ -94,7 +94,8 @@ func _physics_process(_delta: float) -> void:
         # check collision info
         var collision: KinematicCollision3D = get_last_slide_collision()
         var collision_vector: Vector3 = (collision.get_position() - global_position).normalized()
-        velocity = -collision_vector * speed * velocity.normalized().dot(collision_vector)
+        # velocity = -collision_vector * speed * velocity.normalized().dot(collision_vector)
+        velocity = -collision_vector * speed
 
 
 #####################################
