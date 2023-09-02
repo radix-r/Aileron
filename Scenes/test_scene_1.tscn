@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://c0vo01kgljeyq"]
+[gd_scene load_steps=16 format=3 uid="uid://c0vo01kgljeyq"]
 
 [ext_resource type="PackedScene" uid="uid://54wog5qnpeg5" path="res://Scenes/ship_1.tscn" id="1_r18vh"]
 [ext_resource type="Texture2D" uid="uid://dinta0emiyeik" path="res://Assets/Textures/aerial_rocks_02_diff_4k.png" id="2_gq36s"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dg01rmwgh38gi" path="res://Scenes/tile.tscn" id="5_r0ge3"]
 [ext_resource type="PackedScene" uid="uid://cp3bd100xweat" path="res://Scenes/waypoint.tscn" id="6_87a1a"]
 [ext_resource type="PackedScene" uid="uid://bk8yj7qady78c" path="res://Scenes/water.tscn" id="7_wn2o5"]
+[ext_resource type="Script" path="res://Scripts/waypoint_system.gd" id="8_5gi2h"]
 [ext_resource type="PackedScene" uid="uid://cqm8o4xo703yh" path="res://Scenes/tube.tscn" id="8_jrsyo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2fbij"]
@@ -82,6 +83,7 @@ environment = SubResource("Environment_sjuh2")
 [node name="Navigation" type="Node3D" parent="Services"]
 
 [node name="WaypointSystem" type="Node3D" parent="Services/Navigation"]
+script = ExtResource("8_5gi2h")
 
 [node name="Waypoint" parent="Services/Navigation/WaypointSystem" instance=ExtResource("6_87a1a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200, 58, -267)

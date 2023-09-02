@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cp3bd100xweat"]
 
 [ext_resource type="Script" path="res://Scripts/waypoint.gd" id="1_l6dpt"]
-[ext_resource type="Texture2D" uid="uid://lukmy1d3oex" path="res://icon.svg" id="1_ogcon"]
+[ext_resource type="Texture2D" uid="uid://bte0mpymydwi7" path="res://Assets/Images/locationMarker.png" id="2_aikx6"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_x56h4"]
 radius = 5.0
@@ -21,7 +21,9 @@ script = ExtResource("1_l6dpt")
 [node name="Origin" type="Node2D" parent="."]
 
 [node name="Marker" type="Sprite2D" parent="Origin"]
-texture = ExtResource("1_ogcon")
+modulate = Color(1, 1, 1, 0.341176)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_aikx6")
 
 [node name="Area3D" type="Area3D" parent="."]
 
