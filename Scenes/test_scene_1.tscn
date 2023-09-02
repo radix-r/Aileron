@@ -1,11 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://c0vo01kgljeyq"]
+[gd_scene load_steps=15 format=3 uid="uid://c0vo01kgljeyq"]
 
 [ext_resource type="PackedScene" uid="uid://54wog5qnpeg5" path="res://Scenes/ship_1.tscn" id="1_r18vh"]
 [ext_resource type="Texture2D" uid="uid://dinta0emiyeik" path="res://Assets/Textures/aerial_rocks_02_diff_4k.png" id="2_gq36s"]
 [ext_resource type="Texture2D" uid="uid://bubl1uk6cc4q2" path="res://Assets/Textures/aerial_rocks_02_nor_gl_4k.png" id="3_7ggqk"]
 [ext_resource type="Texture2D" uid="uid://baxl8f6wshgk3" path="res://Assets/Textures/aerial_rocks_02_rough_4k.png" id="4_lkfpd"]
 [ext_resource type="PackedScene" uid="uid://dg01rmwgh38gi" path="res://Scenes/tile.tscn" id="5_r0ge3"]
-[ext_resource type="PackedScene" uid="uid://cp3bd100xweat" path="res://Scenes/waypoint.tscn" id="6_87a1a"]
 [ext_resource type="PackedScene" uid="uid://bk8yj7qady78c" path="res://Scenes/water.tscn" id="7_wn2o5"]
 [ext_resource type="Script" path="res://Scripts/waypoint_system.gd" id="8_5gi2h"]
 [ext_resource type="PackedScene" uid="uid://cqm8o4xo703yh" path="res://Scenes/tube.tscn" id="8_jrsyo"]
@@ -38,7 +37,7 @@ glow_enabled = true
 
 [node name="TestScene1" type="Node3D"]
 
-[node name="Ship1" parent="." instance=ExtResource("1_r18vh")]
+[node name="Ship1" parent="." groups=["player"] instance=ExtResource("1_r18vh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 106.432)
 
 [node name="Environment" type="Node3D" parent="."]
@@ -85,5 +84,22 @@ environment = SubResource("Environment_sjuh2")
 [node name="WaypointSystem" type="Node3D" parent="Services/Navigation"]
 script = ExtResource("8_5gi2h")
 
-[node name="Waypoint" parent="Services/Navigation/WaypointSystem" instance=ExtResource("6_87a1a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200, 58, -267)
+[node name="Points" type="Node3D" parent="Services/Navigation/WaypointSystem"]
+
+[node name="Node3D" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -227.96, 115.002, -401.177)
+
+[node name="Node3D2" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -227.96, 115.002, -726.439)
+
+[node name="Node3D3" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -227.96, 239.885, -726.439)
+
+[node name="Node3D4" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -227.96, 239.885, -428.526)
+
+[node name="Node3D5" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -227.96, 54.7646, -115.766)
+
+[node name="Node3D6" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.0056, 54.7646, -53.3154)

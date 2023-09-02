@@ -1,17 +1,48 @@
 extends Node3D
 
-#@onready var NO_WAYPOINT: Waypoint = Waypoint.new(0, Vector3(0, 0, 0))
-#@onready var active_waypoint: Waypoint = NO_WAYPOINT
+
 @onready var waypoint: PackedScene = preload("res://Scenes/waypoint.tscn")
+@onready var NO_WAYPOINT: Waypoint = waypoint.instantiate()
+@onready var active_waypoint: Waypoint = NO_WAYPOINT
+@onready var active_waypoint_index: int = 0
+@onready var waypoints: Array = []
+
+# where the waypoints will be. expect to be node3ds
+@onready var points: Node3D = $Points
+
+const DEFAULT_RADIUS: float = 40
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-    var new_waypoint = waypoint.instantiate()
+    var i: int = 0
+    for point in points.get_children():
+        var new_waypoint: Waypoint = waypoint.instantiate()
+        add_child(new_waypoint)
+        new_waypoint.set_radius(DEFAULT_RADIUS)
+        new_waypoint.set_disabled(true)
+        new_waypoint.position = point.position
+        new_waypoint.waypoint_arrived.connect(on_waypoint_arrived)
+        waypoints.append(new_waypoint)
 
-    add_child(new_waypoint)
-    new_waypoint.set_radius(100.0)
+    waypoints[0].set_disabled(false)
+    active_waypoint = waypoints[0]
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-    pass
+func on_waypoint_arrived(body: Node3D, id: int) -> void:
+    var player_found: bool = false
+
+    for group in body.get_groups():
+        player_found = player_found || group == "player"
+
+    if !player_found:#|| id != active_waypoint.id:
+        return
+
+    print_debug(body, " entered waypoint ", id)
+    waypoints[active_waypoint_index].set_disabled(true)
+    active_waypoint_index += 1
+    if active_waypoint_index >= waypoints.size():
+        print_debug("Done")
+        return
+    else:
+        waypoints[active_waypoint_index].set_disabled(false)
+        active_waypoint = waypoints[active_waypoint_index]

@@ -34,3 +34,5 @@ shape = SubResource("SphereShape3D_x56h4")
 mesh = SubResource("SphereMesh_6oucy")
 
 [node name="VisibleNotifier" type="VisibleOnScreenNotifier3D" parent="."]
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
