@@ -9,19 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://bk8yj7qady78c" path="res://Scenes/water.tscn" id="7_wn2o5"]
 [ext_resource type="PackedScene" uid="uid://cqm8o4xo703yh" path="res://Scenes/tube.tscn" id="8_jrsyo"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f18ww"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-
-[sub_resource type="Sky" id="Sky_you74"]
-sky_material = SubResource("ProceduralSkyMaterial_f18ww")
-
-[sub_resource type="Environment" id="Environment_sjuh2"]
-background_mode = 2
-sky = SubResource("Sky_you74")
-tonemap_mode = 2
-glow_enabled = true
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2fbij"]
 albedo_texture = ExtResource("2_gq36s")
 roughness_texture = ExtResource("4_lkfpd")
@@ -35,43 +22,66 @@ size = Vector2(300, 300)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0yot1"]
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f18ww"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_you74"]
+sky_material = SubResource("ProceduralSkyMaterial_f18ww")
+
+[sub_resource type="Environment" id="Environment_sjuh2"]
+background_mode = 2
+sky = SubResource("Sky_you74")
+tonemap_mode = 2
+glow_enabled = true
+
 [node name="TestScene1" type="Node3D"]
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_sjuh2")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.839432, -0.245678, -0.484765, 0.133262, -0.771708, 0.621859, -0.526874, -0.586609, -0.615057, 0, 0, 0)
-shadow_enabled = true
 
 [node name="Ship1" parent="." instance=ExtResource("1_r18vh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 106.432)
 
-[node name="Ground" type="MeshInstance3D" parent="."]
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="Ground" type="MeshInstance3D" parent="Environment"]
 visible = false
 mesh = SubResource("PlaneMesh_8skdd")
+skeleton = NodePath("../..")
 
-[node name="Person" type="MeshInstance3D" parent="."]
+[node name="Person" type="MeshInstance3D" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_0yot1")
+skeleton = NodePath("../..")
 
-[node name="Tile" parent="." instance=ExtResource("5_r0ge3")]
+[node name="Tile" parent="Environment" instance=ExtResource("5_r0ge3")]
 transform = Transform3D(1000, 0, 0, 0, 1, 0, 0, 0, 1000, 0, 0, 0)
 
-[node name="Tile2" parent="." instance=ExtResource("5_r0ge3")]
+[node name="Tile2" parent="Environment" instance=ExtResource("5_r0ge3")]
 transform = Transform3D(913.503, -0.406832, 0, 406.832, 0.913503, 0, 0, 0, 1000, 0, 0, 0)
 
-[node name="Tile3" parent="." instance=ExtResource("5_r0ge3")]
+[node name="Tile3" parent="Environment" instance=ExtResource("5_r0ge3")]
 transform = Transform3D(913.503, -0.406832, 0, 394.067, 0.884839, -248.538, 101.113, 0.22704, 968.622, 0, 0, 0)
 
-[node name="Tile4" parent="." instance=ExtResource("5_r0ge3")]
+[node name="Tile4" parent="Environment" instance=ExtResource("5_r0ge3")]
 transform = Transform3D(-4.37114e-05, 1, 0, -1000, -4.37114e-08, 0, 0, 0, 1000, -402.375, 0, 0)
 
-[node name="Waypoint" parent="." instance=ExtResource("6_87a1a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200, 58, -267)
-
-[node name="Tile5" parent="." instance=ExtResource("7_wn2o5")]
+[node name="Ocean" parent="Environment" instance=ExtResource("7_wn2o5")]
 transform = Transform3D(10000, 0, 0, 0, 1, 0, 0, 0, 10000, 0, -5, 0)
 
-[node name="Tube" parent="." instance=ExtResource("8_jrsyo")]
+[node name="Tube" parent="Environment" instance=ExtResource("8_jrsyo")]
 transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -230.876, 71.5437, -566.061)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(0.839432, -0.245678, -0.484765, 0.133262, -0.771708, 0.621859, -0.526874, -0.586609, -0.615056, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_sjuh2")
+
+[node name="Services" type="Node3D" parent="."]
+
+[node name="Navigation" type="Node3D" parent="Services"]
+
+[node name="WaypointSystem" type="Node3D" parent="Services/Navigation"]
+
+[node name="Waypoint" parent="Services/Navigation/WaypointSystem" instance=ExtResource("6_87a1a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200, 58, -267)
