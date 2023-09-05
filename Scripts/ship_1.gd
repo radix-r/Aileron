@@ -35,7 +35,13 @@ extends CharacterBody3D
 
 @onready var pitch_point: Node3D = $PitchPoint
 @onready var forward_point: Node3D = $PitchPoint/ForwardPoint
-@onready var camera: Node3D = $PitchPoint/CameraControl
+@onready var camera_control: Node3D = $PitchPoint/CameraControl
+@onready var camera: Camera3D = $PitchPoint/CameraControl/Camera3D
+@onready var nav_arrow_point: Node3D = $NavArrowPoint
+@onready var overlay: CanvasLayer = $NavArrowPoint/Overlay
+
+@onready var waypoint_system: Node3D = get_node("/root/TestScene1/Services/Navigation/WaypointSystem")
+
 
 @onready var forward: Vector3 = Vector3()
 @onready var starting_camera_position: Vector3 = Vector3()
@@ -71,10 +77,12 @@ func _ready() -> void:
     camera_chase = dataDict[unit_name]["camera_chase"]
     acceleration = dataDict[unit_name]["acceleration"]
 
-    starting_camera_position = camera.position
+    starting_camera_position = camera_control.position
 
 
 func _physics_process(_delta: float) -> void:
+
+    $NavArrowPoint/Overlay/Draw3d.queue_redraw()
 
     # Get input and handel turining, acel/decel
     var input_dir = Input.get_vector("left", "right", "up", "down")
@@ -87,8 +95,8 @@ func _physics_process(_delta: float) -> void:
     velocity = ((velocity * momentum + forward * speed ) / 2).normalized() * speed
 
     # shift camera based on speed to give chase effect
-    camera.position = starting_camera_position
-    camera.position.z += camera_chase * speed
+    camera_control.position = starting_camera_position
+    camera_control.position.z += camera_chase * speed
 
     if ( move_and_slide() ):
         # check collision info

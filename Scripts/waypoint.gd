@@ -51,6 +51,7 @@ func set_disabled(disabled: bool) -> void:
     collision_shape_node.set_deferred("disabled", disabled)
     visible = !disabled
 
+
 func set_radius(new_radius: float) -> void:
     #shape = SphereShape3D.new()
     shape.radius = new_radius
