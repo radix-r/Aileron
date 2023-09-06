@@ -1,5 +1,7 @@
 extends Node3D
 
+signal waypoint_arrived(id: int)
+signal waypoints_finished
 
 @onready var waypoint: PackedScene = preload("res://Scenes/waypoint.tscn")
 @onready var NO_WAYPOINT: Waypoint = waypoint.instantiate()
@@ -37,11 +39,13 @@ func on_waypoint_arrived(body: Node3D, id: int) -> void:
     if !player_found:#|| id != active_waypoint.id:
         return
 
-    print_debug(body, " entered waypoint ", id)
+    waypoint_arrived.emit(id)
     waypoints[active_waypoint_index].set_disabled(true)
     active_waypoint_index += 1
+
     if active_waypoint_index >= waypoints.size():
-        print_debug("Done")
+        waypoints_finished.emit()
+        active_waypoint = NO_WAYPOINT
         return
     else:
         waypoints[active_waypoint_index].set_disabled(false)
