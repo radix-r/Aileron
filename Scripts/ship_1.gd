@@ -35,16 +35,18 @@ extends CharacterBody3D
 
 @onready var pitch_point: Node3D = $PitchPoint
 @onready var forward_point: Node3D = $PitchPoint/ForwardPoint
+@onready var up_point: Node3D = $PitchPoint/UpPoint
 @onready var camera_control: Node3D = $PitchPoint/CameraControl
 @onready var camera: Camera3D = $PitchPoint/CameraControl/Camera3D
 @onready var nav_arrow_point: Node3D = $NavArrowPoint
 @onready var overlay: CanvasLayer = $NavArrowPoint/Overlay
+@onready var nav_arrow_drawer: Control = $NavArrowPoint/Overlay/Draw3d
 
 @onready var waypoint_system: Node3D = get_node("/root/TestScene1/Services/Navigation/WaypointSystem")
 
 
 @onready var forward: Vector3 = Vector3()
-@onready var starting_camera_position: Vector3 = Vector3()
+@onready var starting_camera_position: Vector3 = camera_control.global_position
 @onready var speed: float = 0
 
 
@@ -77,12 +79,10 @@ func _ready() -> void:
     camera_chase = dataDict[unit_name]["camera_chase"]
     acceleration = dataDict[unit_name]["acceleration"]
 
-    starting_camera_position = camera_control.position
-
 
 func _physics_process(_delta: float) -> void:
 
-    $NavArrowPoint/Overlay/Draw3d.queue_redraw()
+    nav_arrow_drawer.queue_redraw()
 
     # Get input and handel turining, acel/decel
     var input_dir = Input.get_vector("left", "right", "up", "down")
@@ -95,14 +95,18 @@ func _physics_process(_delta: float) -> void:
     velocity = ((velocity * momentum + forward * speed ) / 2).normalized() * speed
 
     # shift camera based on speed to give chase effect
-    camera_control.position = starting_camera_position
-    camera_control.position.z += camera_chase * speed
+    var basis_z = forward
+    var basis_y = -(up_point.global_position - global_position).normalized()
+    var basis_x = -forward.rotated(basis_y, PI/2)
+    var new_basis = Basis(basis_x, basis_y, basis_z)
+
+    camera_control.position = ((velocity * new_basis ) * camera_chase + camera_control.position) /2
 
     if ( move_and_slide() ):
         # check collision info
         var collision: KinematicCollision3D = get_last_slide_collision()
         var collision_vector: Vector3 = (collision.get_position() - global_position).normalized()
-        # velocity = -collision_vector * speed * velocity.normalized().dot(collision_vector)
+
         velocity = -collision_vector * speed
 
 

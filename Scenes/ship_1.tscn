@@ -30,6 +30,9 @@ mesh = ExtResource("2_y6aw0")
 [node name="ForwardPoint" type="Node3D" parent="PitchPoint"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 
+[node name="UpPoint" type="Node3D" parent="PitchPoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
 [node name="NavArrowPoint" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
 
