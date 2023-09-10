@@ -49,6 +49,8 @@ extends CharacterBody3D
 @onready var starting_camera_position: Vector3 = camera_control.global_position
 @onready var speed: float = 0
 
+@onready var i = 0
+
 
 #####################################
 # OVERRIDE FUNCTIONS
@@ -79,20 +81,31 @@ func _ready() -> void:
     camera_chase = dataDict[unit_name]["camera_chase"]
     acceleration = dataDict[unit_name]["acceleration"]
 
+    velocity = Vector3.ZERO
 
 func _physics_process(_delta: float) -> void:
 
     nav_arrow_drawer.queue_redraw()
 
     # Get input and handel turining, acel/decel
-    var input_dir = Input.get_vector("left", "right", "up", "down")
-    # var direction = Vector3(input_dir.x, 0, input_dir.y).normalized()
-    var target_speed = (-input_dir.y * speed_max) + speed_default
-    target_speed = clamp(target_speed, speed_min, speed_max)
+    var input_right = Input.get_axis("left", "right")
+    var input_up = Input.get_axis("down","up")
+    var input_forward = Input.get_axis( "back", "forward")
+    var input_dir = Vector3(input_right, input_up, input_forward)
+    var target_direction = Vector3(input_dir.x, input_dir.y, -1-input_dir.z)
+    target_direction.z = ceil(target_direction.z)
+#    var target_x_speed =
+#    var target_y_speed =
+    var target_speed = target_direction.length() * speed_max
+
+    var target_velocity: Vector3 = target_direction * speed_max
+    #target_speed = clamp(target_speed, speed_min, speed_max)
     speed = move_toward(speed, target_speed, acceleration)
+    target_velocity = pitch_point.to_global(target_velocity) - global_position
 
     forward = (forward_point.global_position - global_position).normalized()
-    velocity = ((velocity * momentum + forward * speed ) / 2).normalized() * speed
+
+    velocity = ((velocity * momentum + target_velocity ) / 2).normalized() * speed
 
     # shift camera based on speed to give chase effect
     var basis_z = forward
