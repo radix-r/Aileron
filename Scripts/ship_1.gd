@@ -41,6 +41,9 @@ extends CharacterBody3D
 @onready var nav_arrow_point: Node3D = $NavArrowPoint
 @onready var overlay: CanvasLayer = $NavArrowPoint/Overlay
 @onready var nav_arrow_drawer: Control = $NavArrowPoint/Overlay/Draw3d
+@onready var hud_center: Control = $HudAnchor/CanvasLayer/HudCenter
+@onready var hud_anchor: Node3D = $HudAnchor
+@onready var velocity_marker: Control = $HudAnchor/CanvasLayer/VelocityMarker
 
 @onready var waypoint_system: Node3D = get_node("/root/TestScene1/Services/Navigation/WaypointSystem")
 
@@ -83,9 +86,12 @@ func _ready() -> void:
 
     velocity = Vector3.ZERO
 
+# TODO: Boost
 func _physics_process(_delta: float) -> void:
 
-    nav_arrow_drawer.queue_redraw()
+    update_nav_arrow()
+    update_hud_center()
+    update_velocity_marker()
 
     # Get input and handel turining, acel/decel
     var input_right = Input.get_axis("left", "right")
@@ -94,8 +100,7 @@ func _physics_process(_delta: float) -> void:
     var input_dir = Vector3(input_right, input_up, input_forward)
     var target_direction = Vector3(input_dir.x, input_dir.y, -1-input_dir.z)
     target_direction.z = ceil(target_direction.z)
-#    var target_x_speed =
-#    var target_y_speed =
+
     var target_speed = target_direction.length() * speed_max
 
     var target_velocity: Vector3 = target_direction * speed_max
@@ -107,7 +112,7 @@ func _physics_process(_delta: float) -> void:
 
     velocity = ((velocity * momentum + target_velocity ) / 2).normalized() * speed
 
-    # shift camera based on speed to give chase effect
+    # shift camera based on velocity to give chase effect
     var basis_z = forward
     var basis_y = -(up_point.global_position - global_position).normalized()
     var basis_x = -forward.rotated(basis_y, PI/2)
@@ -115,6 +120,7 @@ func _physics_process(_delta: float) -> void:
 
     camera_control.position = ((velocity * new_basis ) * camera_chase + camera_control.position) /2
 
+    # apply velocity
     if ( move_and_slide() ):
         # check collision info
         var collision: KinematicCollision3D = get_last_slide_collision()
@@ -131,6 +137,27 @@ func _physics_process(_delta: float) -> void:
 # HELPER FUNCTIONS
 #####################################
 
+func update_hud_center() -> void:
+    var cam_rotation: Vector3 = camera_control.rotation
+    var hud_pos: Vector2 = transform_to_hud_space(camera.global_position + forward )
+
+    if !camera.is_position_behind(hud_anchor.global_position):
+        hud_center.show()
+        hud_center.position = hud_pos
+        #hud_anchor.rotation = Vector3(0,0,-cam_rotation.z)
+    else:
+        hud_center.hide()
+
+
+func update_nav_arrow() -> void:
+    nav_arrow_drawer.queue_redraw()
+
+
+func update_velocity_marker() -> void:
+    var hud_pos: Vector2 = transform_to_hud_space(camera.global_position + velocity)
+
+    velocity_marker.position = hud_pos
+
 # TODO: Move to utils file?
 func read_json_file(file_path: String) -> Dictionary:
     var json_as_text = FileAccess.get_file_as_string(file_path)
@@ -141,3 +168,11 @@ func read_json_file(file_path: String) -> Dictionary:
         # TODO: Retrun error dict
         return Dictionary()
 
+
+func transform_angle(angel: float, fov: float, pixel_height: float) -> float:
+    return (tan(angel) / tan(fov / 2)) * pixel_height / 2
+
+
+func transform_to_hud_space(world_space: Vector3) -> Vector2:
+    var screen_space: Vector2 = camera.unproject_position(world_space)
+    return screen_space #- Vector2(get_viewport().get_visible_rect().size / 2)

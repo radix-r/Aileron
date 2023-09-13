@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://54wog5qnpeg5"]
+[gd_scene load_steps=7 format=3 uid="uid://54wog5qnpeg5"]
 
 [ext_resource type="Script" path="res://Scripts/ship_1.gd" id="1_4be1u"]
-[ext_resource type="ArrayMesh" uid="uid://bxwpcgprlm67q" path="res://Assets/Ship1/Models/ship_model.obj" id="2_y6aw0"]
+[ext_resource type="Texture2D" uid="uid://7w0r8mdvlohs" path="res://Assets/HUD/boresight.png" id="2_4k50q"]
+[ext_resource type="ArrayMesh" uid="uid://c3vev1qejfpr2" path="res://Assets/Ship1/Models/ship_model.obj" id="2_y6aw0"]
+[ext_resource type="Texture2D" uid="uid://d2o6pwscq1txl" path="res://Assets/HUD/velocity_marker.png" id="3_5v10j"]
 [ext_resource type="Script" path="res://Scripts/draw3d.gd" id="3_rxedx"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_wxfr1"]
@@ -9,6 +11,54 @@ points = PackedVector3Array(3.62931, 0.317469, -1.73545, -0.300825, -0.0755564, 
 
 [node name="Ship1" type="CharacterBody3D"]
 script = ExtResource("1_4be1u")
+
+[node name="HudAnchor" type="Node3D" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="HudAnchor"]
+
+[node name="HudCenter" type="Control" parent="HudAnchor/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 1
+
+[node name="Boresight" type="Sprite2D" parent="HudAnchor/CanvasLayer/HudCenter"]
+modulate = Color(0.45098, 1, 0.556863, 0.686275)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_4k50q")
+
+[node name="VelocityMarker" type="Control" parent="HudAnchor/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 1
+
+[node name="VelocityMarker" type="Sprite2D" parent="HudAnchor/CanvasLayer/VelocityMarker"]
+modulate = Color(0.45098, 1, 0.556863, 0.686275)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("3_5v10j")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

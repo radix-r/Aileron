@@ -33,7 +33,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
     var marker_pos = camera.unproject_position(self.global_transform.origin)
     $Origin.position = marker_pos
 

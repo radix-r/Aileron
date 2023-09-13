@@ -16,7 +16,6 @@ const DEFAULT_RADIUS: float = 40
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-    var i: int = 0
     for point in points.get_children():
         var new_waypoint: Waypoint = waypoint.instantiate()
         add_child(new_waypoint)
