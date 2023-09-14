@@ -47,7 +47,6 @@ extends CharacterBody3D
 
 @onready var waypoint_system: Node3D = get_node("/root/TestScene1/Services/Navigation/WaypointSystem")
 
-
 @onready var forward: Vector3 = Vector3()
 @onready var starting_camera_position: Vector3 = camera_control.global_position
 @onready var speed: float = 0
@@ -86,6 +85,7 @@ func _ready() -> void:
 
     velocity = Vector3.ZERO
 
+
 # TODO: Boost
 func _physics_process(_delta: float) -> void:
 
@@ -102,7 +102,6 @@ func _physics_process(_delta: float) -> void:
 
     # shift camera based on velocity to give chase effect
     update_camera_position()
-
 
     # apply velocity
     if ( move_and_slide() ):
@@ -127,6 +126,8 @@ func get_input_direction() -> Vector3:
     var input_forward = Input.get_axis( "back", "forward")
     return Vector3(input_right, input_up, input_forward)
 
+
+# apply chase effect to camera
 func update_camera_position() -> void:
     var basis_z = forward
     var basis_y = -(up_point.global_position - global_position).normalized()
@@ -159,9 +160,8 @@ func calc_velocity(input_dir: Vector3) -> Vector3:
     speed = move_toward(speed, target_speed, acceleration)
     target_velocity = pitch_point.to_global(target_velocity) - global_position
 
-
-
     return ((velocity * momentum + target_velocity ) / 2).normalized() * speed
+
 
 func update_nav_arrow() -> void:
     nav_arrow_drawer.queue_redraw()
@@ -175,6 +175,7 @@ func update_velocity_marker() -> void:
     else:
         velocity_marker.show()
         velocity_marker.position = hud_pos
+
 
 # TODO: Move to utils file?
 func read_json_file(file_path: String) -> Dictionary:
