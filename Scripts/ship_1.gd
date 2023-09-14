@@ -93,32 +93,16 @@ func _physics_process(_delta: float) -> void:
     update_hud_center()
     update_velocity_marker()
 
-    # Get input and handel turining, acel/decel
-    var input_right = Input.get_axis("left", "right")
-    var input_up = Input.get_axis("down","up")
-    var input_forward = Input.get_axis( "back", "forward")
-    var input_dir = Vector3(input_right, input_up, input_forward)
-    var target_direction = Vector3(input_dir.x, input_dir.y, -1-input_dir.z)
-    target_direction.z = ceil(target_direction.z)
-
-    var target_speed = target_direction.length() * speed_max
-
-    var target_velocity: Vector3 = target_direction * speed_max
-    #target_speed = clamp(target_speed, speed_min, speed_max)
-    speed = move_toward(speed, target_speed, acceleration)
-    target_velocity = pitch_point.to_global(target_velocity) - global_position
-
     forward = (forward_point.global_position - global_position).normalized()
 
-    velocity = ((velocity * momentum + target_velocity ) / 2).normalized() * speed
+    # Get input and handel turining, acel/decel
+    var input_dir: Vector3 = get_input_direction()
+
+    velocity = calc_velocity(input_dir)
 
     # shift camera based on velocity to give chase effect
-    var basis_z = forward
-    var basis_y = -(up_point.global_position - global_position).normalized()
-    var basis_x = -forward.rotated(basis_y, PI/2)
-    var new_basis = Basis(basis_x, basis_y, basis_z)
+    update_camera_position()
 
-    camera_control.position = ((velocity * new_basis ) * camera_chase + camera_control.position) /2
 
     # apply velocity
     if ( move_and_slide() ):
@@ -137,6 +121,21 @@ func _physics_process(_delta: float) -> void:
 # HELPER FUNCTIONS
 #####################################
 
+func get_input_direction() -> Vector3:
+    var input_right = Input.get_axis("left", "right")
+    var input_up = Input.get_axis("down","up")
+    var input_forward = Input.get_axis( "back", "forward")
+    return Vector3(input_right, input_up, input_forward)
+
+func update_camera_position() -> void:
+    var basis_z = forward
+    var basis_y = -(up_point.global_position - global_position).normalized()
+    var basis_x = -forward.rotated(basis_y, PI/2)
+    var new_basis = Basis(basis_x, basis_y, basis_z)
+
+    camera_control.position = ((velocity * new_basis ) * camera_chase + camera_control.position) /2
+
+
 func update_hud_center() -> void:
     var cam_rotation: Vector3 = camera_control.rotation
     var hud_pos: Vector2 = transform_to_hud_space(camera.global_position + forward )
@@ -148,6 +147,21 @@ func update_hud_center() -> void:
     else:
         hud_center.hide()
 
+
+func calc_velocity(input_dir: Vector3) -> Vector3:
+    var target_direction = Vector3(input_dir.x, input_dir.y, -1-input_dir.z)
+    target_direction.z = ceil(target_direction.z)
+
+    var target_speed = target_direction.length() * speed_max
+
+    var target_velocity: Vector3 = target_direction * speed_max
+    #target_speed = clamp(target_speed, speed_min, speed_max)
+    speed = move_toward(speed, target_speed, acceleration)
+    target_velocity = pitch_point.to_global(target_velocity) - global_position
+
+
+
+    return ((velocity * momentum + target_velocity ) / 2).normalized() * speed
 
 func update_nav_arrow() -> void:
     nav_arrow_drawer.queue_redraw()
