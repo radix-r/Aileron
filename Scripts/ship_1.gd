@@ -141,7 +141,7 @@ func update_hud_center() -> void:
     var cam_rotation: Vector3 = camera_control.rotation
     var hud_pos: Vector2 = transform_to_hud_space(camera.global_position + forward )
 
-    if !camera.is_position_behind(hud_anchor.global_position):
+    if !camera.is_position_behind(camera.global_position + forward):
         hud_center.show()
         hud_center.position = hud_pos
         #hud_anchor.rotation = Vector3(0,0,-cam_rotation.z)
@@ -156,7 +156,11 @@ func update_nav_arrow() -> void:
 func update_velocity_marker() -> void:
     var hud_pos: Vector2 = transform_to_hud_space(camera.global_position + velocity)
 
-    velocity_marker.position = hud_pos
+    if camera.is_position_behind(camera.global_position + velocity):
+        velocity_marker.hide()
+    else:
+        velocity_marker.show()
+        velocity_marker.position = hud_pos
 
 # TODO: Move to utils file?
 func read_json_file(file_path: String) -> Dictionary:
