@@ -15,9 +15,14 @@ run/main_scene="res://Scenes/test_scene_1.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Utilities="*res://Scenes/utilities.tscn"
+
 [display]
 
 window/size/mode=2
+window/vsync/vsync_mode=0
 
 [filesystem]
 

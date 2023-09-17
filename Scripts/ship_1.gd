@@ -74,14 +74,14 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _ready() -> void:
     var unit_name = "Ship1"
-    var dataDict: Dictionary = read_json_file("res://Data.json")
-    speed_default = dataDict[unit_name]["speed_default"]
-    speed_max = dataDict[unit_name]["speed_max"]
-    speed_min = dataDict[unit_name]["speed_min"]
-    rotation_speed = dataDict[unit_name]["rotation_speed"]
-    momentum = dataDict[unit_name]["momentum"]
-    camera_chase = dataDict[unit_name]["camera_chase"]
-    acceleration = dataDict[unit_name]["acceleration"]
+
+    speed_default = Utilities.data_dict[unit_name]["speed_default"]
+    speed_max = Utilities.data_dict[unit_name]["speed_max"]
+    speed_min = Utilities.data_dict[unit_name]["speed_min"]
+    rotation_speed = Utilities.data_dict[unit_name]["rotation_speed"]
+    momentum = Utilities.data_dict[unit_name]["momentum"]
+    camera_chase = Utilities.data_dict[unit_name]["camera_chase"]
+    acceleration = Utilities.data_dict[unit_name]["acceleration"]
 
     velocity = Vector3.ZERO
 
@@ -109,7 +109,7 @@ func _physics_process(_delta: float) -> void:
         var collision: KinematicCollision3D = get_last_slide_collision()
         var collision_vector: Vector3 = (collision.get_position() - global_position).normalized()
 
-        velocity = -collision_vector * speed
+        #velocity = -collision_vector * speed
 
 
 #####################################
@@ -148,19 +148,26 @@ func update_hud_center() -> void:
     else:
         hud_center.hide()
 
-
+# TODO: Fix jank in accel/decel
 func calc_velocity(input_dir: Vector3) -> Vector3:
     var target_direction = Vector3(input_dir.x, input_dir.y, -1-input_dir.z)
-    target_direction.z = ceil(target_direction.z)
+    # convert to world space
+    target_direction = pitch_point.to_global(target_direction) - global_position
+    #target_direction.z = ceil(target_direction.z)
+    #target_direction = target_direction * -1
 
-    var target_speed = target_direction.length() * speed_max
+    var velocity_x = move_toward(velocity.x, target_direction.x * speed_max, acceleration)
+    var velocity_y = move_toward(velocity.y, target_direction.y * speed_max, acceleration)
+    var velocity_z = move_toward(velocity.z, target_direction.z * speed_max, acceleration)
 
-    var target_velocity: Vector3 = target_direction * speed_max
+    var target_velocity: Vector3 = Vector3(velocity_x, velocity_y ,velocity_z)
     #target_speed = clamp(target_speed, speed_min, speed_max)
-    speed = move_toward(speed, target_speed, acceleration)
-    target_velocity = pitch_point.to_global(target_velocity) - global_position
+    speed = target_velocity.length()
 
-    return ((velocity * momentum + target_velocity ) / 2).normalized() * speed
+    #target_velocity = pitch_point.to_global(target_velocity)
+    #if target_direction.length() > 1:
+    #    print_debug(target_direction)
+    return ((velocity + target_velocity ) /2  )#.normalized() * speed
 
 
 func update_nav_arrow() -> void:
@@ -175,17 +182,6 @@ func update_velocity_marker() -> void:
     else:
         velocity_marker.show()
         velocity_marker.position = hud_pos
-
-
-# TODO: Move to utils file?
-func read_json_file(file_path: String) -> Dictionary:
-    var json_as_text = FileAccess.get_file_as_string(file_path)
-    var json_as_dict = JSON.parse_string(json_as_text)
-    if json_as_dict:
-        return json_as_dict
-    else:
-        # TODO: Retrun error dict
-        return Dictionary()
 
 
 func transform_angle(angel: float, fov: float, pixel_height: float) -> float:
