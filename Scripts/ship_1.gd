@@ -167,7 +167,8 @@ func calc_velocity(input_dir: Vector3) -> Vector3:
     #target_velocity = pitch_point.to_global(target_velocity)
     #if target_direction.length() > 1:
     #    print_debug(target_direction)
-    return ((velocity + target_velocity ) /2  )#.normalized() * speed
+    # return ((velocity + target_velocity ) /2  )#.normalized() * speed
+    return target_velocity
 
 
 func update_nav_arrow() -> void:

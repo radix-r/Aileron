@@ -1,13 +1,14 @@
-[gd_scene load_steps=16 format=3 uid="uid://c0vo01kgljeyq"]
+[gd_scene load_steps=18 format=3 uid="uid://c0vo01kgljeyq"]
 
 [ext_resource type="Script" path="res://Scripts/test_scene_1.gd" id="1_57xjv"]
 [ext_resource type="PackedScene" uid="uid://54wog5qnpeg5" path="res://Scenes/ship_1.tscn" id="1_r18vh"]
-[ext_resource type="Texture2D" uid="uid://dinta0emiyeik" path="res://Assets/Textures/aerial_rocks_02_diff_4k.png" id="2_gq36s"]
-[ext_resource type="Texture2D" uid="uid://bubl1uk6cc4q2" path="res://Assets/Textures/aerial_rocks_02_nor_gl_4k.png" id="3_7ggqk"]
-[ext_resource type="Texture2D" uid="uid://baxl8f6wshgk3" path="res://Assets/Textures/aerial_rocks_02_rough_4k.png" id="4_lkfpd"]
+[ext_resource type="Texture2D" uid="uid://dgg7j81yawyya" path="res://Assets/Textures/aerial_rocks_02_diff_4k.png" id="2_gq36s"]
+[ext_resource type="Texture2D" uid="uid://dw3l0dm1vkivm" path="res://Assets/Textures/aerial_rocks_02_nor_gl_4k.png" id="3_7ggqk"]
+[ext_resource type="Texture2D" uid="uid://b6406imit8vgo" path="res://Assets/Textures/aerial_rocks_02_rough_4k.png" id="4_lkfpd"]
 [ext_resource type="PackedScene" uid="uid://dg01rmwgh38gi" path="res://Scenes/tile.tscn" id="5_r0ge3"]
 [ext_resource type="PackedScene" uid="uid://bk8yj7qady78c" path="res://Scenes/water.tscn" id="7_wn2o5"]
 [ext_resource type="Script" path="res://Scripts/waypoint_system.gd" id="8_5gi2h"]
+[ext_resource type="PackedScene" uid="uid://k7fri66xt1e1" path="res://Scenes/palm_tree.tscn" id="8_fm3sb"]
 [ext_resource type="PackedScene" uid="uid://cqm8o4xo703yh" path="res://Scenes/tube.tscn" id="8_jrsyo"]
 [ext_resource type="PackedScene" uid="uid://cggqb75a8w8r" path="res://addons/debug_menu/debug_menu.tscn" id="10_0udxv"]
 
@@ -76,6 +77,9 @@ shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
 environment = SubResource("Environment_sjuh2")
+
+[node name="PalmTree" parent="Environment" instance=ExtResource("8_fm3sb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60.9517, 0, 0)
 
 [node name="Services" type="Node3D" parent="."]
 

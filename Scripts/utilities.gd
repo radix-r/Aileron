@@ -17,6 +17,7 @@ extends Node
 # PUBLIC VARIABLES
 #####################################
 @onready var data_dict: Dictionary = {}
+
 #####################################
 # PRIVATE VARIABLES
 #####################################

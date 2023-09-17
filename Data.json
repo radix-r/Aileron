@@ -3,9 +3,16 @@
 		"speed_default": 10,
 		"speed_max": 100,
 		"speed_min": 0,
-		"acceleration": 1,
+		"acceleration": 4,
 		"rotation_speed": 0.01,
-		"momentum": 20,
+		"momentum": 4,
 		"camera_chase": 0.1
+	},
+	"Bullet1": {
+		"lifespan": 10
+	},
+	"Gun1": {
+		"fire_cooldown": 0.1,
+		"projectile_speed": 10
 	}
 }

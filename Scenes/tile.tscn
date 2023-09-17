@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dg01rmwgh38gi"]
 
-[ext_resource type="Texture2D" uid="uid://cvcoaml1xmnut" path="res://Assets/StoneFloor/Textures/StoneFloor_Specular.jpg" id="1_o7gp4"]
-[ext_resource type="ArrayMesh" uid="uid://c4cpap456fy8d" path="res://Assets/StoneFloor/Models/StoneFloor_SlabOne_LOD2.obj" id="1_wlwql"]
+[ext_resource type="Texture2D" uid="uid://dan10jdw3pppv" path="res://Assets/StoneFloor/Textures/StoneFloor_Specular.jpg" id="1_o7gp4"]
+[ext_resource type="ArrayMesh" uid="uid://cqwoebfxwt0sb" path="res://Assets/StoneFloor/Models/StoneFloor_SlabOne_LOD2.obj" id="1_wlwql"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2r6md"]
 albedo_texture = ExtResource("1_o7gp4")
@@ -10,6 +10,8 @@ albedo_texture = ExtResource("1_o7gp4")
 points = PackedVector3Array(44.44, 13.7236, 44.7098, -48.2216, -0.750513, -47.9518, -44.44, 13.7236, -44.1702, 48.2216, -0.750513, -47.9518, -48.2216, -0.750513, 48.4914, 48.2216, -0.750513, 48.4914, 44.44, 13.7236, -44.1702, -44.44, 13.7236, 44.7098)
 
 [node name="Tile" type="StaticBody3D"]
+collision_layer = 8
+collision_mask = 15
 
 [node name="StoneFloorSlabOneLod2" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
