@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bk8yj7qady78c" path="res://Scenes/water.tscn" id="7_wn2o5"]
 [ext_resource type="Script" path="res://Scripts/waypoint_system.gd" id="8_5gi2h"]
 [ext_resource type="PackedScene" uid="uid://cqm8o4xo703yh" path="res://Scenes/tube.tscn" id="8_jrsyo"]
+[ext_resource type="PackedScene" uid="uid://cggqb75a8w8r" path="res://addons/debug_menu/debug_menu.tscn" id="10_0udxv"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2fbij"]
 albedo_texture = ExtResource("2_gq36s")
@@ -109,3 +110,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.0056, 54.7646, -53.3154)
 
 [node name="Ship1" parent="Combatants/Player" groups=["player"] instance=ExtResource("1_r18vh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 106.432)
+
+[node name="UI" type="Node3D" parent="."]
+
+[node name="CanvasLayer" parent="UI" instance=ExtResource("10_0udxv")]
