@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://d1iqn0kgh3k0k"]
+
+[ext_resource type="Script" path="res://Scripts/trail_effect2.gd" id="1_vtjlk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0qwi3"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[node name="Trail3D1" type="MeshInstance3D"]
+material_override = SubResource("StandardMaterial3D_0qwi3")
+script = ExtResource("1_vtjlk")
+_end_color = Color(1, 1, 1, 0)

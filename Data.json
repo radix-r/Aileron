@@ -5,7 +5,7 @@
 		"speed_min": 0,
 		"acceleration": 4,
 		"rotation_speed": 0.01,
-		"momentum": 4,
+		"momentum": 1,
 		"camera_chase": 0.1
 	},
 	"Bullet1": {
@@ -13,6 +13,6 @@
 	},
 	"Gun1": {
 		"fire_cooldown": 0.1,
-		"projectile_speed": 10
+		"projectile_speed": 5
 	}
 }

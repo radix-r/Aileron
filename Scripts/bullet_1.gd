@@ -45,6 +45,7 @@ func _physics_process(_delta: float) -> void:
         if !player_found:
             queue_free()
 
+
 func _ready() -> void:
     var unit_name = "Bullet1"
     #speed = Utilities.data_dict[unit_name]["speed"]

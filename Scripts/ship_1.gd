@@ -148,6 +148,7 @@ func update_hud_center() -> void:
     else:
         hud_center.hide()
 
+
 # TODO: Fix jank in accel/decel
 func calc_velocity(input_dir: Vector3) -> Vector3:
     var target_direction = Vector3(input_dir.x, input_dir.y, -1-input_dir.z)
@@ -167,8 +168,7 @@ func calc_velocity(input_dir: Vector3) -> Vector3:
     #target_velocity = pitch_point.to_global(target_velocity)
     #if target_direction.length() > 1:
     #    print_debug(target_direction)
-    # return ((velocity + target_velocity ) /2  )#.normalized() * speed
-    return target_velocity
+    return ((velocity * momentum + target_velocity ) /(1 + momentum)  )
 
 
 func update_nav_arrow() -> void:

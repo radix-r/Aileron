@@ -112,7 +112,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.0056, 54.7646, -53.3154)
 
 [node name="Player" type="Node3D" parent="Combatants"]
 
-[node name="Ship1" parent="Combatants/Player" groups=["player"] instance=ExtResource("1_r18vh")]
+[node name="Ship1" parent="Combatants/Player" instance=ExtResource("1_r18vh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 106.432)
 
 [node name="UI" type="Node3D" parent="."]
