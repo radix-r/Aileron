@@ -30,6 +30,7 @@ var bullet: PackedScene = preload("res://Scenes/bullet_1.tscn")
 @onready var can_fire: bool = true
 @onready var platform: CharacterBody3D = $"../.."
 @onready var fire_point: Node3D = $FirePoint
+@onready var muzzel_flash: Node3D = $FirePoint/MuzzleFlash1
 @onready var cooldown: Timer = Timer.new()
 @onready var root = get_node("/root/")
 #####################################
@@ -72,3 +73,5 @@ func fire():
     bullet_instace.velocity = platform.velocity/60 + (platform.forward * projectile_speed)
     root.add_child(bullet_instace)
     bullet_instace.global_position = fire_point.global_position
+    bullet_instace.global_rotation = fire_point.global_rotation
+    muzzel_flash.get_node("AnimationPlayer").play("Fire")

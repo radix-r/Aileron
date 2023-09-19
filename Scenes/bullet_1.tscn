@@ -30,3 +30,6 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 
 shape = SubResource("CapsuleShape3D_rugkm")
 
 [node name="Trail3D1" parent="." instance=ExtResource("2_84hoq")]
+_from_width = 0.1
+_lifespan = 0.1
+_start_color = Color(1, 1, 0, 1)

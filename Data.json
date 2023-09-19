@@ -13,6 +13,6 @@
 	},
 	"Gun1": {
 		"fire_cooldown": 0.1,
-		"projectile_speed": 5
+		"projectile_speed": 10
 	}
 }

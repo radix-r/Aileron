@@ -1,0 +1,117 @@
+[gd_scene load_steps=7 format=3 uid="uid://biydulbukmyrr"]
+
+[ext_resource type="Texture2D" uid="uid://doxqfoj66t834" path="res://Assets/Images/muzzleFlash.png" id="1_u6d0t"]
+[ext_resource type="ArrayMesh" uid="uid://cptqytnmk8mau" path="res://Assets/Models/muzzleFlash.obj" id="2_42tde"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rptaj"]
+transparency = 1
+cull_mode = 2
+albedo_texture = ExtResource("1_u6d0t")
+emission_enabled = true
+emission_texture = ExtResource("1_u6d0t")
+
+[sub_resource type="Animation" id="Animation_cfljs"]
+resource_name = "Fire"
+length = 0.1
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.02, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OmniLight3D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.01, 0.04),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MeshInstance3D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.02, 0.06),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.1, 0.1, 0.1), Vector3(0.1, 0.1, 0.1), Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ioysd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OmniLight3D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MeshInstance3D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.1, 0.1, 0.1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6fhbt"]
+_data = {
+"Fire": SubResource("Animation_cfljs"),
+"RESET": SubResource("Animation_ioysd")
+}
+
+[node name="MuzzleFlash1" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+visible = false
+material_override = SubResource("StandardMaterial3D_rptaj")
+mesh = ExtResource("2_42tde")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.228939)
+visible = false
+light_color = Color(1, 0.992157, 0.0313726, 1)
+light_energy = 1.2
+omni_range = 10.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_6fhbt")
+}
