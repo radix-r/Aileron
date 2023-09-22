@@ -25,8 +25,9 @@ func _ready() -> void:
         new_waypoint.waypoint_arrived.connect(on_waypoint_arrived)
         waypoints.append(new_waypoint)
 
-    waypoints[0].set_disabled(false)
-    active_waypoint = waypoints[0]
+    if waypoints.size() > 0:
+        waypoints[0].set_disabled(false)
+        active_waypoint = waypoints[0]
 
 
 func on_waypoint_arrived(body: Node3D, id: int) -> void:

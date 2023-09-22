@@ -45,7 +45,7 @@ extends CharacterBody3D
 @onready var hud_anchor: Node3D = $HudAnchor
 @onready var velocity_marker: Control = $HudAnchor/CanvasLayer/VelocityMarker
 
-@onready var waypoint_system: Node3D = get_node("/root/TestScene1/Services/Navigation/WaypointSystem")
+@onready var waypoint_system: Node3D = get_tree().root.get_child(1).waypoint_system
 
 @onready var forward: Vector3 = Vector3()
 @onready var starting_camera_position: Vector3 = camera_control.global_position

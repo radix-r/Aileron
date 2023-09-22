@@ -1,17 +1,18 @@
 extends Control
 
 @onready var nav_arrow_point: Node3D= $"../.."
-@onready var waypoint_system: Node3D = get_tree().root.get_node("/root/TestScene1/Services/Navigation/WaypointSystem")
+@onready var waypoint_system: Node3D = get_tree().root.get_child(1).waypoint_system
 @onready var camera: Camera3D= $"../../../PitchPoint/CameraControl/Camera3D"
 
 const WIDTH: float = 10.0
 
 
 func _draw() -> void:
-    if waypoint_system.active_waypoint == waypoint_system.NO_WAYPOINT:
+    if !waypoint_system || waypoint_system.active_waypoint == waypoint_system.NO_WAYPOINT:
         nav_arrow_point.hide()
         return
 
+    nav_arrow_point.show()
     var active_waypoint: Waypoint = waypoint_system.active_waypoint
     var vector_to_navpoint: Vector3 = active_waypoint.global_transform.origin - nav_arrow_point.global_transform.origin
     vector_to_navpoint = vector_to_navpoint.normalized() * 10
@@ -22,6 +23,9 @@ func _draw() -> void:
     var distance: float =  start.distance_to(end)
     draw_line(start, end, color, WIDTH)
     draw_triangle(end, start.direction_to(end), WIDTH*2, distance / 3.0 , color)
+
+#func _ready() -> void:
+#    print_debug(waypoint_system.name)
 
 
 func draw_triangle(pos: Vector2, dir: Vector2, width: float, length: float, color: Color):
