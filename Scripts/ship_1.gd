@@ -53,7 +53,7 @@ extends CharacterBody3D
 
 @onready var i = 0
 
-
+var spark_effect: PackedScene = preload("res://Scenes/sparks1.tscn")
 #####################################
 # OVERRIDE FUNCTIONS
 #####################################
@@ -108,6 +108,8 @@ func _physics_process(_delta: float) -> void:
         # check collision info
         var collision: KinematicCollision3D = get_last_slide_collision()
         var collision_vector: Vector3 = (collision.get_position() - global_position).normalized()
+        var collision_position: Vector3 = collision.get_position()
+        apply_spark_effect(collision_position)
 
         #velocity = -collision_vector * speed
 
@@ -119,6 +121,14 @@ func _physics_process(_delta: float) -> void:
 #####################################
 # HELPER FUNCTIONS
 #####################################
+
+func apply_spark_effect(global_location: Vector3) -> void:
+    if velocity.length() > 0:
+        var new_sparks: GPUParticles3D = spark_effect.instantiate() as GPUParticles3D
+        get_node("/root").add_child(new_sparks)
+        new_sparks.emitting = true
+        new_sparks.global_position = global_location
+
 
 func get_input_direction() -> Vector3:
     var input_right = Input.get_axis("left", "right")
