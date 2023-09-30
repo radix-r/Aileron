@@ -46,7 +46,7 @@ extends CharacterBody3D
 @onready var velocity_marker: Control = $HudAnchor/CanvasLayer/VelocityMarker
 
 @onready var waypoint_system: Node3D = get_tree().root.get_child(1).waypoint_system
-
+@onready var gravity: Vector3 = get_tree().root.get_child(1).gravity
 @onready var forward: Vector3 = Vector3()
 @onready var starting_camera_position: Vector3 = camera_control.global_position
 @onready var speed: float = 0
@@ -87,7 +87,7 @@ func _ready() -> void:
 
 
 # TODO: Boost
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 
     update_nav_arrow()
     update_hud_center()
@@ -98,7 +98,7 @@ func _physics_process(_delta: float) -> void:
     # Get input and handel turining, acel/decel
     var input_dir: Vector3 = get_input_direction()
 
-    velocity = calc_velocity(input_dir)
+    velocity = calc_velocity(input_dir, delta)
 
     # shift camera based on velocity to give chase effect
     update_camera_position()
@@ -160,18 +160,19 @@ func update_hud_center() -> void:
 
 
 # TODO: Fix jank in accel/decel
-func calc_velocity(input_dir: Vector3) -> Vector3:
+func calc_velocity(input_dir: Vector3, delta: float) -> Vector3:
     var target_direction = Vector3(input_dir.x, input_dir.y, -1-input_dir.z)
     # convert to world space
     target_direction = pitch_point.to_global(target_direction) - global_position
     #target_direction.z = ceil(target_direction.z)
     #target_direction = target_direction * -1
 
-    var velocity_x = move_toward(velocity.x, target_direction.x * speed_max, acceleration)
-    var velocity_y = move_toward(velocity.y, target_direction.y * speed_max, acceleration)
-    var velocity_z = move_toward(velocity.z, target_direction.z * speed_max, acceleration)
+    var velocity_x = move_toward(velocity.x, target_direction.x * speed_max, acceleration * delta)
+    var velocity_y = move_toward(velocity.y, target_direction.y * speed_max, acceleration * delta)
+    var velocity_z = move_toward(velocity.z, target_direction.z * speed_max, acceleration * delta)
 
     var target_velocity: Vector3 = Vector3(velocity_x, velocity_y ,velocity_z)
+    target_velocity += gravity * delta
     #target_speed = clamp(target_speed, speed_min, speed_max)
     speed = target_velocity.length()
 

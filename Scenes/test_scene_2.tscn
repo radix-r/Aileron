@@ -1,0 +1,91 @@
+[gd_scene load_steps=13 format=3 uid="uid://bp3b7kbqvxruq"]
+
+[ext_resource type="PackedScene" uid="uid://d0mgf4yjnwxgl" path="res://addons/simplified_flightsim/Aircraft/Aircraft.tscn" id="1_neo8o"]
+[ext_resource type="ArrayMesh" uid="uid://bxwpcgprlm67q" path="res://Assets/Ship1/Models/ship_model.obj" id="2_30hwt"]
+[ext_resource type="Script" path="res://Scripts/aircraft_control.gd" id="2_odkbj"]
+[ext_resource type="PackedScene" path="res://addons/simplified_flightsim/aircraft_modules/Steering/Steering.tscn" id="3_nls6h"]
+[ext_resource type="PackedScene" path="res://addons/simplified_flightsim/aircraft_modules/Engine/Engine.tscn" id="3_sm0qf"]
+[ext_resource type="PackedScene" path="res://addons/simplified_flightsim/aircraft_modules/Controls/ControlEngine.tscn" id="5_rax6m"]
+[ext_resource type="PackedScene" path="res://addons/simplified_flightsim/aircraft_modules/Controls/ControlSteering.tscn" id="6_dqiis"]
+[ext_resource type="PackedScene" uid="uid://6a37kmvi1pw0" path="res://Scenes/grand_canyon_env.tscn" id="7_2r56t"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q24d7"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_you74"]
+sky_material = SubResource("ProceduralSkyMaterial_q24d7")
+
+[sub_resource type="Environment" id="Environment_18hqw"]
+background_mode = 2
+sky = SubResource("Sky_you74")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_q88s1"]
+points = PackedVector3Array(3.62931, 0.317469, -1.73545, -0.300825, -0.0755564, 5.92808, 0.484206, 1.30003, 3.37357, -3.64166, 0.317469, -2.71786, 1.26995, 0.12111, -5.27237, 1.07351, 1.30003, -4.87965, -3.64166, 0.710494, -2.12817, -1.47944, 1.30003, -4.68268, -0.497261, 1.30003, 3.37357, 1.26995, 1.10352, -6.45176, -1.283, 0.12111, -5.27237, 0.287771, 0.513982, 6.12506, 3.62931, 0.710494, -2.12817, -1.283, 1.10352, -6.45176, -0.497261, 0.513982, 5.73111, 1.46639, 0.317469, -6.05781, 0.484206, -0.0755564, 5.14142, 3.62931, 0.317469, -2.71786, -0.497261, -0.0755564, 3.37357, 1.46639, 1.30003, -4.68268, -3.64166, 0.317469, -1.73545, 3.43145, 0.710494, -1.3415, -3.44451, 0.710494, -1.3415, -1.23526, 0.710494, -6.21661, 0.484206, 0.12111, 5.73111, -0.300825, 0.710494, 5.73111, 0.484206, -0.0755564, 3.37357, 3.43145, 0.710494, -3.11058, -3.44451, 0.710494, -3.11058, 0.287771, 0.710494, 5.73111, -1.47944, 0.12111, -5.0754, 1.46639, 0.12111, -5.0754)
+
+[node name="TestScene2" type="Node3D"]
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="GrandCanyon" parent="Environment" instance=ExtResource("7_2r56t")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(0.839432, -0.245678, -0.484765, 0.133262, -0.771708, 0.621859, -0.526874, -0.586609, -0.615056, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_18hqw")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AircraftControl" type="Node3D" parent="."]
+script = ExtResource("2_odkbj")
+
+[node name="Aircraft" parent="AircraftControl" instance=ExtResource("1_neo8o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 395.064, 0)
+collision_mask = 12
+
+[node name="Model" type="Node3D" parent="AircraftControl/Aircraft"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="StaticParts" type="Node3D" parent="AircraftControl/Aircraft/Model"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="AircraftControl/Aircraft/Model/StaticParts"]
+mesh = ExtResource("2_30hwt")
+
+[node name="MovingParts" type="Node3D" parent="AircraftControl/Aircraft/Model"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AircraftControl/Aircraft"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_q88s1")
+
+[node name="Steering" parent="AircraftControl/Aircraft" instance=ExtResource("3_nls6h")]
+SteeringType = 1
+PowerFactor = 15.0
+FuelRate = 0.0
+
+[node name="Engine" parent="AircraftControl/Aircraft" instance=ExtResource("3_sm0qf")]
+FuelRate = 0.0
+
+[node name="ControlEngineForward" parent="AircraftControl/Aircraft" instance=ExtResource("5_rax6m")]
+RestrictEngineToTag = true
+SearchTag = "forward"
+KeyStart = -1
+KeyStop = -1
+KeyUp = 87
+KeyDown = 83
+
+[node name="ControlSteering" parent="AircraftControl/Aircraft" instance=ExtResource("6_dqiis")]
+
+[node name="CameraControl" type="Node3D" parent="AircraftControl/Aircraft"]
+
+[node name="Camera3D" type="Camera3D" parent="AircraftControl/Aircraft/CameraControl"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 10, 15)
