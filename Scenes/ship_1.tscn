@@ -1,13 +1,13 @@
 [gd_scene load_steps=10 format=3 uid="uid://54wog5qnpeg5"]
 
 [ext_resource type="Script" path="res://Scripts/ship_1.gd" id="1_4be1u"]
-[ext_resource type="Texture2D" uid="uid://7w0r8mdvlohs" path="res://Assets/HUD/boresight.png" id="2_4k50q"]
-[ext_resource type="ArrayMesh" uid="uid://c3vev1qejfpr2" path="res://Assets/Ship1/Models/ship_model.obj" id="2_y6aw0"]
-[ext_resource type="Texture2D" uid="uid://d2o6pwscq1txl" path="res://Assets/HUD/velocity_marker.png" id="3_5v10j"]
+[ext_resource type="Texture2D" uid="uid://bbkctg0eejnj2" path="res://Assets/HUD/boresight.png" id="2_4k50q"]
+[ext_resource type="ArrayMesh" uid="uid://bxwpcgprlm67q" path="res://Assets/Ship1/Models/ship_model.obj" id="2_y6aw0"]
+[ext_resource type="Texture2D" uid="uid://b4hxvlgdwrxn8" path="res://Assets/HUD/velocity_marker.png" id="3_5v10j"]
 [ext_resource type="Script" path="res://Scripts/draw3d.gd" id="3_rxedx"]
-[ext_resource type="PackedScene" uid="uid://d1iqn0kgh3k0k" path="res://Scenes/trail_3d_1.tscn" id="5_ouqld"]
+[ext_resource type="PackedScene" path="res://Scenes/trail_3d_1.tscn" id="5_ouqld"]
 [ext_resource type="Script" path="res://Scripts/gun1.gd" id="5_rdoe2"]
-[ext_resource type="PackedScene" uid="uid://biydulbukmyrr" path="res://Scenes/muzzle_flash_1.tscn" id="7_62dph"]
+[ext_resource type="PackedScene" path="res://Scenes/muzzle_flash_1.tscn" id="7_62dph"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_wxfr1"]
 points = PackedVector3Array(3.62931, 0.317469, -1.73545, -0.300825, -0.0755564, 5.92808, 0.484206, 1.30003, 3.37357, -3.64166, 0.317469, -2.71786, 1.26995, 0.12111, -5.27237, 1.07351, 1.30003, -4.87965, -3.64166, 0.710494, -2.12817, -1.47944, 1.30003, -4.68268, -0.497261, 1.30003, 3.37357, 1.26995, 1.10352, -6.45176, -1.283, 0.12111, -5.27237, 0.287771, 0.513982, 6.12506, 3.62931, 0.710494, -2.12817, -1.283, 1.10352, -6.45176, -0.497261, 0.513982, 5.73111, 1.46639, 0.317469, -6.05781, 0.484206, -0.0755564, 5.14142, 3.62931, 0.317469, -2.71786, -0.497261, -0.0755564, 3.37357, 1.46639, 1.30003, -4.68268, -3.64166, 0.317469, -1.73545, 3.43145, 0.710494, -1.3415, -3.44451, 0.710494, -1.3415, -1.23526, 0.710494, -6.21661, 0.484206, 0.12111, 5.73111, -0.300825, 0.710494, 5.73111, 0.484206, -0.0755564, 3.37357, 3.43145, 0.710494, -3.11058, -3.44451, 0.710494, -3.11058, 0.287771, 0.710494, 5.73111, -1.47944, 0.12111, -5.0754, 1.46639, 0.12111, -5.0754)
