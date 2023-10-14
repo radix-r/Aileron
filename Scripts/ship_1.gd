@@ -32,6 +32,7 @@ extends CharacterBody3D
 @onready var rotation_speed: float = 0
 @onready var momentum: float = 0
 @onready var camera_chase: float = 0
+@onready var drag: float = 0
 
 @onready var pitch_point: Node3D = $PitchPoint
 @onready var forward_point: Node3D = $PitchPoint/ForwardPoint
@@ -52,6 +53,12 @@ extends CharacterBody3D
 @onready var speed: float = 0
 
 @onready var i = 0
+
+# Debug
+var debug: bool = true
+var debug_prev_target_direction_local: Vector3 = Vector3.ZERO
+var debug_prev_velocity: Vector3 = Vector3.ZERO
+
 
 var spark_effect: PackedScene = preload("res://Scenes/sparks1.tscn")
 #####################################
@@ -82,6 +89,7 @@ func _ready() -> void:
     momentum = Utilities.data_dict[unit_name]["momentum"]
     camera_chase = Utilities.data_dict[unit_name]["camera_chase"]
     acceleration = Utilities.data_dict[unit_name]["acceleration"]
+    drag = Utilities.data_dict[unit_name]["drag"]
 
     velocity = Vector3.ZERO
 
@@ -161,25 +169,37 @@ func update_hud_center() -> void:
 
 # TODO: Fix jank in accel/decel
 func calc_velocity(input_dir: Vector3, delta: float) -> Vector3:
-    var target_direction = Vector3(input_dir.x, input_dir.y, -1-input_dir.z)
+    var target_direction_local = Vector3(input_dir.x, input_dir.y, -1-input_dir.z)
     # convert to world space
-    target_direction = pitch_point.to_global(target_direction) - global_position
-    #target_direction.z = ceil(target_direction.z)
-    #target_direction = target_direction * -1
+    var target_direction = target_direction_local * pitch_point.global_transform.basis.inverse()
 
-    var velocity_x = move_toward(velocity.x, target_direction.x * speed_max, acceleration * delta)
-    var velocity_y = move_toward(velocity.y, target_direction.y * speed_max, acceleration * delta)
-    var velocity_z = move_toward(velocity.z, target_direction.z * speed_max, acceleration * delta)
+    # apply thrust
+    var velocity_x = move_toward(velocity.x,  speed_max, target_direction.x * acceleration * delta)
+    var velocity_y = move_toward(velocity.y,  speed_max, target_direction.y * acceleration * delta) # -(30 * delta))# Gravity?
+    var velocity_z = move_toward(velocity.z,  speed_max, target_direction.z * acceleration * delta)
 
-    var target_velocity: Vector3 = Vector3(velocity_x, velocity_y ,velocity_z)
-    target_velocity += gravity * delta
-    #target_speed = clamp(target_speed, speed_min, speed_max)
-    speed = target_velocity.length()
+    # apply drag
+    velocity_x -= velocity.x * drag * delta
+    velocity_y -= velocity.y * drag * delta
+    velocity_z -= velocity.z * drag * delta
 
-    #target_velocity = pitch_point.to_global(target_velocity)
-    #if target_direction.length() > 1:
-    #    print_debug(target_direction)
-    return ((velocity * momentum + target_velocity ) /(1 + momentum)  )
+    var target_velocity: Vector3 = Vector3(velocity_x, velocity_y ,velocity_z) #- target_direction_local
+
+    if debug:
+        if Vector3.ZERO == debug_prev_target_direction_local && Vector3.ZERO != target_direction_local:
+            print_debug("Input: ", target_direction_local, "\n",
+                        "Input Global: ", target_direction, "\n",
+                        "Velocity: ", target_velocity, "\n",
+                        "Orientation: ", forward)
+
+
+
+        debug_prev_target_direction_local = target_direction_local
+        debug_prev_velocity = velocity
+
+    #return target_velocity
+
+    return ((velocity * momentum + target_velocity ) / (1 + momentum) )
 
 
 func update_nav_arrow() -> void:

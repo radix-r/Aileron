@@ -7,7 +7,7 @@ extends Node3D
 
 var watch_running: bool = false
 var time_elapsed: float = 0.0
-var gravity: Vector3 = Vector3.DOWN * 10
+var gravity: Vector3 = Vector3.DOWN * 100
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
