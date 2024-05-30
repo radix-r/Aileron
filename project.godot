@@ -10,19 +10,30 @@ config_version=5
 
 [application]
 
-config/name="Aileron"
-run/main_scene="res://Scenes/test_scene_1.tscn"
-config/features=PackedStringArray("4.1", "Forward Plus")
+config/name="Aileron (4+)"
+run/main_scene="res://Scenes/Templates/scenes/Opening/OpeningWithLogo.tscn"
+config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 Utilities="*res://Scenes/utilities.tscn"
+DebugMenu="*res://addons/debug_menu/debug_menu.tscn"
+ControllerIcons="*res://addons/controller_icons/ControllerIcons.gd"
+SoundManager="*res://addons/sound_manager/sound_manager.gd"
+AppConfig="*res://addons/maaacks_game_template/base/scenes/Autoloads/AppConfig.tscn"
+SceneLoader="*res://addons/maaacks_game_template/base/scenes/Autoloads/SceneLoader.tscn"
+ProjectMusicController="*res://addons/maaacks_game_template/base/scenes/Autoloads/ProjectMusicController.tscn"
+ProjectUISoundController="*res://addons/maaacks_game_template/base/scenes/Autoloads/ProjectUISoundController.tscn"
 
 [display]
 
 window/size/mode=2
 window/vsync/vsync_mode=0
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/controller_icons/plugin.cfg", "res://addons/debug_menu/plugin.cfg", "res://addons/gui_auto_layout/plugin.cfg", "res://addons/maaacks_game_template/plugin.cfg", "res://addons/sound_manager/plugin.cfg")
 
 [filesystem]
 
@@ -77,3 +88,12 @@ fire={
 3d_physics/layer_2="player_projectiles"
 3d_physics/layer_3="enemy_projectiles"
 3d_physics/layer_4="environment"
+
+[maaacks_game_template]
+
+disable_plugin_dialogues=true
+copy_path="res://Scenes/Templates"
+
+[physics]
+
+3d/physics_engine="JoltPhysics3D"

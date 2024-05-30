@@ -1,0 +1,130 @@
+[gd_scene load_steps=10 format=3 uid="uid://m4diyu7gsmx3"]
+
+[ext_resource type="Script" path="res://Scripts/canyon_race_level.gd" id="1_4km8d"]
+[ext_resource type="Script" path="res://Scripts/waypoint_system.gd" id="1_2306v"]
+[ext_resource type="PackedScene" uid="uid://bjp0gluvfcn7k" path="res://Scenes/grand_canyon_env.tscn" id="2_lt0s6"]
+[ext_resource type="PackedScene" uid="uid://54wog5qnpeg5" path="res://Scenes/Actors/ship_1.tscn" id="3_2rbym"]
+[ext_resource type="PackedScene" uid="uid://cggqb75a8w8r" path="res://addons/debug_menu/debug_menu.tscn" id="5_ssa4x"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_paxhc"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_you74"]
+sky_material = SubResource("ProceduralSkyMaterial_paxhc")
+
+[sub_resource type="Environment" id="Environment_2lh4p"]
+background_mode = 2
+sky = SubResource("Sky_you74")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="LabelSettings" id="LabelSettings_gvfvj"]
+font_size = 30
+outline_size = 2
+outline_color = Color(0.00392157, 0.00392157, 0.00392157, 1)
+
+[node name="CanyonRaceLevel" type="Node3D" node_paths=PackedStringArray("waypoint_system")]
+script = ExtResource("1_4km8d")
+waypoint_system = NodePath("Services/Navigation/WaypointSystem")
+
+[node name="Services" type="Node3D" parent="."]
+
+[node name="Navigation" type="Node3D" parent="Services"]
+
+[node name="WaypointSystem" type="Node3D" parent="Services/Navigation"]
+script = ExtResource("1_2306v")
+
+[node name="Points" type="Node3D" parent="Services/Navigation/WaypointSystem"]
+
+[node name="Node3D" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.7317, 365.252, -1029.29)
+
+[node name="Node3D2" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -326.207, 238.057, -453.899)
+
+[node name="Node3D3" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -826.638, 94.5548, 171.463)
+
+[node name="Node3D4" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1257.07, 34.6724, 589.187)
+
+[node name="Node3D5" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1129.09, 34.6724, 880.589)
+
+[node name="Node3D6" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -750.389, 34.6724, 1141.56)
+
+[node name="Node3D7" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -268.298, 34.6724, 1033.9)
+
+[node name="Node3D8" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 303.722, 34.6724, 1051.55)
+
+[node name="Node3D9" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 549.391, 53.9842, 1067.88)
+
+[node name="Node3D10" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 989.782, 53.9842, 1295.55)
+
+[node name="Node3D11" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1257.1, 53.9842, 1530.19)
+
+[node name="Node3D12" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1257.1, 1587.18, 1530.19)
+
+[node name="Node3D13" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 636.725, 85.5313, 626.998)
+
+[node name="Node3D14" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 914.004, 147.464, 205.51)
+
+[node name="Node3D15" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 274.678, 187.652, 269.462)
+
+[node name="Node3D16" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.6703, 122.523, 407.147)
+
+[node name="Node3D17" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -401.707, 167.935, -131.602)
+
+[node name="Node3D18" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -289.557, 219.394, -669.625)
+
+[node name="Node3D19" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 67.7139, 382.591, -1107.06)
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="GrandCanyon" parent="Environment" instance=ExtResource("2_lt0s6")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(0.839432, -0.245678, -0.484765, 0.133262, -0.771708, 0.621859, -0.526874, -0.586609, -0.615056, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_2lh4p")
+
+[node name="Combatants" type="Node3D" parent="."]
+
+[node name="Player" type="Node3D" parent="Combatants"]
+
+[node name="Ship1" parent="Combatants/Player" instance=ExtResource("3_2rbym")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 287.255, 408.31, -1057.89)
+
+[node name="UI" type="Node3D" parent="."]
+
+[node name="CanvasLayer" parent="UI" instance=ExtResource("5_ssa4x")]
+
+[node name="StopwatchLabel" type="Label" parent="UI"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "00:00"
+label_settings = SubResource("LabelSettings_gvfvj")
+
+[node name="CanvasLayer2" parent="UI" instance=ExtResource("5_ssa4x")]

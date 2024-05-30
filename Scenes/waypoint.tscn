@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cp3bd100xweat"]
 
 [ext_resource type="Script" path="res://Scripts/waypoint.gd" id="1_l6dpt"]
-[ext_resource type="Texture2D" uid="uid://elryv5ux5sic" path="res://Assets/Images/locationMarker.png" id="2_aikx6"]
+[ext_resource type="Texture2D" uid="uid://bte0mpymydwi7" path="res://Assets/Images/locationMarker.png" id="2_aikx6"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_x56h4"]
 radius = 5.0

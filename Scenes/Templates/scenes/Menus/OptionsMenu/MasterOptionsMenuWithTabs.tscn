@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid://day4auvvyr0ue"]
+
+[ext_resource type="PackedScene" path="res://Scenes/Templates/scenes/Menus/OptionsMenu/MasterOptionsMenu.tscn" id="1_ajv44"]
+[ext_resource type="PackedScene" path="res://Scenes/Templates/scenes/Menus/OptionsMenu/Input/InputOptionsMenuWithMouseSensitivity.tscn" id="2_oml80"]
+[ext_resource type="PackedScene" path="res://Scenes/Templates/scenes/Menus/OptionsMenu/Audio/AudioOptionsMenu.tscn" id="3_06gxy"]
+[ext_resource type="PackedScene" path="res://Scenes/Templates/scenes/Menus/OptionsMenu/Video/VideoOptionsMenuWithExtras.tscn" id="4_6ypf1"]
+[ext_resource type="PackedScene" path="res://Scenes/Templates/scenes/Menus/OptionsMenu/Game/GameOptionsMenu.tscn" id="5_48o1o"]
+
+[node name="MasterOptionsMenu" instance=ExtResource("1_ajv44")]
+
+[node name="Controls" parent="TabContainer" index="1" instance=ExtResource("2_oml80")]
+layout_mode = 2
+
+[node name="Audio" parent="TabContainer" index="2" instance=ExtResource("3_06gxy")]
+visible = false
+layout_mode = 2
+
+[node name="Video" parent="TabContainer" index="3" instance=ExtResource("4_6ypf1")]
+visible = false
+layout_mode = 2
+
+[node name="Game" parent="TabContainer" index="4" instance=ExtResource("5_48o1o")]
+visible = false
+layout_mode = 2

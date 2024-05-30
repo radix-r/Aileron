@@ -6,7 +6,7 @@
 		"acceleration": 500,
 		"rotation_speed": 0.001,
 		"momentum": 0.1,
-		"camera_chase": 0.1,
+		"camera_chase": 0.05,
 		"drag": 1.510,
 	},
 	"Bullet1": {

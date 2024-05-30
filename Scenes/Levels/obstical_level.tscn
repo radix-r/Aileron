@@ -1,0 +1,97 @@
+[gd_scene load_steps=10 format=3 uid="uid://b2rvyao8gp5up"]
+
+[ext_resource type="PackedScene" uid="uid://54wog5qnpeg5" path="res://Scenes/Actors/ship_1.tscn" id="1_dqdgs"]
+[ext_resource type="Texture2D" uid="uid://c0s1yrb2ngt1f" path="res://Assets/kenney_prototype-textures/PNG/Light/texture_07.png" id="1_ykokh"]
+[ext_resource type="Texture2D" uid="uid://o6lcnwrc4rai" path="res://Assets/kenney_prototype-textures/PNG/Orange/texture_01.png" id="2_ner7i"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_paxhc"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_you74"]
+sky_material = SubResource("ProceduralSkyMaterial_paxhc")
+
+[sub_resource type="Environment" id="Environment_2lh4p"]
+background_mode = 2
+sky = SubResource("Sky_you74")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3nexx"]
+albedo_texture = ExtResource("1_ykokh")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cxknv"]
+albedo_texture = ExtResource("2_ner7i")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rm65l"]
+albedo_texture = ExtResource("2_ner7i")
+
+[node name="LevelRoot" type="Node3D"]
+
+[node name="Services" type="Node3D" parent="."]
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(0.839432, -0.245678, -0.484765, 0.133262, -0.771708, 0.621859, -0.526874, -0.586609, -0.615056, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_2lh4p")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="Environment"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_3nexx")
+use_collision = true
+collision_layer = 8
+collision_mask = 7
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="Environment/CSGCombiner3D"]
+material_override = SubResource("StandardMaterial3D_cxknv")
+material_overlay = SubResource("StandardMaterial3D_rm65l")
+flip_faces = true
+inner_radius = 100.0
+outer_radius = 1000.0
+smooth_faces = false
+
+[node name="CSGTorus3D2" type="CSGTorus3D" parent="Environment/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1482.54, 0, 0)
+flip_faces = true
+inner_radius = 100.0
+outer_radius = 1000.0
+smooth_faces = false
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Environment/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -515.462)
+operation = 2
+flip_faces = true
+radius = 60.0
+height = 795.06
+
+[node name="CSGCylinder3D4" type="CSGCylinder3D" parent="Environment/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 0.5, -0.866025, 0, 0.866025, 0.5, 0, 0, 523.041)
+operation = 2
+flip_faces = true
+radius = 60.0
+height = 875.206
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Environment/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 1473.39, 0, -543.577)
+operation = 2
+flip_faces = true
+radius = 60.0
+height = 919.64
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="Environment/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, -0.482472, -0.875911, 0, 0.875911, -0.482472, 1473.39, 7.50827, 549.178)
+operation = 2
+flip_faces = true
+radius = 60.0
+height = 919.64
+
+[node name="Actors" type="Node3D" parent="."]
+
+[node name="Ship1" parent="Actors" instance=ExtResource("1_dqdgs")]
+transform = Transform3D(-0.410894, 0, -0.911683, 0, 1, 0, 0.911683, 0, -0.410894, 0, 0, -408.629)
+
+[node name="UI" type="Node3D" parent="."]

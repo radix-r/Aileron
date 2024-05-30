@@ -44,6 +44,7 @@ func start_timer() -> void:
     # arrived at last waypoint
     watch_running = true
 
+
 func stop_timer() -> void:
     # stop timer and save time to file
     watch_running = false

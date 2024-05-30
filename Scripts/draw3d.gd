@@ -1,8 +1,9 @@
 extends Control
 
 @onready var nav_arrow_point: Node3D= $"../.."
-@onready var waypoint_system: Node3D = get_tree().root.get_child(1).waypoint_system
-@onready var camera: Camera3D= $"../../../PitchPoint/CameraControl/Camera3D"
+@onready var level_root: Node3D = Utilities.get_level_root()
+@onready var waypoint_system: Node3D
+@export var camera: Camera3D
 
 const WIDTH: float = 10.0
 
@@ -24,8 +25,11 @@ func _draw() -> void:
     draw_line(start, end, color, WIDTH)
     draw_triangle(end, start.direction_to(end), WIDTH*2, distance / 3.0 , color)
 
-#func _ready() -> void:
-#    print_debug(waypoint_system.name)
+
+func _ready() -> void:
+
+    if "waypoint_system" in level_root:
+        waypoint_system = level_root.waypoint_system
 
 
 func draw_triangle(pos: Vector2, dir: Vector2, width: float, length: float, color: Color):
