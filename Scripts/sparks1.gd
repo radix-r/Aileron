@@ -8,6 +8,3 @@ func _ready() -> void:
     timer.wait_time = lifetime
     timer.connect("timeout", queue_free)
     timer.start()
-
-
-

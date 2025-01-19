@@ -160,7 +160,7 @@ func update_camera_position() -> void:
 
 
 
-# TODO: Fix jank in accel/decel
+
 func calc_velocity(input_dir: Vector3, delta: float) -> Vector3:
     var target_direction_local = Vector3(input_dir.x, input_dir.y, -1-input_dir.z)
     # convert to world space
@@ -193,11 +193,3 @@ func calc_velocity(input_dir: Vector3, delta: float) -> Vector3:
     #return target_velocity
 
     return ((velocity * momentum + target_velocity ) / (1 + momentum) )
-
-
-
-
-
-
-
-
