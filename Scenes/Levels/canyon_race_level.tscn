@@ -126,5 +126,3 @@ offset_bottom = 23.0
 grow_horizontal = 2
 text = "00:00"
 label_settings = SubResource("LabelSettings_gvfvj")
-
-[node name="CanvasLayer2" parent="UI" instance=ExtResource("5_ssa4x")]

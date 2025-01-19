@@ -90,12 +90,12 @@ func _ready() -> void:
 
     velocity = Vector3.ZERO
 
+    if level_root:
+        if "waypoint_system" in level_root:
+            waypoint_system = level_root.waypoint_system
 
-    if "waypoint_system" in level_root:
-        waypoint_system = level_root.waypoint_system
-
-    if "gravity" in level_root:
-        gravity = level_root.gravity
+        if "gravity" in level_root:
+            gravity = level_root.gravity
 
 
 # TODO: Boost

@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=3 uid="uid://d2srf4i5bpuxh"]
+
+[ext_resource type="PackedScene" uid="uid://54wog5qnpeg5" path="res://Scenes/Actors/ship_1.tscn" id="1_wob8l"]
+[ext_resource type="PackedScene" uid="uid://b6ab04h32aky1" path="res://Scenes/GUI/hud_anchor.tscn" id="2_w6mpe"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_paxhc"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_you74"]
+sky_material = SubResource("ProceduralSkyMaterial_paxhc")
+
+[sub_resource type="Environment" id="Environment_2lh4p"]
+background_mode = 2
+sky = SubResource("Sky_you74")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="LevelRoot" type="Node3D"]
+
+[node name="Services" type="Node3D" parent="."]
+
+[node name="LevelLogic" type="Control" parent="Services"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(0.839432, -0.245678, -0.484765, 0.133262, -0.771708, 0.621859, -0.526874, -0.586609, -0.615056, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_2lh4p")
+
+[node name="Actors" type="Node3D" parent="."]
+
+[node name="Player" type="Node3D" parent="Actors"]
+
+[node name="Ship1" parent="Actors/Player" instance=ExtResource("1_wob8l")]
+
+[node name="UI" type="Node3D" parent="."]
+
+[node name="HudAnchor" parent="UI" node_paths=PackedStringArray("player_ship") instance=ExtResource("2_w6mpe")]
+player_ship = NodePath("../../Actors/Player/Ship1")
