@@ -38,4 +38,3 @@ func draw_triangle(pos: Vector2, dir: Vector2, width: float, length: float, colo
     var c = pos + dir.rotated(4*PI/3) * width
     var points = PackedVector2Array([a, b, c])
     draw_polygon(points, PackedColorArray([color]))
-

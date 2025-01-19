@@ -1,88 +1,23 @@
-[gd_scene load_steps=13 format=3 uid="uid://54wog5qnpeg5"]
+[gd_scene load_steps=9 format=3 uid="uid://54wog5qnpeg5"]
 
 [ext_resource type="Script" path="res://Scripts/ship_1.gd" id="1_4be1u"]
-[ext_resource type="Script" path="res://Scripts/player_gui.gd" id="2_1uxmp"]
-[ext_resource type="Texture2D" uid="uid://bbkctg0eejnj2" path="res://Assets/HUD/boresight.png" id="2_4k50q"]
-[ext_resource type="ArrayMesh" uid="uid://bxwpcgprlm67q" path="res://Assets/Ship1/Models/ship_model.obj" id="2_y6aw0"]
-[ext_resource type="Texture2D" uid="uid://b4hxvlgdwrxn8" path="res://Assets/HUD/velocity_marker.png" id="3_5v10j"]
-[ext_resource type="Script" path="res://Scripts/draw3d.gd" id="3_rxedx"]
-[ext_resource type="Texture2D" uid="uid://c0s1yrb2ngt1f" path="res://Assets/kenney_prototype-textures/PNG/Light/texture_07.png" id="4_vcm2g"]
-[ext_resource type="PackedScene" path="res://Scenes/trail_3d_1.tscn" id="5_ouqld"]
+[ext_resource type="PackedScene" uid="uid://b6ab04h32aky1" path="res://Scenes/GUI/gui_anchor.tscn" id="2_bm7kp"]
+[ext_resource type="ArrayMesh" uid="uid://decbk2pc6n1dj" path="res://Assets/Ship1/Models/ship_model.obj" id="2_y6aw0"]
+[ext_resource type="PackedScene" uid="uid://d1iqn0kgh3k0k" path="res://Scenes/trail_3d_1.tscn" id="5_ouqld"]
 [ext_resource type="Script" path="res://Scripts/gun1.gd" id="5_rdoe2"]
-[ext_resource type="PackedScene" path="res://Scenes/muzzle_flash_1.tscn" id="7_62dph"]
+[ext_resource type="PackedScene" uid="uid://biydulbukmyrr" path="res://Scenes/muzzle_flash_1.tscn" id="7_62dph"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_wxfr1"]
 points = PackedVector3Array(3.62931, 0.317469, -1.73545, -0.300825, -0.0755564, 5.92808, 0.484206, 1.30003, 3.37357, -3.64166, 0.317469, -2.71786, 1.26995, 0.12111, -5.27237, 1.07351, 1.30003, -4.87965, -3.64166, 0.710494, -2.12817, -1.47944, 1.30003, -4.68268, -0.497261, 1.30003, 3.37357, 1.26995, 1.10352, -6.45176, -1.283, 0.12111, -5.27237, 0.287771, 0.513982, 6.12506, 3.62931, 0.710494, -2.12817, -1.283, 1.10352, -6.45176, -0.497261, 0.513982, 5.73111, 1.46639, 0.317469, -6.05781, 0.484206, -0.0755564, 5.14142, 3.62931, 0.317469, -2.71786, -0.497261, -0.0755564, 3.37357, 1.46639, 1.30003, -4.68268, -3.64166, 0.317469, -1.73545, 3.43145, 0.710494, -1.3415, -3.44451, 0.710494, -1.3415, -1.23526, 0.710494, -6.21661, 0.484206, 0.12111, 5.73111, -0.300825, 0.710494, 5.73111, 0.484206, -0.0755564, 3.37357, 3.43145, 0.710494, -3.11058, -3.44451, 0.710494, -3.11058, 0.287771, 0.710494, 5.73111, -1.47944, 0.12111, -5.0754, 1.46639, 0.12111, -5.0754)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n8eup"]
-albedo_texture = ExtResource("4_vcm2g")
 
 [node name="Ship1" type="CharacterBody3D" groups=["player"]]
 collision_mask = 12
 script = ExtResource("1_4be1u")
 
-[node name="GuiAnchor" type="Node3D" parent="." node_paths=PackedStringArray("player_ship")]
-script = ExtResource("2_1uxmp")
-player_ship = NodePath("..")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="GuiAnchor"]
-
-[node name="HudCenter" type="Control" parent="GuiAnchor/CanvasLayer"]
-layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-mouse_filter = 1
-
-[node name="Boresight" type="Sprite2D" parent="GuiAnchor/CanvasLayer/HudCenter"]
-modulate = Color(0.45098, 1, 0.556863, 0.686275)
-scale = Vector2(0.1, 0.1)
-texture = ExtResource("2_4k50q")
-
-[node name="VelocityMarker" type="Control" parent="GuiAnchor/CanvasLayer"]
-layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-mouse_filter = 1
-
-[node name="VelocityMarker" type="Sprite2D" parent="GuiAnchor/CanvasLayer/VelocityMarker"]
-modulate = Color(0.45098, 1, 0.556863, 0.686275)
-scale = Vector2(0.1, 0.1)
-texture = ExtResource("3_5v10j")
-
-[node name="NavArrowPoint" type="Node3D" parent="GuiAnchor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
-
-[node name="Overlay" type="CanvasLayer" parent="GuiAnchor/NavArrowPoint"]
-
-[node name="Draw3d" type="Control" parent="GuiAnchor/NavArrowPoint/Overlay" node_paths=PackedStringArray("camera")]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("3_rxedx")
-camera = NodePath("../../../../PitchPoint/CameraControl/Camera3D")
+[node name="GuiAnchor" parent="." instance=ExtResource("2_bm7kp")]
+visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." groups=["player"]]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
