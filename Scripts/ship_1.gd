@@ -62,7 +62,7 @@ var debug_prev_velocity: Vector3 = Vector3.ZERO
 # OVERRIDE FUNCTIONS
 #####################################
 
-func _unhandled_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
     #capture mouse movements
     if event is InputEventMouseButton:
         Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -78,7 +78,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _ready() -> void:
     var unit_name = "Ship1"
-
+    
+    Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+    
     speed_default = Utilities.data_dict[unit_name]["speed_default"]
     speed_max = Utilities.data_dict[unit_name]["speed_max"]
     speed_min = Utilities.data_dict[unit_name]["speed_min"]
