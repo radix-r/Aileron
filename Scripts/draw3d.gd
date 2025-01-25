@@ -19,12 +19,13 @@ func _draw() -> void:
 
     nav_arrow_overlay.show()
     #var active_waypoint: Waypoint = waypoint_system.active_waypoint
-    var vector_to_navpoint: Vector3 = nav_arrow_point.global_transform.origin - level_logic.current_target.global_transform.origin
-    vector_to_navpoint = vector_to_navpoint.normalized() * 10
+    #var vector_to_navpoint: Vector3 = nav_arrow_point.global_transform.origin - level_logic.current_target.global_transform.origin
+    #vector_to_navpoint = vector_to_navpoint.normalized() * 10
 
     var color: Color = Color(0, 1, 0)
     var start: Vector2 = camera.unproject_position(nav_arrow_point.global_transform.origin) - position
     var end: Vector2 = camera.unproject_position(level_logic.current_target.global_transform.origin) - position
+    #end = end.normalized() * 10
     var distance: float =  start.distance_to(end)
     draw_line(start, end, color, WIDTH)
     draw_triangle(end, start.direction_to(end), WIDTH*2, distance / 3.0 , color)

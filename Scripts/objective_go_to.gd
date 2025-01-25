@@ -44,7 +44,7 @@ func on_waypoint_arrived(body: Node3D, id: int) -> void:
     if !player_found:#|| id != active_waypoint.id:
         return
 
-    waypoint_arrived.emit(id)
+    
     waypoints[active_waypoint_index].set_disabled(true)
     active_waypoint_index += 1
 
@@ -55,3 +55,5 @@ func on_waypoint_arrived(body: Node3D, id: int) -> void:
     else:
         waypoints[active_waypoint_index].set_disabled(false)
         active_waypoint = waypoints[active_waypoint_index]
+
+    waypoint_arrived.emit(id)
