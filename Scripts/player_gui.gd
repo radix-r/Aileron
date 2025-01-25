@@ -2,7 +2,7 @@ extends Control
 
 @export var player_ship: AirMover
 
-@onready var nav_arrow_point: Node3D = $NavArrowPoint
+@onready var nav_arrow_point: Node3D = player_ship
 @onready var overlay: CanvasLayer = $NavArrowOverlay
 @onready var nav_arrow_drawer: Control = $NavArrowOverlay/Draw3d
 @onready var hud_center: Control = $PlayerVectorOverlay/HudCenter
@@ -15,7 +15,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
     if player_ship.camera:
         update_nav_arrow()
         update_hud_center()

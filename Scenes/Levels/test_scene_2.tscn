@@ -1,6 +1,5 @@
-[gd_scene load_steps=8 format=3 uid="uid://d2srf4i5bpuxh"]
+[gd_scene load_steps=7 format=3 uid="uid://d2srf4i5bpuxh"]
 
-[ext_resource type="Script" path="res://Scripts/waypoint_system.gd" id="1_552h0"]
 [ext_resource type="Script" path="res://Scripts/test_scene_2_level_logic.gd" id="1_gi5bl"]
 [ext_resource type="PackedScene" uid="uid://54wog5qnpeg5" path="res://Scenes/Actors/ship_1.tscn" id="1_wob8l"]
 [ext_resource type="PackedScene" uid="uid://b6ab04h32aky1" path="res://Scenes/GUI/hud_anchor.tscn" id="2_w6mpe"]
@@ -22,75 +21,68 @@ glow_enabled = true
 
 [node name="Services" type="Node3D" parent="."]
 
-[node name="LevelLogic" type="Control" parent="Services"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="LevelLogic" type="Node3D" parent="Services"]
 script = ExtResource("1_gi5bl")
 
 [node name="Navigation" type="Node3D" parent="Services"]
 
-[node name="WaypointSystem" type="Node3D" parent="Services/Navigation"]
-script = ExtResource("1_552h0")
+[node name="Points" type="Node3D" parent="Services/Navigation"]
 
-[node name="Points" type="Node3D" parent="Services/Navigation/WaypointSystem"]
-
-[node name="Node3D" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.7317, 365.252, -1029.29)
 
-[node name="Node3D2" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D2" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -326.207, 238.057, -453.899)
 
-[node name="Node3D3" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D3" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -826.638, 94.5548, 171.463)
 
-[node name="Node3D4" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D4" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1257.07, 34.6724, 589.187)
 
-[node name="Node3D5" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D5" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1129.09, 34.6724, 880.589)
 
-[node name="Node3D6" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D6" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -750.389, 34.6724, 1141.56)
 
-[node name="Node3D7" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D7" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -268.298, 34.6724, 1033.9)
 
-[node name="Node3D8" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D8" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 303.722, 34.6724, 1051.55)
 
-[node name="Node3D9" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D9" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 549.391, 53.9842, 1067.88)
 
-[node name="Node3D10" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D10" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 989.782, 53.9842, 1295.55)
 
-[node name="Node3D11" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D11" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1257.1, 53.9842, 1530.19)
 
-[node name="Node3D12" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D12" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1257.1, 1587.18, 1530.19)
 
-[node name="Node3D13" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D13" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 636.725, 85.5313, 626.998)
 
-[node name="Node3D14" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D14" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 914.004, 147.464, 205.51)
 
-[node name="Node3D15" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D15" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 274.678, 187.652, 269.462)
 
-[node name="Node3D16" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D16" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.6703, 122.523, 407.147)
 
-[node name="Node3D17" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D17" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -401.707, 167.935, -131.602)
 
-[node name="Node3D18" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D18" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -289.557, 219.394, -669.625)
 
-[node name="Node3D19" type="Node3D" parent="Services/Navigation/WaypointSystem/Points"]
+[node name="Node3D19" type="Node3D" parent="Services/Navigation/Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 67.7139, 382.591, -1107.06)
 
 [node name="Environment" type="Node3D" parent="."]

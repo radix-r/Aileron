@@ -1,11 +1,11 @@
-extends Control
+extends Node3D
 
+@onready var go_to_objective = GoTo.new()
 
-# Called when the node enters the scene tree for the first time.
+# Publish objective/target location for waypoint arrow
+var current_target: Node3D
+
 func _ready() -> void:
-    pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-    pass
+    go_to_objective.points_root = $"../Navigation/Points"
+    add_child(go_to_objective)
+    current_target = go_to_objective.active_waypoint

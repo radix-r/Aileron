@@ -83,3 +83,16 @@ offset_bottom = 42.0
 grow_horizontal = 2
 text = "00:00"
 label_settings = SubResource("LabelSettings_qdwn5")
+
+[node name="ObjectiveBox" type="CanvasLayer" parent="."]
+
+[node name="ObjectveTitle" type="RichTextLabel" parent="ObjectiveBox"]
+offset_right = 115.0
+offset_bottom = 24.0
+text = "Objective Title"
+
+[node name="ObjectiveDescription" type="RichTextLabel" parent="ObjectiveBox"]
+offset_top = 21.0
+offset_right = 117.0
+offset_bottom = 90.0
+text = "Objective Description"

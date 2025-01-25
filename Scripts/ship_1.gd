@@ -52,7 +52,7 @@ class_name AirMover extends CharacterBody3D
 @onready var i = 0
 
 # Debug
-var debug: bool = true
+var debug: bool = false
 var debug_prev_target_direction_local: Vector3 = Vector3.ZERO
 var debug_prev_velocity: Vector3 = Vector3.ZERO
 

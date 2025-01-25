@@ -10,7 +10,7 @@ signal waypoint_arrived(body: Node3D, waypoint_id: int)
 
 @onready var shape: SphereShape3D = collision_shape_node.shape#.duplicate(true)
 @onready var mesh: SphereMesh = mesh_node.mesh#.duplicate(true)
-@onready var temp_radius: float = 0.0
+@onready var temp_radius: float = 1.0
 @onready var temp_position: Vector3 = Vector3.ZERO
 
 var id: int
