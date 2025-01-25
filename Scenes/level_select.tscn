@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://b123qrymwqa3e"]
+[gd_scene load_steps=2 format=3 uid="uid://b123qrymwqa3e"]
 
 [ext_resource type="Script" path="res://Scripts/level_select.gd" id="1_lc4wm"]
-[ext_resource type="Script" path="res://Scripts/DemoLevel1Button.gd" id="2_h0uug"]
 
 [node name="LevelSelect" type="Control"]
 layout_mode = 3
@@ -21,12 +20,3 @@ button_level_dict = {
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
-
-[node name="DemoLevel1Button" type="Button" parent="VBoxContainer"]
-visible = false
-layout_mode = 2
-text = "Demo Level 1"
-script = ExtResource("2_h0uug")
-game_scene_path = "res://Scenes/Levels/test_scene_1.tscn"
-
-[connection signal="pressed" from="VBoxContainer/DemoLevel1Button" to="." method="_on_demo_level_1_button_pressed"]

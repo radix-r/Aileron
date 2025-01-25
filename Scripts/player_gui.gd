@@ -1,13 +1,13 @@
-extends Node3D
+extends Control
 
 @export var player_ship: AirMover
 
-@onready var nav_arrow_point: Node3D = $NavArrowPoint
-@onready var overlay: CanvasLayer = $NavArrowPoint/Overlay
-@onready var nav_arrow_drawer: Control = $NavArrowPoint/Overlay/Draw3d
-@onready var hud_center: Control = $CanvasLayer/HudCenter
-@onready var hud_anchor: Node3D = self
-@onready var velocity_marker: Control = $CanvasLayer/VelocityMarker
+@onready var nav_arrow_point: Node3D = player_ship
+@onready var overlay: CanvasLayer = $NavArrowOverlay
+@onready var nav_arrow_drawer: Control = $NavArrowOverlay/Draw3d
+@onready var hud_center: Control = $PlayerVectorOverlay/HudCenter
+@onready var hud_anchor: Control = self
+@onready var velocity_marker: Control = $PlayerVectorOverlay/VelocityMarker
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -15,7 +15,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
     if player_ship.camera:
         update_nav_arrow()
         update_hud_center()

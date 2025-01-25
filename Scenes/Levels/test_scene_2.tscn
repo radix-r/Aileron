@@ -1,0 +1,106 @@
+[gd_scene load_steps=7 format=3 uid="uid://d2srf4i5bpuxh"]
+
+[ext_resource type="Script" path="res://Scripts/test_scene_2_level_logic.gd" id="1_gi5bl"]
+[ext_resource type="PackedScene" uid="uid://54wog5qnpeg5" path="res://Scenes/Actors/ship_1.tscn" id="1_wob8l"]
+[ext_resource type="PackedScene" uid="uid://b6ab04h32aky1" path="res://Scenes/GUI/hud_anchor.tscn" id="2_w6mpe"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_paxhc"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_you74"]
+sky_material = SubResource("ProceduralSkyMaterial_paxhc")
+
+[sub_resource type="Environment" id="Environment_2lh4p"]
+background_mode = 2
+sky = SubResource("Sky_you74")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="LevelRoot" type="Node3D"]
+
+[node name="Services" type="Node3D" parent="."]
+
+[node name="LevelLogic" type="Node3D" parent="Services"]
+script = ExtResource("1_gi5bl")
+
+[node name="Navigation" type="Node3D" parent="Services"]
+
+[node name="Points" type="Node3D" parent="Services/Navigation"]
+
+[node name="Node3D" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.7317, 365.252, -1029.29)
+
+[node name="Node3D2" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -326.207, 238.057, -453.899)
+
+[node name="Node3D3" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -826.638, 94.5548, 171.463)
+
+[node name="Node3D4" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1257.07, 34.6724, 589.187)
+
+[node name="Node3D5" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1129.09, 34.6724, 880.589)
+
+[node name="Node3D6" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -750.389, 34.6724, 1141.56)
+
+[node name="Node3D7" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -268.298, 34.6724, 1033.9)
+
+[node name="Node3D8" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 303.722, 34.6724, 1051.55)
+
+[node name="Node3D9" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 549.391, 53.9842, 1067.88)
+
+[node name="Node3D10" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 989.782, 53.9842, 1295.55)
+
+[node name="Node3D11" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1257.1, 53.9842, 1530.19)
+
+[node name="Node3D12" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1257.1, 1587.18, 1530.19)
+
+[node name="Node3D13" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 636.725, 85.5313, 626.998)
+
+[node name="Node3D14" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 914.004, 147.464, 205.51)
+
+[node name="Node3D15" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 274.678, 187.652, 269.462)
+
+[node name="Node3D16" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.6703, 122.523, 407.147)
+
+[node name="Node3D17" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -401.707, 167.935, -131.602)
+
+[node name="Node3D18" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -289.557, 219.394, -669.625)
+
+[node name="Node3D19" type="Node3D" parent="Services/Navigation/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 67.7139, 382.591, -1107.06)
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(0.839432, -0.245678, -0.484765, 0.133262, -0.771708, 0.621859, -0.526874, -0.586609, -0.615056, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_2lh4p")
+
+[node name="Actors" type="Node3D" parent="."]
+
+[node name="Player" type="Node3D" parent="Actors"]
+
+[node name="Ship1" parent="Actors/Player" instance=ExtResource("1_wob8l")]
+
+[node name="UI" type="Node3D" parent="."]
+
+[node name="HudAnchor" parent="UI" node_paths=PackedStringArray("player_ship") instance=ExtResource("2_w6mpe")]
+player_ship = NodePath("../../Actors/Player/Ship1")

@@ -51,7 +51,7 @@ func get_level_root() -> Node:
     # root not found
     return null
 
-# TODO: Move to utils file?
+
 func read_json_file(file_path: String) -> Dictionary:
     var json_as_text = FileAccess.get_file_as_string(file_path)
     var json_as_dict = JSON.parse_string(json_as_text)

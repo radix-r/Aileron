@@ -52,7 +52,7 @@ class_name AirMover extends CharacterBody3D
 @onready var i = 0
 
 # Debug
-var debug: bool = true
+var debug: bool = false
 var debug_prev_target_direction_local: Vector3 = Vector3.ZERO
 var debug_prev_velocity: Vector3 = Vector3.ZERO
 
@@ -62,7 +62,7 @@ var debug_prev_velocity: Vector3 = Vector3.ZERO
 # OVERRIDE FUNCTIONS
 #####################################
 
-func _unhandled_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
     #capture mouse movements
     if event is InputEventMouseButton:
         Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -78,7 +78,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _ready() -> void:
     var unit_name = "Ship1"
-
+    
+    Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+    
     speed_default = Utilities.data_dict[unit_name]["speed_default"]
     speed_max = Utilities.data_dict[unit_name]["speed_max"]
     speed_min = Utilities.data_dict[unit_name]["speed_min"]
@@ -90,12 +92,12 @@ func _ready() -> void:
 
     velocity = Vector3.ZERO
 
+    if level_root:
+        if "waypoint_system" in level_root:
+            waypoint_system = level_root.waypoint_system
 
-    if "waypoint_system" in level_root:
-        waypoint_system = level_root.waypoint_system
-
-    if "gravity" in level_root:
-        gravity = level_root.gravity
+        if "gravity" in level_root:
+            gravity = level_root.gravity
 
 
 # TODO: Boost
@@ -160,7 +162,7 @@ func update_camera_position() -> void:
 
 
 
-# TODO: Fix jank in accel/decel
+
 func calc_velocity(input_dir: Vector3, delta: float) -> Vector3:
     var target_direction_local = Vector3(input_dir.x, input_dir.y, -1-input_dir.z)
     # convert to world space
@@ -193,11 +195,3 @@ func calc_velocity(input_dir: Vector3, delta: float) -> Vector3:
     #return target_velocity
 
     return ((velocity * momentum + target_velocity ) / (1 + momentum) )
-
-
-
-
-
-
-
-

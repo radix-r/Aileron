@@ -1,0 +1,98 @@
+[gd_scene load_steps=6 format=3 uid="uid://b6ab04h32aky1"]
+
+[ext_resource type="Script" path="res://Scripts/player_gui.gd" id="1_fenuy"]
+[ext_resource type="Texture2D" uid="uid://bbkctg0eejnj2" path="res://Assets/HUD/boresight.png" id="2_klokj"]
+[ext_resource type="Texture2D" uid="uid://b4hxvlgdwrxn8" path="res://Assets/HUD/velocity_marker.png" id="3_sll57"]
+[ext_resource type="Script" path="res://Scripts/draw3d.gd" id="4_4dnbk"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_qdwn5"]
+font_size = 30
+outline_size = 2
+outline_color = Color(0.00392157, 0.00392157, 0.00392157, 1)
+
+[node name="HudAnchor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_fenuy")
+
+[node name="NavArrowOverlay" type="CanvasLayer" parent="."]
+
+[node name="Draw3d" type="Control" parent="NavArrowOverlay"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_4dnbk")
+
+[node name="PlayerVectorOverlay" type="CanvasLayer" parent="."]
+
+[node name="HudCenter" type="Control" parent="PlayerVectorOverlay"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 1
+
+[node name="Boresight" type="Sprite2D" parent="PlayerVectorOverlay/HudCenter"]
+modulate = Color(0.45098, 1, 0.556863, 0.686275)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_klokj")
+
+[node name="VelocityMarker" type="Control" parent="PlayerVectorOverlay"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 1
+
+[node name="VelocityMarker" type="Sprite2D" parent="PlayerVectorOverlay/VelocityMarker"]
+modulate = Color(0.45098, 1, 0.556863, 0.686275)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("3_sll57")
+
+[node name="StopwatchLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -38.5
+offset_right = 38.5
+offset_bottom = 42.0
+grow_horizontal = 2
+text = "00:00"
+label_settings = SubResource("LabelSettings_qdwn5")
+
+[node name="ObjectiveBox" type="CanvasLayer" parent="."]
+
+[node name="ObjectveTitle" type="RichTextLabel" parent="ObjectiveBox"]
+offset_right = 115.0
+offset_bottom = 24.0
+text = "Objective Title"
+
+[node name="ObjectiveDescription" type="RichTextLabel" parent="ObjectiveBox"]
+offset_top = 21.0
+offset_right = 117.0
+offset_bottom = 90.0
+text = "Objective Description"
