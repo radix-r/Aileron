@@ -25,6 +25,8 @@ func _draw() -> void:
     var color: Color = Color(0, 1, 0)
     var start: Vector2 = camera.unproject_position(nav_arrow_point.global_transform.origin) - position
     var end: Vector2 = camera.unproject_position(level_logic.current_target.global_transform.origin) - position
+    if camera.is_position_behind(level_logic.current_target.global_transform.origin):
+        end.y = -end.y
     #end = end.normalized() * 10
     var distance: float =  start.distance_to(end)
     draw_line(start, end, color, WIDTH)
