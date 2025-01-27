@@ -1,4 +1,4 @@
-class_name AirMover extends CharacterBody3D
+class_name AirMover extends BaseMover
 
 
 #####################################
@@ -26,14 +26,9 @@ class_name AirMover extends CharacterBody3D
 # ONREADY VARIABLES
 #####################################
 
-@onready var acceleration: float = 0
-@onready var speed_default: float = 0
-@onready var speed_max: float = 0
-@onready var speed_min: float = 0
-@onready var rotation_speed: float = 0
-@onready var momentum: float = 0
+
 @onready var camera_chase: float = 0
-@onready var drag: float = 0
+
 
 @onready var pitch_point: Node3D = $PitchPoint
 @onready var forward_point: Node3D = $PitchPoint/ForwardPoint
