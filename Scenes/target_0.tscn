@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://jpx3uc2a7orp"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_3432h"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_a75r1"]
+
+[node name="Node3D" type="CharacterBody3D"]
+motion_mode = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_3432h")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_a75r1")
+
+[node name="HurtBox" type="Area3D" parent="."]
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="HurtBox"]
+shape = SubResource("SphereShape3D_3432h")

@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://cim854ay8wvr7"]
+
+[ext_resource type="Script" uid="uid://c0fmb6abiohrm" path="res://Scripts/ship_physics.gd" id="1_h445o"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rtrmn"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_6iifb"]
+
+[node name="ShipPhysics" type="RigidBody3D"]
+script = ExtResource("1_h445o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_rtrmn")
+debug_color = Color(0, 0.6, 0.701961, 1)
+
+[node name="PitchPoint" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PitchPoint"]
+mesh = SubResource("BoxMesh_6iifb")
+skeleton = NodePath("../../CollisionShape3D")
+
+[node name="CameraControl" type="Node3D" parent="PitchPoint"]
+
+[node name="Camera3D" type="Camera3D" parent="PitchPoint/CameraControl"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.807268, 3.35197)
+current = true
+far = 8000.0
+
+[node name="ForwardPoint" type="Node3D" parent="PitchPoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="UpPoint" type="Node3D" parent="PitchPoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]
