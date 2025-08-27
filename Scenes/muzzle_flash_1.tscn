@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://biydulbukmyrr"]
 
-[ext_resource type="Texture2D" uid="uid://doxqfoj66t834" path="res://Assets/Images/muzzleFlash.png" id="1_u6d0t"]
-[ext_resource type="ArrayMesh" uid="uid://cptqytnmk8mau" path="res://Assets/Models/muzzleFlash.obj" id="2_42tde"]
+[ext_resource type="Texture2D" uid="uid://bvjem5ojsjs6" path="res://Assets/Images/muzzleFlash.png" id="1_u6d0t"]
+[ext_resource type="ArrayMesh" uid="uid://ri2cnp86ljnr" path="res://Assets/Models/muzzleFlash.obj" id="2_42tde"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rptaj"]
 transparency = 1
@@ -92,8 +92,8 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_6fhbt"]
 _data = {
-"Fire": SubResource("Animation_cfljs"),
-"RESET": SubResource("Animation_ioysd")
+&"Fire": SubResource("Animation_cfljs"),
+&"RESET": SubResource("Animation_ioysd")
 }
 
 [node name="MuzzleFlash1" type="Node3D"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://m4diyu7gsmx3"]
 
-[ext_resource type="Script" path="res://Scripts/canyon_race_level.gd" id="1_4km8d"]
-[ext_resource type="Script" path="res://Scripts/waypoint_system.gd" id="1_2306v"]
+[ext_resource type="Script" uid="uid://bek1joxancfy6" path="res://Scripts/canyon_race_level.gd" id="1_4km8d"]
+[ext_resource type="Script" uid="uid://jkhudf6pf2xf" path="res://Scripts/waypoint_system.gd" id="1_2306v"]
 [ext_resource type="PackedScene" uid="uid://bjp0gluvfcn7k" path="res://Scenes/grand_canyon_env.tscn" id="2_lt0s6"]
 [ext_resource type="PackedScene" uid="uid://54wog5qnpeg5" path="res://Scenes/Actors/ship_1.tscn" id="3_2rbym"]
 [ext_resource type="PackedScene" uid="uid://cggqb75a8w8r" path="res://addons/debug_menu/debug_menu.tscn" id="5_ssa4x"]

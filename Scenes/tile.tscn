@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dg01rmwgh38gi"]
 
-[ext_resource type="Texture2D" uid="uid://dan10jdw3pppv" path="res://Assets/StoneFloor/Textures/StoneFloor_Specular.jpg" id="1_o7gp4"]
-[ext_resource type="ArrayMesh" uid="uid://cqwoebfxwt0sb" path="res://Assets/StoneFloor/Models/StoneFloor_SlabOne_LOD2.obj" id="1_wlwql"]
+[ext_resource type="Texture2D" uid="uid://cvcoaml1xmnut" path="res://Assets/StoneFloor/Textures/StoneFloor_Specular.jpg" id="1_o7gp4"]
+[ext_resource type="ArrayMesh" uid="uid://c4cpap456fy8d" path="res://Assets/StoneFloor/Models/StoneFloor_SlabOne_LOD2.obj" id="1_wlwql"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2r6md"]
 albedo_texture = ExtResource("1_o7gp4")

@@ -97,9 +97,6 @@ func _ready() -> void:
 
 # TODO: Boost
 func _physics_process(delta: float) -> void:
-
-
-
     forward = (forward_point.global_position - global_position).normalized()
 
     # Get input and handel turining, acel/decel

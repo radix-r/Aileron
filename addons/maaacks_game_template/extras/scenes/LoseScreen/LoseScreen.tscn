@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://cp3p3kqcjh0me"]
 
-[ext_resource type="Script" path="res://addons/maaacks_game_template/extras/scenes/LoseScreen/LoseScreen.gd" id="1_vd50a"]
-[ext_resource type="Script" path="res://addons/maaacks_game_template/base/scripts/UISoundController.gd" id="2_haoyh"]
-[ext_resource type="Script" path="res://addons/maaacks_game_template/base/scripts/CaptureFocus.gd" id="3_mqffv"]
+[ext_resource type="Script" uid="uid://da3y2wx6gclgn" path="res://addons/maaacks_game_template/extras/scenes/LoseScreen/LoseScreen.gd" id="1_vd50a"]
+[ext_resource type="Script" uid="uid://chpxwlfkmqe6c" path="res://addons/maaacks_game_template/base/scripts/UISoundController.gd" id="2_haoyh"]
+[ext_resource type="Script" uid="uid://34dvadsa8kmy" path="res://addons/maaacks_game_template/base/scripts/CaptureFocus.gd" id="3_mqffv"]
 
 [node name="LoseScreen" type="CanvasLayer"]
 process_mode = 3

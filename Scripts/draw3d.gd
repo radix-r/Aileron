@@ -36,10 +36,6 @@ func _draw() -> void:
 func _ready() -> void:
     if !level_logic:
         print_debug("Failed to init waypoint arrow GUI")
-    #if level_logic and "waypoint_system" in level_root:
-        #waypoint_system = level_root.waypoint_system
-    #else:
-        #print_debug("Failed to init waypoint arrow GUI")
 
 
 func draw_triangle(pos: Vector2, dir: Vector2, width: float, length: float, color: Color):

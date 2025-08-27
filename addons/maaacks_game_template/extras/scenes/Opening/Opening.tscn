@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://sikc02ddepyt"]
 
-[ext_resource type="Script" path="res://addons/maaacks_game_template/extras/scenes/Opening/Opening.gd" id="1_fcjph"]
+[ext_resource type="Script" uid="uid://s5l36s3ejuam" path="res://addons/maaacks_game_template/extras/scenes/Opening/Opening.gd" id="1_fcjph"]
 
 [sub_resource type="Animation" id="Animation_nsnod"]
 resource_name = "FadeInOut"
@@ -35,8 +35,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_uc3w8"]
 _data = {
-"FadeInOut": SubResource("Animation_nsnod"),
-"RESET": SubResource("Animation_4b2uu")
+&"FadeInOut": SubResource("Animation_nsnod"),
+&"RESET": SubResource("Animation_4b2uu")
 }
 
 [node name="Opening" type="Control"]

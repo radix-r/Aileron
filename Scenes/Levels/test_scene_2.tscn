@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://d2srf4i5bpuxh"]
 
-[ext_resource type="Script" path="res://Scripts/test_scene_2_level_logic.gd" id="1_gi5bl"]
+[ext_resource type="Script" uid="uid://s5a3n24kg53l" path="res://Scripts/test_scene_2_level_logic.gd" id="1_gi5bl"]
 [ext_resource type="PackedScene" uid="uid://54wog5qnpeg5" path="res://Scenes/Actors/ship_1.tscn" id="1_wob8l"]
 [ext_resource type="PackedScene" uid="uid://b6ab04h32aky1" path="res://Scenes/GUI/hud_anchor.tscn" id="2_w6mpe"]
 
