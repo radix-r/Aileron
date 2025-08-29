@@ -102,4 +102,5 @@ copy_path="res://Scenes/Templates"
 
 [physics]
 
-3d/physics_engine="JoltPhysics3D"
+3d/physics_engine="Jolt Physics"
+common/physics_interpolation=true

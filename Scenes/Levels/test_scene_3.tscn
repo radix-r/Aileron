@@ -23,6 +23,7 @@ transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+physics_interpolation_mode = 1
 environment = SubResource("Environment_sh7ys")
 
 [node name="Island_00" parent="." instance=ExtResource("1_nkug8")]
