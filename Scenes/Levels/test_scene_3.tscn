@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://d343glcxkpvhg"]
+[gd_scene load_steps=7 format=3 uid="uid://d343glcxkpvhg"]
 
 [ext_resource type="PackedScene" uid="uid://c3egj6hibjxut" path="res://Blender/Island_00.glb" id="1_nkug8"]
 [ext_resource type="PackedScene" uid="uid://cim854ay8wvr7" path="res://Scenes/Actors/ship_physics.tscn" id="2_rtrmn"]
+[ext_resource type="PackedScene" uid="uid://b6ab04h32aky1" path="res://Scenes/GUI/hud_anchor.tscn" id="3_nkug8"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fkccy"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -41,4 +42,7 @@ axis_lock_angular_z = true
 
 [node name="Services" type="Node3D" parent="."]
 
-[node name="LevelLogic" type="Node3D" parent="Services"]
+[node name="UI" type="Node3D" parent="."]
+
+[node name="HudAnchor" parent="UI" node_paths=PackedStringArray("player_ship") instance=ExtResource("3_nkug8")]
+player_ship = NodePath("../../Actors/Player/ShipPhysics")

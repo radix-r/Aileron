@@ -8,6 +8,7 @@
 
 [node name="ShipPhysics" type="RigidBody3D"]
 physics_interpolation_mode = 1
+linear_damp = 1.0
 script = ExtResource("1_h445o")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

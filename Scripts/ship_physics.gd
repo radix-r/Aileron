@@ -25,6 +25,12 @@ extends RigidBody3D
 #####################################
 # PRIVATE VARIABLES
 #####################################
+enum FlightModes{
+    OFF,
+    HOVER,
+    SPEED,
+}
+var flight_mode: FlightModes = FlightModes.HOVER
 var tick_y_rotation_input_sum: float = 0
 var tick_x_rotation_input_sum: float = 0
 
@@ -33,7 +39,9 @@ var tick_x_rotation_input_sum: float = 0
 #####################################
 @onready var pitch_point: Node3D = $PitchPoint
 @onready var forward_point: Node3D = $PitchPoint/ForwardPoint
+@onready var forward: Vector3 = Vector3()
 @onready var up_point: Node3D = $PitchPoint/UpPoint
+@onready var up_relative: Vector3 = Vector3()
 @onready var camera_control: Node3D = $PitchPoint/CameraControl
 @onready var camera: Camera3D = $PitchPoint/CameraControl/Camera3D
 
@@ -66,15 +74,24 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 
 
 func _physics_process(delta: float) -> void:
-    var input_dir: Vector3 = get_input_direction()
+    forward = (forward_point.global_position - global_position).normalized()
+    up_relative = (up_point.global_position - global_position).normalized()
+    var input_dir_local: Vector3 = get_input_direction()
 
+    var input_dir_world = input_dir_local * pitch_point.global_transform.basis.inverse()
+    
+    #Apply rotation input
     self.rotate_y(tick_y_rotation_input_sum * rotation_speed * delta)
     tick_y_rotation_input_sum = 0
     pitch_point.rotate_x(tick_x_rotation_input_sum * rotation_speed * delta)
     tick_x_rotation_input_sum = 0
     pitch_point.rotation.x = clamp(pitch_point.rotation.x, deg_to_rad(-85), deg_to_rad(85))
+    
+    var thrust: Vector3 = calc_thrust(input_dir_world, delta)
 
-    var thrust: Vector3 = calc_thrust(input_dir, delta).rotated(Vector3.UP, global_rotation.y)
+    # apply gavity counter force
+    if flight_mode == FlightModes.HOVER || flight_mode == FlightModes.SPEED:
+        thrust += mass * -get_gravity()
     
     apply_force(thrust)
     #if thrust.length() > 0:
@@ -94,7 +111,7 @@ func _ready() -> void:
     spark_amount_ratio_coeficent = Utilities.data_dict[unit_name]["spark_amount_ratio_coeficent"]
     spark_lifetime_coeficent = Utilities.data_dict[unit_name]["spark_lifetime_coeficent"]
 
-# TODO: factor out of ship code
+# TODO: spark effect factor out of ship code
 func apply_spark_effect(global_location: Vector3) -> void:
     if linear_velocity.length() > 0.2:
         var new_sparks: GPUParticles3D = spark_effect.instantiate() as GPUParticles3D
@@ -107,8 +124,19 @@ func apply_spark_effect(global_location: Vector3) -> void:
 
 
 func calc_thrust(input_dir: Vector3, delta: float) -> Vector3:
-    return input_dir * thrust_strength * delta
-    # return Vector3.ZERO
+    var thrust = Vector3.ZERO
+    match flight_mode:
+        FlightModes.OFF:
+            thrust = Vector3.ZERO
+        FlightModes.HOVER:
+            
+            thrust = input_dir * thrust_strength * delta
+            # add thrust to offset gravity
+            #thrust += mass * -get_gravity()
+        FlightModes.SPEED:
+            input_dir.z = input_dir.z - 1 
+            #thrust += mass * -get_gravity()
+    return thrust 
     
 
 func get_input_direction() -> Vector3:
@@ -116,7 +144,7 @@ func get_input_direction() -> Vector3:
     var input_up = Input.get_axis("down","up")
     # -z is forward
     var input_forward = Input.get_axis("forward", "back")
-    return Vector3(input_right, input_up, input_forward)
+    return Vector3(input_right, input_up, input_forward).normalized()
 
 
 func _on_body_shape_entered(body_rid: RID, body: Node, body_shape_index: int, local_shape_index: int) -> void:

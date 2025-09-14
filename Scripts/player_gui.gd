@@ -1,6 +1,6 @@
 extends Control
 
-@export var player_ship: AirMover
+@export var player_ship: PhysicsBody3D 
 
 @onready var nav_arrow_point: Node3D = player_ship
 @onready var overlay: CanvasLayer = $NavArrowOverlay
@@ -41,9 +41,9 @@ func update_nav_arrow() -> void:
 
 
 func update_velocity_marker() -> void:
-    var hud_pos: Vector2 = transform_to_hud_space(player_ship.camera.global_position + player_ship.velocity)
+    var hud_pos: Vector2 = transform_to_hud_space(player_ship.camera.global_position + player_ship.linear_velocity)
 
-    if player_ship.camera.is_position_behind(player_ship.camera.global_position + player_ship.velocity):
+    if player_ship.camera.is_position_behind(player_ship.camera.global_position + player_ship.linear_velocity):
         velocity_marker.hide()
     else:
         velocity_marker.show()
