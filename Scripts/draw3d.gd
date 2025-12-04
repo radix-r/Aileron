@@ -8,12 +8,14 @@ extends Control
 @onready var level_logic: Node3D = get_node("/root/LevelRoot/Services/LevelLogic")
 @onready var camera: Camera3D = hud_root.player_ship.camera
 
+@onready var nav_enabled: bool = false
+
 const WIDTH: float = 10.0
 
 
 func _draw() -> void:
 
-    if !(level_logic and level_logic.current_target):
+    if !(nav_enabled and level_logic and level_logic.current_target):
         nav_arrow_overlay.hide()
         return
 

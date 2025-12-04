@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://d343glcxkpvhg"]
+[gd_scene load_steps=10 format=3 uid="uid://d343glcxkpvhg"]
 
-[ext_resource type="PackedScene" uid="uid://c3egj6hibjxut" path="res://Blender/Island_00.glb" id="1_nkug8"]
+[ext_resource type="PackedScene" uid="uid://c3egj6hibjxut" path="res://Assets/Blender/Island_00.glb" id="1_nkug8"]
 [ext_resource type="PackedScene" uid="uid://cim854ay8wvr7" path="res://Scenes/Actors/ship_physics.tscn" id="2_rtrmn"]
+[ext_resource type="PackedScene" uid="uid://jpx3uc2a7orp" path="res://Scenes/target_0.tscn" id="2_wg3yj"]
 [ext_resource type="PackedScene" uid="uid://b6ab04h32aky1" path="res://Scenes/GUI/hud_anchor.tscn" id="3_nkug8"]
+[ext_resource type="PackedScene" uid="uid://b3qe65pdbip4k" path="res://Scenes/ball.tscn" id="4_scjij"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fkccy"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -17,18 +19,10 @@ sky = SubResource("Sky_mp5pl")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_scjij"]
+bounce = 0.75
+
 [node name="LevelRoot" type="Node3D"]
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
-shadow_enabled = true
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-physics_interpolation_mode = 1
-environment = SubResource("Environment_sh7ys")
-
-[node name="Island_00" parent="." instance=ExtResource("1_nkug8")]
-transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
 
 [node name="Actors" type="Node3D" parent="."]
 
@@ -40,9 +34,33 @@ axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
 
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(-0.86602354, -0.43301606, 0.25000072, 0, 0.49999818, 0.86602646, -0.5000033, 0.7499993, -0.4330102, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+physics_interpolation_mode = 1
+environment = SubResource("Environment_sh7ys")
+
+[node name="Island_00" parent="Environment" instance=ExtResource("1_nkug8")]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+
+[node name="Ball" parent="Environment" instance=ExtResource("4_scjij")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.378, 34.1087, 27.9572)
+mass = 0.5
+physics_material_override = SubResource("PhysicsMaterial_scjij")
+
+[node name="target_0" parent="Environment" instance=ExtResource("2_wg3yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 23.330854, 0)
+
 [node name="Services" type="Node3D" parent="."]
+
+[node name="LevelLogic" type="Node3D" parent="Services"]
 
 [node name="UI" type="Node3D" parent="."]
 
 [node name="HudAnchor" parent="UI" node_paths=PackedStringArray("player_ship") instance=ExtResource("3_nkug8")]
 player_ship = NodePath("../../Actors/Player/ShipPhysics")
+metadata/_edit_use_anchors_ = true

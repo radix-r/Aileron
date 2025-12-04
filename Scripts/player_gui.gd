@@ -41,14 +41,16 @@ func update_nav_arrow() -> void:
 
 
 func update_velocity_marker() -> void:
-    var hud_pos: Vector2 = transform_to_hud_space(player_ship.camera.global_position + player_ship.linear_velocity)
+    if player_ship.linear_velocity.length() > 0.01:
+        var hud_pos: Vector2 = transform_to_hud_space(player_ship.camera.global_position + player_ship.linear_velocity)
 
-    if player_ship.camera.is_position_behind(player_ship.camera.global_position + player_ship.linear_velocity):
-        velocity_marker.hide()
+        if player_ship.camera.is_position_behind(player_ship.camera.global_position + player_ship.linear_velocity):
+            velocity_marker.hide()
+        else:
+            velocity_marker.show()
+            velocity_marker.position = hud_pos
     else:
-        velocity_marker.show()
-        velocity_marker.position = hud_pos
-
+        velocity_marker.hide()
 
 func transform_angle(angel: float, fov: float, pixel_height: float) -> float:
     return (tan(angel) / tan(fov / 2)) * pixel_height / 2

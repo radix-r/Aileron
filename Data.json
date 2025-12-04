@@ -19,9 +19,16 @@
     "Bullet1": {
         "lifespan": 10
     },
+    "Bullet2": {
+        "lifespan": 2
+    },
     "Gun1": {
         "fire_cooldown": 0.1,
         "projectile_speed": 10
+    },
+    "Gun2": {
+        "fire_cooldown": 0.1,
+        "projectile_speed": 100
     },
     "Ship2": {
         "pitch_sensitivity": 5.0,

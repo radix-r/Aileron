@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cim854ay8wvr7"]
+[gd_scene load_steps=6 format=3 uid="uid://cim854ay8wvr7"]
 
 [ext_resource type="Script" uid="uid://c0fmb6abiohrm" path="res://Scripts/ship_physics.gd" id="1_h445o"]
+[ext_resource type="Script" uid="uid://cis08mftfnn2u" path="res://Scripts/gun2.gd" id="2_f55n5"]
+[ext_resource type="PackedScene" uid="uid://biydulbukmyrr" path="res://Scenes/muzzle_flash_1.tscn" id="3_kia6q"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rtrmn"]
 
@@ -33,5 +35,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 
 [node name="UpPoint" type="Node3D" parent="PitchPoint"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Gun1" type="Node3D" parent="PitchPoint"]
+script = ExtResource("2_f55n5")
+
+[node name="FirePoint" type="Node3D" parent="PitchPoint/Gun1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="MuzzleFlash1" parent="PitchPoint/Gun1/FirePoint" instance=ExtResource("3_kia6q")]
 
 [connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]

@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://du0ya3mwtloqm"]
+
+[ext_resource type="Script" uid="uid://b2s0d5pydn1b8" path="res://Scripts/bullet_2.gd" id="1_xs6d3"]
+[ext_resource type="PackedScene" uid="uid://d1iqn0kgh3k0k" path="res://Scenes/trail_3d_1.tscn" id="2_mvdab"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3myqu"]
+emission_enabled = true
+emission = Color(0.988235, 1, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_4voj3"]
+material = SubResource("StandardMaterial3D_3myqu")
+radius = 0.05
+height = 0.2
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rugkm"]
+radius = 0.05
+height = 0.2
+
+[node name="BulletBody" type="RigidBody3D"]
+collision_layer = 2
+collision_mask = 12
+script = ExtResource("1_xs6d3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_4voj3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_rugkm")
+
+[node name="Trail3D1" parent="." instance=ExtResource("2_mvdab")]
+_from_width = 0.1
+_lifespan = 0.1
+_start_color = Color(1, 1, 0, 1)

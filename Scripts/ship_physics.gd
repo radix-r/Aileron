@@ -45,7 +45,7 @@ var tick_x_rotation_input_sum: float = 0
 @onready var camera_control: Node3D = $PitchPoint/CameraControl
 @onready var camera: Camera3D = $PitchPoint/CameraControl/Camera3D
 
-@onready var camera_chase: float =not 0
+@onready var camera_chase: float = 0
 @onready var contact_point: Vector3 = Vector3.ZERO
 
 @onready var spark_speed_coeficent: float 
