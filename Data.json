@@ -15,6 +15,7 @@
         "spark_amount_ratio_coeficent": 0.1,
         "spark_lifetime_coeficent": 0.1,
         "camera_chase": 0.05,
+        "boost_factor": 2,
     },
     "Bullet1": {
         "lifespan": 10
@@ -28,7 +29,7 @@
     },
     "Gun2": {
         "fire_cooldown": 0.1,
-        "projectile_speed": 100
+        "projectile_speed": 700
     },
     "Ship2": {
         "pitch_sensitivity": 5.0,
