@@ -96,3 +96,5 @@ offset_top = 21.0
 offset_right = 117.0
 offset_bottom = 90.0
 text = "Objective Description"
+
+[node name="TargetingOverlay" type="CanvasLayer" parent="."]
