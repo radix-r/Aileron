@@ -60,3 +60,7 @@ func read_json_file(file_path: String) -> Dictionary:
     else:
         # TODO: Retrun error dict
         return Dictionary()
+
+func transform_to_hud_space(world_space: Vector3, camera: Camera3D) -> Vector2:
+    var screen_space: Vector2 = camera.unproject_position(world_space)
+    return screen_space

@@ -7,6 +7,7 @@ class_name LevelLogic extends Node3D
 @onready var ball_scene: PackedScene = preload("res://Scenes/ball.tscn") 
 
 @export var targeting_logic: TargetingLogic = null # $"../TargetingLogic"
+@export var hud_logic: HudLogic = null
 @export var hud_anchor: HudAnchor = null #$"../../UI/HudAnchor"
 @export var actors_root: Node3D = null
 @export var env_root: Node3D = null 
@@ -45,7 +46,8 @@ func _physics_process(delta: float) -> void:
 
 func _process(delta: float) -> void:
     draw_target_ui_for_cam(player_node.get_camera(), targeting_logic.get_targetable(player_node.name), null)
-
+    hud_logic.update_velocity_marker(player_node)
+    hud_logic.update_boresight(player_node)
 
 func add_object_in_force_field(obj: RigidBody3D) -> void:
     objects_in_force_field[obj.name] = obj

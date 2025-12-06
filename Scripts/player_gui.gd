@@ -7,19 +7,16 @@ var target_ui_element: PackedScene = preload("res://Scenes/GUI/target_ui_element
 #@onready var nav_arrow_point: Node3D = player_ship
 @onready var overlay: CanvasLayer = $NavArrowOverlay
 @onready var nav_arrow_drawer: Control = $NavArrowOverlay/Draw3d
-@onready var hud_center: Control = $PlayerVectorOverlay/HudCenter
+@onready var boresight: Control = $PlayerVectorOverlay/Boresight
 @onready var hud_anchor: Control = self
 @onready var velocity_marker: Control = $PlayerVectorOverlay/VelocityMarker
 
-# Dictionary full of nodes in group target
-#@onready var target_list: Array = []
+# Key: node name, Value: target ui element assigned to that node
 var target_ui_element_dict: Dictionary = {}
-# @onready var current_target: Node3D = null
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-    
-    # init_targeting_ui()
     pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -27,7 +24,7 @@ func _process(_delta: float) -> void:
     # Moving to level logic
     #if player_ship.camera:
         #update_nav_arrow()
-        #update_hud_center(player_ship)
+        #update_boresight(player_ship)
         #update_velocity_marker(player_ship)
         #
         #update_target_indicator(player_ship)
@@ -38,14 +35,14 @@ func add_target_indicator(target: Node3D) -> void:
     add_child(new_target_ui_element)
     target_ui_element_dict[target.name] = new_target_ui_element
     target_ui_element_dict[target.name].hide()
-    
 
-#func init_targeting_ui() -> void:
-    ## Moving to level logic
-#
-    #for target in target_list:
-        #
 
+func hide_boresight() -> void:
+    boresight.hide()
+
+
+func hide_velocity_marker() -> void:
+    velocity_marker.hide()
 
 
 func remove_target_indicator(node_name: String) -> void:
@@ -53,17 +50,32 @@ func remove_target_indicator(node_name: String) -> void:
         target_ui_element_dict.erase(node_name)
 
 
-func update_hud_center(ship: PlayerPhysicsShip) -> void:
-    # var cam_rotation: Vector3 = camera_control.rotation
+func set_boresight_position(hud_pos: Vector2) -> void:
+    boresight.set_position(hud_pos)
 
-    var hud_pos: Vector2 = transform_to_hud_space(ship.get_camera().global_position + ship.forward, ship.get_camera() )
 
-    if !ship.get_camera().is_position_behind(ship.get_camera().global_position + ship.forward):
-        hud_center.show()
-        hud_center.position = hud_pos
+func set_velocity_marker_pos(hud_pos: Vector2) -> void:
+    velocity_marker.set_position(hud_pos)
 
-    else:
-        hud_center.hide()
+
+func show_boresight() -> void:
+    boresight.show()
+
+
+func show_velocity_marker() -> void:
+    velocity_marker.show()
+
+#func update_boresight(ship: PlayerPhysicsShip) -> void:
+    ## var cam_rotation: Vector3 = camera_control.rotation
+#
+    #var hud_pos: Vector2 = transform_to_hud_space(ship.get_camera().global_position + ship.forward, ship.get_camera() )
+#
+    #if !ship.get_camera().is_position_behind(ship.get_camera().global_position + ship.forward):
+        #boresight.show()
+        #boresight.position = hud_pos
+#
+    #else:
+        #boresight.hide()
 
 
 func update_nav_arrow() -> void:
@@ -76,17 +88,17 @@ func update_selected_target_indicator(_camera: Camera3D, target: Node3D) -> void
         target_ui_element_dict[target.name].show_selected_indicator()
 
 
-func update_velocity_marker(ship: PlayerPhysicsShip) -> void:
-    if ship.linear_velocity.length() > 0.01:
-        var hud_pos: Vector2 = transform_to_hud_space(ship.get_camera().global_position + ship.linear_velocity, ship.get_camera())
-
-        if ship.get_camera().is_position_behind(ship.get_camera().global_position + ship.linear_velocity):
-            velocity_marker.hide()
-        else:
-            velocity_marker.show()
-            velocity_marker.position = hud_pos
-    else:
-        velocity_marker.hide()
+#func update_velocity_marker(ship: PlayerPhysicsShip) -> void:
+    #if ship.linear_velocity.length() > 0.01:
+        #var hud_pos: Vector2 = transform_to_hud_space(ship.get_camera().global_position + ship.linear_velocity, ship.get_camera())
+#
+        #if ship.get_camera().is_position_behind(ship.get_camera().global_position + ship.linear_velocity):
+            #velocity_marker.hide()
+        #else:
+            #velocity_marker.show()
+            #velocity_marker.position = hud_pos
+    #else:
+        #velocity_marker.hide()
 
 
 

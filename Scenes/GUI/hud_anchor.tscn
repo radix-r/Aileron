@@ -34,7 +34,7 @@ grow_vertical = 2
 
 [node name="PlayerVectorOverlay" type="CanvasLayer" parent="."]
 
-[node name="HudCenter" type="Control" parent="PlayerVectorOverlay"]
+[node name="Boresight" type="Control" parent="PlayerVectorOverlay"]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -47,7 +47,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 1
 
-[node name="Boresight" type="Sprite2D" parent="PlayerVectorOverlay/HudCenter"]
+[node name="Boresight" type="Sprite2D" parent="PlayerVectorOverlay/Boresight"]
 modulate = Color(0.45098, 1, 0.556863, 0.686275)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_klokj")
