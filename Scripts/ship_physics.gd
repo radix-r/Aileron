@@ -1,4 +1,4 @@
-extends RigidBody3D
+class_name PlayerPhysicsShip extends RigidBody3D
 
 # TODO: Hover and speed mode
 
@@ -116,6 +116,8 @@ func _ready() -> void:
     spark_amount_ratio_coeficent = Utilities.data_dict[unit_name]["spark_amount_ratio_coeficent"]
     spark_lifetime_coeficent = Utilities.data_dict[unit_name]["spark_lifetime_coeficent"]
     boost_factor = Utilities.data_dict[unit_name]["boost_factor"]
+
+
 # TODO: spark effect factor out of ship code
 func apply_spark_effect(global_location: Vector3) -> void:
     if linear_velocity.length() > 0.2:
@@ -151,6 +153,8 @@ func get_input_direction() -> Vector3:
     var input_forward = Input.get_axis("forward", "back")
     return Vector3(input_right, input_up, input_forward).normalized()
 
+func get_camera() -> Camera3D:
+    return $PitchPoint/CameraControl/Camera3D
 
 # apply chase effect to camera
 func update_camera_position() -> void:
