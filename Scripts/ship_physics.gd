@@ -15,8 +15,7 @@ class_name PlayerPhysicsShip extends RigidBody3D
 # EXPORT VARIABLES
 #####################################
 @export var spark_effect: PackedScene = preload("res://Scenes/sparks1.tscn")
-# TODO: make data driven
-@export var thrust_strength: float = 2000
+
 
 #####################################
 # PUBLIC VARIABLES
@@ -44,6 +43,7 @@ var tick_x_rotation_input_sum: float = 0
 @onready var up_relative: Vector3 = Vector3()
 @onready var camera_control: Node3D = $PitchPoint/CameraControl
 @onready var camera: Camera3D = $PitchPoint/CameraControl/Camera3D
+@onready var thrust_vector: Node3D = $ThrustVector
 
 @onready var camera_chase: float = 0
 @onready var contact_point: Vector3 = Vector3.ZERO
@@ -53,6 +53,8 @@ var tick_x_rotation_input_sum: float = 0
 @onready var spark_amount_ratio_coeficent: float = 0
 @onready var spark_lifetime_coeficent: float = 0
 @onready var rotation_speed: float = 0
+@onready var thrust_strength: float = 2000
+
 
 # TODO: Controler support
 func _input(event: InputEvent) -> void:
@@ -99,7 +101,14 @@ func _physics_process(delta: float) -> void:
     apply_force(thrust)
     #if thrust.length() > 0:
         #print_debug(thrust)
-    # TODO draw thrust vector
+    # draw thrust vector
+    var thrust_direction: Vector3 = thrust
+
+    thrust_direction += Vector3(forward/10)
+
+    thrust_vector.look_at(global_position + thrust_direction)
+    var scale_factor = thrust.length() / 1000
+    thrust_vector.scale = Vector3(scale_factor, scale_factor, scale_factor)
     
     # shift camera based on velocity to give chase effect
     update_camera_position()
@@ -116,7 +125,7 @@ func _ready() -> void:
     spark_amount_ratio_coeficent = Utilities.data_dict[unit_name]["spark_amount_ratio_coeficent"]
     spark_lifetime_coeficent = Utilities.data_dict[unit_name]["spark_lifetime_coeficent"]
     boost_factor = Utilities.data_dict[unit_name]["boost_factor"]
-
+    thrust_strength = Utilities.data_dict[unit_name]["thrust_strength"]
 
 # TODO: spark effect factor out of ship code
 func apply_spark_effect(global_location: Vector3) -> void:
@@ -167,6 +176,6 @@ func update_camera_position() -> void:
 
 
 
-func _on_body_shape_entered(body_rid: RID, body: Node, body_shape_index: int, local_shape_index: int) -> void:
-    #apply_spark_effect(contact_point)
-    pass
+#func _on_body_shape_entered(body_rid: RID, body: Node, body_shape_index: int, local_shape_index: int) -> void:
+    ##apply_spark_effect(contact_point)
+    #pass

@@ -1,4 +1,7 @@
 {
+    "Arena0": {
+        "foce_field_force_newtons": 1000,
+    },
     "Ship1": {
         "speed_default": 10,
         "speed_max": 1200000,
@@ -16,6 +19,7 @@
         "spark_lifetime_coeficent": 0.1,
         "camera_chase": 0.05,
         "boost_factor": 2,
+        "thrust_strength": 200000,
     },
     "Bullet1": {
         "lifespan": 10

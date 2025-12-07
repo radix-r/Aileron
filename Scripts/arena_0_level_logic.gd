@@ -1,7 +1,6 @@
 class_name LevelLogic extends Node3D
 
 @onready var objects_in_force_field: Dictionary = {}
-# TODO make data driven
 @onready var foce_field_force_newtons: float = 1000
 @onready var player_scene: PackedScene = preload("res://Scenes/Actors/ship_physics.tscn")
 @onready var ball_scene: PackedScene = preload("res://Scenes/ball.tscn") 
@@ -22,13 +21,12 @@ class_name LevelLogic extends Node3D
 
 
 func _ready() -> void:
-    pass
     SignalManager.arena_force_field_entered.connect(add_object_in_force_field)
     SignalManager.arena_force_field_exited.connect(remove_object_in_force_field)
     
     # Instantiate team relations
     targeting_logic.set_team_targetability(PLAYER_TEAM, ENVIRNOMENT_TEAM)
-    # TODO Instantiate player, npcs, objects (ball)
+    # Instantiate player, npcs, objects (ball)
     player_node = player_scene.instantiate()
     actors_root.add_child(player_node)
     player_node.global_position = Vector3(0, 0, -96)
@@ -40,11 +38,14 @@ func _ready() -> void:
     ball_node.global_position = Vector3(0, 20, 0)
     targeting_logic.add_targetable_node(ball_node, ENVIRNOMENT_TEAM)
     
+    # get data values
+    foce_field_force_newtons = Utilities.data_dict["Arena0"]["foce_field_force_newtons"]
+    
 func _physics_process(delta: float) -> void:
     apply_force_field_effects(delta)
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
     draw_target_ui_for_cam(player_node.get_camera(), targeting_logic.get_targetable(player_node.name), null)
     hud_logic.update_velocity_marker(player_node)
     hud_logic.update_boresight(player_node)

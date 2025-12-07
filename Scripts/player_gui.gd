@@ -105,7 +105,7 @@ func update_selected_target_indicator(_camera: Camera3D, target: Node3D) -> void
 func update_target_indicators(camera: Camera3D, target_list: Array) -> void:
     for target in target_list:
         if !camera.is_position_behind(target.global_position):
-            var hud_pos: Vector2 = transform_to_hud_space(target.global_position,camera)
+            var hud_pos: Vector2 = Utilities.transform_to_hud_space(target.global_position,camera)
             target_ui_element_dict[target.name].position = hud_pos
             target_ui_element_dict[target.name].hide_selected_indicator()
             target_ui_element_dict[target.name].show()
@@ -116,8 +116,3 @@ func update_target_indicators(camera: Camera3D, target_list: Array) -> void:
 # in what way is this tranforming the angle?
 func transform_angle(angel: float, fov: float, pixel_height: float) -> float:
     return (tan(angel) / tan(fov / 2)) * pixel_height / 2
-
-# TODO mode to utilities?
-func transform_to_hud_space(world_space: Vector3, camera: Camera3D) -> Vector2:
-    var screen_space: Vector2 = camera.unproject_position(world_space)
-    return screen_space #- Vector2(get_viewport().get_visible_rect().size / 2)

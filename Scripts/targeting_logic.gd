@@ -29,7 +29,7 @@ func _ready() -> void:
         all_targetable_dict[target.name] = target
     pass
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
     pass
 
 # To be called whenever a targetable node is added to a scene
