@@ -2,7 +2,7 @@ class_name HudLogic extends Node3D
 
 @export var hud_anchor: HudAnchor = null
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
     pass
 
 func update_boresight(ship: PlayerPhysicsShip) -> void:
