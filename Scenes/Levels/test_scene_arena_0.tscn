@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bqvwiqc7qedjb"]
+[gd_scene load_steps=12 format=3 uid="uid://bqvwiqc7qedjb"]
 
 [ext_resource type="PackedScene" uid="uid://cxq3gebh28avn" path="res://Scenes/Levels/arena_0_base.tscn" id="2_u7hmd"]
 [ext_resource type="Script" uid="uid://dg3o36dud77ye" path="res://Scripts/force_field.gd" id="3_sknsq"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://cish1ai34pm5i" path="res://Scripts/arena_0_level_logic.gd" id="5_u7hmd"]
 [ext_resource type="Script" uid="uid://cqsj6qbsjcc6a" path="res://Scripts/targeting_logic.gd" id="6_d2txi"]
 [ext_resource type="PackedScene" uid="uid://b6ab04h32aky1" path="res://Scenes/GUI/hud_anchor.tscn" id="6_eyewj"]
+[ext_resource type="Script" uid="uid://6rb762xkbnv" path="res://Scripts/input_handler.gd" id="6_siku3"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_u7hmd"]
 height = 20.0
@@ -74,6 +75,9 @@ level_logic = NodePath("../LevelLogic")
 [node name="HudLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("hud_anchor")]
 script = ExtResource("5_eyewj")
 hud_anchor = NodePath("../../UI/HudAnchor")
+
+[node name="InputHandler" type="Node3D" parent="Services"]
+script = ExtResource("6_siku3")
 
 [node name="UI" type="Node3D" parent="."]
 

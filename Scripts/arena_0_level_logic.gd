@@ -4,6 +4,7 @@ class_name LevelLogic extends Node3D
 @onready var foce_field_force_newtons: float = 1000
 @onready var player_scene: PackedScene = preload("res://Scenes/Actors/ship_physics.tscn")
 @onready var ball_scene: PackedScene = preload("res://Scenes/ball.tscn") 
+@onready var opponent_scene: PackedScene = preload("res://Scenes/Actors/base_physics_actor.tscn")
 
 @export var targeting_logic: TargetingLogic = null # $"../TargetingLogic"
 @export var hud_logic: HudLogic = null
@@ -13,11 +14,13 @@ class_name LevelLogic extends Node3D
 
 
 @onready var PLAYER_TEAM: String = "1"
+@onready var OPPONENT_TEAM: String = "2"
 @onready var ENVIRNOMENT_TEAM: String = "env"
+
 
 @onready var player_node: PlayerPhysicsShip = null
 @onready var ball_node: RigidBody3D = null
-
+@onready var opponent_node: BasePhysicsActor = null
 
 
 func _ready() -> void:
@@ -26,6 +29,9 @@ func _ready() -> void:
     
     # Instantiate team relations
     targeting_logic.set_team_targetability(PLAYER_TEAM, ENVIRNOMENT_TEAM)
+    targeting_logic.set_team_targetability(OPPONENT_TEAM, PLAYER_TEAM)
+    targeting_logic.set_team_targetability(OPPONENT_TEAM, ENVIRNOMENT_TEAM)
+
     # Instantiate player, npcs, objects (ball)
     player_node = player_scene.instantiate()
     actors_root.add_child(player_node)
@@ -38,8 +44,16 @@ func _ready() -> void:
     ball_node.global_position = Vector3(0, 20, 0)
     targeting_logic.add_targetable_node(ball_node, ENVIRNOMENT_TEAM)
     
+    opponent_node = opponent_scene.instantiate()
+    actors_root.add_child(opponent_node)
+    opponent_node.global_position = Vector3(0, 0, 96)
+    targeting_logic.add_targetable_node(opponent_node, OPPONENT_TEAM)
+    
     # get data values
     foce_field_force_newtons = Utilities.data_dict["Arena0"]["foce_field_force_newtons"]
+    
+    SignalManager.directional_input_received.connect(on_directional_input_recieved)
+    SignalManager.rotation_input_received.connect(on_rotational_input_received)
     
 func _physics_process(delta: float) -> void:
     apply_force_field_effects(delta)
@@ -69,7 +83,17 @@ func draw_target_ui_for_cam(camera: Camera3D, targets: Array, selected_target: N
     hud_anchor.update_selected_target_indicator(camera, selected_target)
     pass
 
+func on_directional_input_recieved(direction: Vector3) -> void:
+    # command player node to move with input
+    if player_node:
+        var move_command: MoveCommand = MoveCommand.new(direction)
+        move_command.execute(player_node)
 
+
+func on_rotational_input_received(x_y_rotation: Vector2):
+    if player_node:
+        var rotate_command: RotationCommand = RotationCommand.new(x_y_rotation)
+        rotate_command.execute(player_node)
 
 func remove_object_in_force_field(obj: RigidBody3D) -> void:
     objects_in_force_field.erase(obj.name)
