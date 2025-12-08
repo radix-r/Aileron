@@ -8,12 +8,14 @@ extends Control
 @onready var level_logic: Node3D = get_node("/root/LevelRoot/Services/LevelLogic")
 @onready var camera: Camera3D = hud_root.player_ship.camera
 
+@onready var nav_enabled: bool = false
+
 const WIDTH: float = 10.0
 
 
 func _draw() -> void:
 
-    if !(level_logic and level_logic.current_target):
+    if !(nav_enabled and level_logic and level_logic.current_target):
         nav_arrow_overlay.hide()
         return
 
@@ -25,6 +27,8 @@ func _draw() -> void:
     var color: Color = Color(0, 1, 0)
     var start: Vector2 = camera.unproject_position(nav_arrow_point.global_transform.origin) - position
     var end: Vector2 = camera.unproject_position(level_logic.current_target.global_transform.origin) - position
+    if camera.is_position_behind(level_logic.current_target.global_transform.origin):
+        end.y = -end.y
     #end = end.normalized() * 10
     var distance: float =  start.distance_to(end)
     draw_line(start, end, color, WIDTH)
@@ -34,10 +38,6 @@ func _draw() -> void:
 func _ready() -> void:
     if !level_logic:
         print_debug("Failed to init waypoint arrow GUI")
-    #if level_logic and "waypoint_system" in level_root:
-        #waypoint_system = level_root.waypoint_system
-    #else:
-        #print_debug("Failed to init waypoint arrow GUI")
 
 
 func draw_triangle(pos: Vector2, dir: Vector2, width: float, length: float, color: Color):

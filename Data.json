@@ -1,28 +1,47 @@
 {
-	"Ship1": {
-		"speed_default": 10,
-		"speed_max": 1200000,
-		"speed_min": 0,
-		"acceleration": 500,
-		"rotation_speed": 0.001,
-		"momentum": 0.1,
-		"camera_chase": 0.05,
-		"drag": 1.510,
-	},
-	"Bullet1": {
-		"lifespan": 10
-	},
-	"Gun1": {
-		"fire_cooldown": 0.1,
-		"projectile_speed": 10
-	},
-	"Ship2": {
-		"pitch_sensitivity": 5.0,
-		"yaw_sensitivity": 5.0
-	},
-	"settings": {
-		"horizontal_look_sensitivity": 0.01,
-		"vertical_look_sensitivity": 0.01
-	}
-	
+    "Arena0": {
+        "foce_field_force_newtons": 1000,
+    },
+    "Ship1": {
+        "speed_default": 10,
+        "speed_max": 1200000,
+        "speed_min": 0,
+        "acceleration": 500,
+        "rotation_speed": 0.001,
+        "momentum": 0.1,
+        "camera_chase": 0.05,
+        "drag": 1.510,
+    },
+    "ShipPhysics": {
+        "rotation_speed": 0.1,
+        "spark_speed_coeficent": 0.3,
+        "spark_amount_ratio_coeficent": 0.1,
+        "spark_lifetime_coeficent": 0.1,
+        "camera_chase": 0.05,
+        "boost_factor": 2,
+        "thrust_strength": 200000,
+    },
+    "Bullet1": {
+        "lifespan": 10
+    },
+    "Bullet2": {
+        "lifespan": 2
+    },
+    "Gun1": {
+        "fire_cooldown": 0.1,
+        "projectile_speed": 10
+    },
+    "Gun2": {
+        "fire_cooldown": 0.1,
+        "projectile_speed": 700
+    },
+    "Ship2": {
+        "pitch_sensitivity": 5.0,
+        "yaw_sensitivity": 5.0
+    },
+    "settings": {
+        "horizontal_look_sensitivity": 0.01,
+        "vertical_look_sensitivity": 0.01
+    }
+    
 }

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bjp0gluvfcn7k"]
 
-[ext_resource type="Texture2D" uid="uid://b0d0p0wdh6d7d" path="res://Assets/GrandCanyon/ESRI_USATOPO_WM.png" id="1_iwoo1"]
-[ext_resource type="ArrayMesh" uid="uid://55hk323dqah2" path="res://Assets/GrandCanyon/Grand Canyon Topo.obj" id="2_ijsfm"]
+[ext_resource type="Texture2D" uid="uid://paaxedsyyeoj" path="res://Assets/GrandCanyon/ESRI_USATOPO_WM.png" id="1_iwoo1"]
+[ext_resource type="ArrayMesh" uid="uid://bod8stcssotut" path="res://Assets/GrandCanyon/Grand Canyon Topo.obj" id="2_ijsfm"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qtl6y"]
 albedo_texture = ExtResource("1_iwoo1")

@@ -1,6 +1,7 @@
 class_name GoTo extends ObjectiveManager
 
-@export var timed: bool
+# time player must stay in objective to go to next one
+@export var linger_time: float = 0 
 # Node3D with child Node3D points to navigate too
 @export var points_root: Node3D
 
@@ -44,6 +45,10 @@ func on_waypoint_arrived(body: Node3D, id: int) -> void:
     if !player_found:#|| id != active_waypoint.id:
         return
 
+    if linger_time > 0.0:
+        # fill progress bar ui
+        # if player leaves reset
+        pass
     
     waypoints[active_waypoint_index].set_disabled(true)
     active_waypoint_index += 1

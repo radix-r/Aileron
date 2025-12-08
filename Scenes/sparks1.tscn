@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dvfdo1fnba51v"]
 
-[ext_resource type="Script" path="res://Scripts/sparks1.gd" id="1_xojqw"]
+[ext_resource type="Script" uid="uid://debgwdfws7m1r" path="res://Scripts/sparks1.gd" id="1_xojqw"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8yhm7"]
 particle_flag_align_y = true
@@ -23,7 +23,7 @@ emitting = false
 amount = 5
 lifetime = 3.0
 one_shot = true
-speed_scale = 2.0
+speed_scale = 0.1
 explosiveness = 1.0
 randomness = 0.54
 process_material = SubResource("ParticleProcessMaterial_8yhm7")
