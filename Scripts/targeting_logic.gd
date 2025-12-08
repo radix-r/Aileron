@@ -43,7 +43,7 @@ func add_targetable_node(node: Node3D, team: String) -> void:
             targetable.append_array(team_node_dict[targetable_team])
             # add new node to hostile team target dicts
             for hostile_node in team_node_dict[targetable_team]:
-                print_debug("Adding " + node.name + " to " + hostile_node.name + "'s targets")
+                #print_debug("Adding " + node.name + " to " + hostile_node.name + "'s targets")
                 node_targetable_dict[hostile_node.name].append(node)
     node_targetable_dict[node.name] = targetable
     # create new target indicator

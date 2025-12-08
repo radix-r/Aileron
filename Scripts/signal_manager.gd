@@ -10,3 +10,6 @@ signal arena_force_field_exited(object: RigidBody3D)
 signal directional_input_received(direction: Vector3)
 # x, y. Quaternion?
 signal rotation_input_received(x_y_rotation: Vector2)
+
+# On triger or fire input
+signal fire_input()

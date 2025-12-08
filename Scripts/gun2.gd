@@ -1,5 +1,5 @@
-extends Node3D
-
+class_name Weapon extends Node3D
+# TODO base weapon class
 
 #####################################
 # SIGNALS
@@ -33,14 +33,11 @@ var bullet: PackedScene = preload("res://Scenes/bullet_2.tscn")
 @onready var muzzel_flash: Node3D = $FirePoint/MuzzleFlash1
 @onready var cooldown: Timer = Timer.new()
 @onready var root = Utilities.get_level_root()
+@onready var triggered: bool = false
 #####################################
 # OVERRIDE FUNCTIONS
 #####################################
 
-func _physics_process(_delta: float) -> void:
-    var triggered = Input.is_action_pressed("fire")
-    if triggered and can_fire:
-        fire()
 
 
 func _ready() -> void:
@@ -64,14 +61,15 @@ func _on_cooldown():
 
 
 func fire():
-    can_fire = false
-    # start timer for firing cooldown
-    cooldown.start()
-    # spawn a bullet
-    var bullet_instace: RigidBody3D = bullet.instantiate()
-    # I have no idea why platform velocity needs to be devided by 60
-    bullet_instace.linear_velocity = platform.linear_velocity/60 + (platform.forward * projectile_speed)
-    root.add_child(bullet_instace)
-    bullet_instace.global_position = fire_point.global_position
-    bullet_instace.global_rotation = fire_point.global_rotation
-    muzzel_flash.get_node("AnimationPlayer").play("Fire")
+    if can_fire:
+        can_fire = false
+        # start timer for firing cooldown
+        cooldown.start()
+        # spawn a bullet
+        var bullet_instace: RigidBody3D = bullet.instantiate()
+        # I have no idea why platform velocity needs to be devided by 60
+        bullet_instace.linear_velocity = platform.linear_velocity/60 + (platform.forward * projectile_speed)
+        root.add_child(bullet_instace)
+        bullet_instace.global_position = fire_point.global_position
+        bullet_instace.global_rotation = fire_point.global_rotation
+        muzzel_flash.get_node("AnimationPlayer").play("Fire")

@@ -92,8 +92,8 @@ func _physics_process(delta: float) -> void:
     pitch_point.rotation.x = clamp(pitch_point.rotation.x, deg_to_rad(-85), deg_to_rad(85))
     
     var thrust: Vector3 = calc_thrust(input_dir_world, delta)
-    if Input.is_action_pressed("boost"):
-        thrust *= boost_factor 
+    #if Input.is_action_pressed("boost"):
+        #thrust *= boost_factor 
         
     # apply gavity counter force
     if flight_mode == FlightModes.HOVER || flight_mode == FlightModes.SPEED:

@@ -32,6 +32,7 @@ class_name PlayerPhysicsShip extends BasePhysicsActor
 #var flight_mode: FlightModes = FlightModes.HOVER
 #var tick_y_rotation_input_sum: float = 0
 #var tick_x_rotation_input_sum: float = 0
+@export var weapon: Weapon 
 
 #####################################
 # ONREADY VARIABLES
@@ -107,7 +108,7 @@ func _physics_process(delta: float) -> void:
     thrust_direction += Vector3(forward/10)
 
     thrust_vector.look_at(global_position + thrust_direction)
-    var scale_factor = thrust.length() / 1000
+    var scale_factor = thrust.length() / 2000
     thrust_vector.scale = Vector3(scale_factor, scale_factor, scale_factor)
     
     # shift camera based on velocity to give chase effect
@@ -137,6 +138,11 @@ func apply_spark_effect(global_location: Vector3) -> void:
         get_node("/root").add_child(new_sparks)
         new_sparks.emitting = true
         new_sparks.global_position = global_location
+
+
+func fire_weapon():
+    weapon.fire()
+
 
 
 func calc_thrust(input_dir: Vector3, delta: float) -> Vector3:

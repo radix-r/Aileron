@@ -21,7 +21,8 @@ class_name LevelLogic extends Node3D
 @onready var player_node: PlayerPhysicsShip = null
 @onready var ball_node: RigidBody3D = null
 @onready var opponent_node: BasePhysicsActor = null
-
+@onready var opponent_move_timer: Timer = Timer.new()
+@onready var opponent_input_dir: Vector3 = Vector3.UP
 
 func _ready() -> void:
     SignalManager.arena_force_field_entered.connect(add_object_in_force_field)
@@ -49,15 +50,29 @@ func _ready() -> void:
     opponent_node.global_position = Vector3(0, 0, 96)
     targeting_logic.add_targetable_node(opponent_node, OPPONENT_TEAM)
     
+    opponent_move_timer.wait_time = 3
+    opponent_move_timer.one_shot = false
+    add_child(opponent_move_timer)
+    opponent_move_timer.connect("timeout", _on_opponent_move_timer_timeout)
+    opponent_move_timer.start()
+    
     # get data values
     foce_field_force_newtons = Utilities.data_dict["Arena0"]["foce_field_force_newtons"]
     
     SignalManager.directional_input_received.connect(on_directional_input_recieved)
     SignalManager.rotation_input_received.connect(on_rotational_input_received)
+    SignalManager.fire_input.connect(on_fire_input)
+    
+    
+    
+func _on_opponent_move_timer_timeout():
+    opponent_input_dir *= -1 
+    
     
 func _physics_process(delta: float) -> void:
     apply_force_field_effects(delta)
 
+    opponent_node.move(opponent_input_dir)
 
 func _process(_delta: float) -> void:
     draw_target_ui_for_cam(player_node.get_camera(), targeting_logic.get_targetable(player_node.name), null)
@@ -94,6 +109,11 @@ func on_rotational_input_received(x_y_rotation: Vector2):
     if player_node:
         var rotate_command: RotationCommand = RotationCommand.new(x_y_rotation)
         rotate_command.execute(player_node)
+
+func on_fire_input():
+    if player_node:
+        var fire_command: FireCommand = FireCommand.new()
+        fire_command.execute(player_node)
 
 func remove_object_in_force_field(obj: RigidBody3D) -> void:
     objects_in_force_field.erase(obj.name)

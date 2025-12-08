@@ -9,7 +9,7 @@
 
 [sub_resource type="BoxMesh" id="BoxMesh_6iifb"]
 
-[node name="ShipPhysics" type="RigidBody3D" groups=["targeter"]]
+[node name="ShipPhysics" type="RigidBody3D" node_paths=PackedStringArray("weapon") groups=["targeter"]]
 physics_interpolation_mode = 1
 axis_lock_angular_x = true
 axis_lock_angular_y = true
@@ -17,6 +17,7 @@ axis_lock_angular_z = true
 mass = 100.0
 linear_damp = 1.0
 script = ExtResource("1_kia6q")
+weapon = NodePath("PitchPoint/Gun1")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_rtrmn")
