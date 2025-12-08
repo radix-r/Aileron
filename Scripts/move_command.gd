@@ -8,4 +8,4 @@ func _init(move_direction: Vector3) -> void:
     
     
 func execute(actor: Node3D):
-    actor.move(move_direction_)
+    actor.set_input_direction(move_direction_)

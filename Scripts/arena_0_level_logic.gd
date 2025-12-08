@@ -72,7 +72,7 @@ func _on_opponent_move_timer_timeout():
 func _physics_process(delta: float) -> void:
     apply_force_field_effects(delta)
 
-    opponent_node.move(opponent_input_dir)
+    opponent_node.set_input_direction(opponent_input_dir)
 
 func _process(_delta: float) -> void:
     draw_target_ui_for_cam(player_node.get_camera(), targeting_logic.get_targetable(player_node.name), null)

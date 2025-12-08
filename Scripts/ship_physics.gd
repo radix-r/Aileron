@@ -102,11 +102,10 @@ func _physics_process(delta: float) -> void:
     apply_force(thrust)
     #if thrust.length() > 0:
         #print_debug(thrust)
+        
     # draw thrust vector
     var thrust_direction: Vector3 = thrust
-
-    thrust_direction += Vector3(forward/10)
-
+    thrust_direction += Vector3(1, 1, 1) - (global_position + thrust_direction).cross(Vector3.UP).normalized()
     thrust_vector.look_at(global_position + thrust_direction)
     var scale_factor = thrust.length() / 2000
     thrust_vector.scale = Vector3(scale_factor, scale_factor, scale_factor)

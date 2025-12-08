@@ -154,16 +154,8 @@ func calc_thrust(input_dir: Vector3, delta: float) -> Vector3:
     return thrust 
     
 
-# TODO factor out to input handeler
-#func get_input_direction() -> Vector3:
-    #var input_right = Input.get_axis("left", "right")
-    #var input_up = Input.get_axis("down","up")
-    ## -z is forward
-    #var input_forward = Input.get_axis("forward", "back")
-    #return Vector3(input_right, input_up, input_forward).normalized()
 
-
-func move(direction_normal: Vector3):
+func set_input_direction(direction_normal: Vector3):
     input_dir_local = direction_normal
 
 
