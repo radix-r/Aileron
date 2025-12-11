@@ -7,6 +7,7 @@ extends Node
 signal arena_force_field_entered(object: RigidBody3D)
 signal arena_force_field_exited(object: RigidBody3D)
 
+signal boost_input(boosting: bool)
 signal directional_input_received(direction: Vector3)
 # x, y. Quaternion?
 signal rotation_input_received(x_y_rotation: Vector2)

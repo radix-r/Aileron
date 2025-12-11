@@ -59,10 +59,10 @@ func _ready() -> void:
     # get data values
     foce_field_force_newtons = Utilities.data_dict["Arena0"]["foce_field_force_newtons"]
     
-    SignalManager.directional_input_received.connect(on_directional_input_recieved)
-    SignalManager.rotation_input_received.connect(on_rotational_input_received)
-    SignalManager.fire_input.connect(on_fire_input)
-    
+    SignalManager.directional_input_received.connect(_on_directional_input_recieved)
+    SignalManager.rotation_input_received.connect(_on_rotational_input_received)
+    SignalManager.fire_input.connect(_on_fire_input)
+    SignalManager.boost_input.connect(_on_boost_input)
     
     
 func _on_opponent_move_timer_timeout():
@@ -98,22 +98,28 @@ func draw_target_ui_for_cam(camera: Camera3D, targets: Array, selected_target: N
     hud_anchor.update_selected_target_indicator(camera, selected_target)
     pass
 
-func on_directional_input_recieved(direction: Vector3) -> void:
+func _on_directional_input_recieved(direction: Vector3) -> void:
     # command player node to move with input
     if player_node:
         var move_command: MoveCommand = MoveCommand.new(direction)
         move_command.execute(player_node)
 
 
-func on_rotational_input_received(x_y_rotation: Vector2):
+func _on_rotational_input_received(x_y_rotation: Vector2):
     if player_node:
         var rotate_command: RotationCommand = RotationCommand.new(x_y_rotation)
         rotate_command.execute(player_node)
 
-func on_fire_input():
+func _on_fire_input():
     if player_node:
         var fire_command: FireCommand = FireCommand.new()
         fire_command.execute(player_node)
+
+func _on_boost_input(boosting: bool):
+    if player_node:
+        var boost_command: BoostCommand = BoostCommand.new(boosting)
+        boost_command.execute(player_node)
+
 
 func remove_object_in_force_field(obj: RigidBody3D) -> void:
     objects_in_force_field.erase(obj.name)

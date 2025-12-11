@@ -1,5 +1,6 @@
 extends Node3D
 
+var boosting: bool = false
 var tick_y_rotation_input_sum: float = 0
 var tick_x_rotation_input_sum: float = 0
 
@@ -36,6 +37,10 @@ func _physics_process(_delta: float) -> void:
     if fire:
         SignalManager.fire_input.emit()
         fire = false
+    
+    boosting = Input.is_action_pressed("boost")
+    SignalManager.boost_input.emit(boosting)
+
     
 func get_input_direction() -> Vector3:
     var input_right = Input.get_axis("left", "right")

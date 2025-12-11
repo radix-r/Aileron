@@ -15,7 +15,7 @@ class_name BasePhysicsActor extends RigidBody3D
 # EXPORT VARIABLES
 #####################################
 @export var spark_effect: PackedScene = preload("res://Scenes/sparks1.tscn")
-
+@export var weapon: Weapon 
 
 #####################################
 # PUBLIC VARIABLES
@@ -55,21 +55,52 @@ var input_dir_local: Vector3 = Vector3.ZERO
 @onready var spark_lifetime_coeficent: float = 0
 @onready var rotation_speed: float = 0
 @onready var thrust_strength: float = 2000
+@onready var boosting: bool = false
+
+func _apply_flight_effects(delta: float):
+    forward = _calc_forward()
+    up_relative = _calc_up_relative()
+    var input_dir_world = _calc_input_dir_world()
+    
+    #Apply rotation input
+    _apply_rotation(delta)
+    
+    var thrust: Vector3 = calc_thrust(input_dir_world, delta)
+     
+    # apply gavity counter force
+    if flight_mode == FlightModes.HOVER || flight_mode == FlightModes.SPEED:
+        thrust += mass * -get_gravity()
+    
+    apply_force(thrust)
+    #if thrust.length() > 0:
+        #print_debug(thrust)
+        
+    # draw thrust vector
+    _draw_thrust_effect(thrust)
+
+func _apply_rotation(delta: float):
+    self.rotate_y(tick_y_rotation_input_sum * rotation_speed * delta)
+    pitch_point.rotate_x(tick_x_rotation_input_sum * rotation_speed * delta)
+    pitch_point.rotation.x = clamp(pitch_point.rotation.x, deg_to_rad(-85), deg_to_rad(85))
+
+func _calc_forward():
+    return (forward_point.global_position - global_position).normalized()
 
 
-## TODO: Controler support
-#func _input(event: InputEvent) -> void:
-    ##capture mouse movements
-    #if event is InputEventMouseButton:
-        #Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-    #elif event.is_action_pressed("ui_cancel"):
-        #Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-#
-    #if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-        #if event is InputEventMouseMotion:
-            #tick_y_rotation_input_sum += -event.relative.x 
-            #tick_x_rotation_input_sum += -event.relative.y
-            
+func _calc_input_dir_world():
+    return input_dir_local * pitch_point.global_transform.basis.inverse()
+
+func _calc_up_relative():
+    return (up_point.global_position - global_position).normalized()
+
+
+func _draw_thrust_effect(thrust: Vector3):
+    var thrust_direction: Vector3 = thrust
+    thrust_direction += Vector3(1, 1, 1) - (global_position + thrust_direction).cross(Vector3.UP).normalized()
+
+    thrust_vector.look_at(global_position + thrust_direction)
+    var scale_factor = thrust.length() / 2000
+    thrust_vector.scale = Vector3(scale_factor, scale_factor, scale_factor)
 
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
     if 0 < state.get_contact_count():
@@ -78,41 +109,10 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 
 
 func _physics_process(delta: float) -> void:
-    forward = (forward_point.global_position - global_position).normalized()
-    up_relative = (up_point.global_position - global_position).normalized()
-    #var input_dir_local: Vector3 = get_input_direction()
-
-    var input_dir_world = input_dir_local * pitch_point.global_transform.basis.inverse()
+    _apply_flight_effects(delta)
     
-    #Apply rotation input
-    self.rotate_y(tick_y_rotation_input_sum * rotation_speed * delta)
-    #tick_y_rotation_input_sum = 0
-    pitch_point.rotate_x(tick_x_rotation_input_sum * rotation_speed * delta)
-    #tick_x_rotation_input_sum = 0
-    pitch_point.rotation.x = clamp(pitch_point.rotation.x, deg_to_rad(-85), deg_to_rad(85))
-    
-    var thrust: Vector3 = calc_thrust(input_dir_world, delta)
-    #if Input.is_action_pressed("boost"):
-        #thrust *= boost_factor 
-        
-    # apply gavity counter force
-    if flight_mode == FlightModes.HOVER || flight_mode == FlightModes.SPEED:
-        thrust += mass * -get_gravity()
-    
-    apply_force(thrust)
-    #if thrust.length() > 0:
-        #print_debug(thrust)
-    # draw thrust vector
-    var thrust_direction: Vector3 = thrust
 
-    thrust_direction += Vector3(forward/10)
-
-    thrust_vector.look_at(global_position + thrust_direction)
-    var scale_factor = thrust.length() / 1000
-    thrust_vector.scale = Vector3(scale_factor, scale_factor, scale_factor)
-
-
-func _ready() -> void:
+func _default_init():
     contact_monitor = true
     max_contacts_reported = 1
     
@@ -125,6 +125,9 @@ func _ready() -> void:
     spark_lifetime_coeficent = Utilities.data_dict[unit_name]["spark_lifetime_coeficent"]
     boost_factor = Utilities.data_dict[unit_name]["boost_factor"]
     thrust_strength = Utilities.data_dict[unit_name]["thrust_strength"]
+
+func _ready() -> void:
+    _default_init()
 
 # TODO: spark effect factor out of ship code
 func apply_spark_effect(global_location: Vector3) -> void:
@@ -151,8 +154,18 @@ func calc_thrust(input_dir: Vector3, delta: float) -> Vector3:
         FlightModes.SPEED:
             input_dir.z = input_dir.z - 1 
             #thrust += mass * -get_gravity()
+    if boosting:
+        thrust *= boost_factor
     return thrust 
     
+    
+func fire_weapon():
+    if weapon:
+        weapon.fire()
+
+
+func set_boosting(boosting_: bool):
+    boosting = boosting_
 
 
 func set_input_direction(direction_normal: Vector3):
