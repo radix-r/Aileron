@@ -6,7 +6,7 @@ func _process(_delta: float) -> void:
     pass
 
 func update_boresight(ship: PlayerPhysicsShip) -> void:
-    var hud_pos: Vector2 = Utilities.transform_to_hud_space(ship.get_camera().global_position + ship.forward, ship.get_camera() )
+    var hud_pos: Vector2 = Utilities.transform_to_hud_space(ship.get_camera().global_position + ship.forward * 1000, ship.get_camera() )
 
     if !ship.get_camera().is_position_behind(ship.get_camera().global_position + ship.forward):
         hud_anchor.show_boresight()
