@@ -63,10 +63,19 @@ func _ready() -> void:
     SignalManager.rotation_input_received.connect(_on_rotational_input_received)
     SignalManager.fire_input.connect(_on_fire_input)
     SignalManager.boost_input.connect(_on_boost_input)
-    
+    SignalManager.target_select_input.connect(_on_target_select_input)
     
 func _on_opponent_move_timer_timeout():
     opponent_input_dir *= -1 
+    
+    
+    
+    
+func _on_target_select_input():
+    # Set player's selected target
+    #targeting_logic.target
+    print_debug("Select next player target")
+    pass
     
     
 func _physics_process(delta: float) -> void:

@@ -33,8 +33,10 @@ func _process(_delta: float) -> void:
     pass
 
 # To be called whenever a targetable node is added to a scene
+# Assumes all targetable nodes can target
 func add_targetable_node(node: Node3D, team: String) -> void:
     all_targetable_dict[node.name] = node
+    node_selected_target_dict[node.name] = null
     # Assume team name already init?
     add_to_team(node, team)
     var targetable: Array = []
@@ -63,6 +65,32 @@ func get_targetable(node_name: String) -> Array:
         targets = node_targetable_dict[node_name]
     return targets        
     
+
+func get_closest_target(targeter_name: String) -> Node3D:
+    var closest_target: Node3D = null
+    var targeter: Node3D = all_targetable_dict[targeter_name]
+    var closest_dist: float = 1.79769e308
+    if node_selected_target_dict.has(targeter_name):
+        for target: Node3D in node_targetable_dict[targeter_name]:
+            var dist: float = (targeter.global_position - target.global_position).length()
+            if closest_dist > dist:
+                closest_dist = dist
+                closest_target = target
+    return closest_target
+
+
+func get_closest_target_to_center_view(targeter_name: String, camera: Camera3D) -> Node3D:
+    # TODO
+    return null
+
+
+func get_next_closest_target(targeter_name: String) -> Node3D:
+    # TODO
+    # sort nodes by closest
+    # find current target
+    # return next target
+    return null
+
 
 func remove_targetable_node(node: Node3D) -> void:
     hud_anchor.remove_target_indicator(node.name)
