@@ -11,7 +11,7 @@ class_name TargetingLogic extends Node3D
 var all_targetable_dict: Dictionary = {}
 # Key: Node name, Value: Array of targetable nodes
 var node_targetable_dict: Dictionary = {}
-# Key: Node name, Value: Currently selected target name
+# Key: Node name, Value: Currently selected target node reff
 var node_selected_target_dict: Dictionary = {}
 # Key: Team name, Value: Array of node names on that team
 var team_node_dict: Dictionary = {}
@@ -92,9 +92,29 @@ func get_next_closest_target(targeter_name: String) -> Node3D:
     return null
 
 
+func get_selected_target(targeter_name: String) -> Node3D:
+    var return_value: Node3D = null
+    if node_selected_target_dict.has(targeter_name):
+        return_value = node_selected_target_dict[targeter_name]
+    return return_value
+
+
 func remove_targetable_node(node: Node3D) -> void:
     hud_anchor.remove_target_indicator(node.name)
     # TODO remove from target dicts
+
+## Attempts to set given targeter's selected target. 
+## @returns 0 on sucess returns -1 on failure
+func set_selected_target(targeter_name: String, selected_target_name: String) -> int:
+    var return_val = -1
+    if node_targetable_dict.has(targeter_name) && \
+            node_targetable_dict[targeter_name].has(all_targetable_dict[selected_target_name]):
+        node_selected_target_dict[targeter_name] = all_targetable_dict[selected_target_name]
+        return_val = 0
+        print_debug(targeter_name + "'s selected target is " + selected_target_name)
+    return return_val
+
+
 
 func set_team_targetability(team: String, can_target_team: String) -> void:
     if team_targetability_dict.has(team):

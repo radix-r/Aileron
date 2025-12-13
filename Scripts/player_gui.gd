@@ -1,7 +1,7 @@
 class_name HudAnchor extends Control
 
 var target_ui_element: PackedScene = preload("res://Scenes/GUI/target_ui_element.tscn")
-
+var aim_ui_elemet: PackedScene = preload("res://Scenes/GUI/aim_indicator.tscn")
 #@export var player_ship: PhysicsBody3D 
 
 #@onready var nav_arrow_point: Node3D = player_ship
@@ -13,22 +13,17 @@ var target_ui_element: PackedScene = preload("res://Scenes/GUI/target_ui_element
 
 # Key: node name, Value: target ui element assigned to that node
 var target_ui_element_dict: Dictionary = {}
-
+var aim_indicator: Control = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-    pass
+    aim_indicator = aim_ui_elemet.instantiate()
+    aim_indicator.hide()
+    add_child(aim_indicator)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-    # Moving to level logic
-    #if player_ship.camera:
-        #update_nav_arrow()
-        #update_boresight(player_ship)
-        #update_velocity_marker(player_ship)
-        #
-        #update_target_indicator(player_ship)
-        pass
+    pass
 
 func add_target_indicator(target: Node3D) -> void:
     var new_target_ui_element = target_ui_element.instantiate()
@@ -76,7 +71,15 @@ func show_velocity_marker() -> void:
 #
     #else:
         #boresight.hide()
+#func update_aim_indicator(camera: Camera3D, selected_target: Node3D, player_node.linear_velocity, player_node.weapon.projectile_speed)
 
+func update_aim_indicator(camera: Camera3D, aim_point_hud_pos: Vector2, selected_target_global_position: Vector3):
+    # if target is in front of camera update aim indicator pos
+    if !camera.is_position_behind(selected_target_global_position):
+        aim_indicator.set_position(aim_point_hud_pos)
+        aim_indicator.show()
+    else:
+        aim_indicator.hide()
 
 func update_nav_arrow() -> void:
     if nav_arrow_drawer:
