@@ -79,9 +79,7 @@ func get_closest_target(targeter_name: String) -> Node3D:
     return closest_target
 
 
-func get_closest_target_to_center_view(targeter_name: String, camera: Camera3D) -> Node3D:
-    # TODO
-    return null
+
 
 
 func get_next_closest_target(targeter_name: String) -> Node3D:

@@ -17,7 +17,7 @@ extends Node
 # PUBLIC VARIABLES
 #####################################
 @onready var data_dict: Dictionary = {}
-
+@onready var MAX_FLOAT: float = 1.79769e308
 #####################################
 # PRIVATE VARIABLES
 #####################################

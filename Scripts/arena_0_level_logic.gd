@@ -74,7 +74,8 @@ func _on_opponent_move_timer_timeout():
 func _on_target_select_input():
     # Set player's selected target
     #targeting_logic.target
-    var closest_target: Node3D = targeting_logic.get_closest_target(player_node.name)
+    # TODO find target closest to center screen
+    var closest_target: Node3D = get_closest_target_to_boresight(player_node.name, player_node.camera)
     var result: int = targeting_logic.set_selected_target(player_node.name, closest_target.name)
     if 0 != result:
         print_debug("Failed to select next player target")
@@ -125,6 +126,25 @@ func draw_target_ui_for_cam(camera: Camera3D, targets: Array, selected_target: N
     if selected_target:
         var aim_point_hud_pos: Vector2 = calculate_aim_indicator_location(camera,selected_target.global_position, selected_target_velocity ,player_node.global_position, player_node.linear_velocity, player_node.weapon.projectile_speed)
         hud_anchor.update_aim_indicator(camera, aim_point_hud_pos, selected_target.position)
+
+
+func get_closest_target_to_boresight(targeter_name: String, camera: Camera3D) -> Node3D:
+
+    var closest_target: Node3D = null
+    var closest_dist: float = Utilities.MAX_FLOAT 
+    var boresight_2d_pos: Vector2 = hud_anchor.boresight.position
+
+    var targets: Array = targeting_logic.node_targetable_dict[targeter_name]
+    for target: Node3D in targets:
+        var target_2d_pos: Vector2 = Utilities.transform_to_hud_space(target.global_position, camera)
+        var dist: float = (boresight_2d_pos - target_2d_pos).length()
+        # account for behind cam
+        if camera.is_position_behind(target.global_position):
+            dist = 10000 - dist
+        if dist < closest_dist:
+            closest_dist = dist
+            closest_target = target
+    return closest_target
 
 
 func _on_directional_input_recieved(direction: Vector3) -> void:
