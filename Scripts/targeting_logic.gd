@@ -109,7 +109,7 @@ func set_selected_target(targeter_name: String, selected_target_name: String) ->
             node_targetable_dict[targeter_name].has(all_targetable_dict[selected_target_name]):
         node_selected_target_dict[targeter_name] = all_targetable_dict[selected_target_name]
         return_val = 0
-        print_debug(targeter_name + "'s selected target is " + selected_target_name)
+        #print_debug(targeter_name + "'s selected target is " + selected_target_name)
     return return_val
 
 

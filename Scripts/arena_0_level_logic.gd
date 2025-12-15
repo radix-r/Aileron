@@ -12,11 +12,14 @@ class_name LevelLogic extends Node3D
 @export var actors_root: Node3D = null
 @export var env_root: Node3D = null 
 
+@onready var goal1: Node3D = $"../../Environment/Arena2/Goal1"
+@onready var goal2: Goal = $"../../Environment/Arena2/Goal2"
 
 @onready var PLAYER_TEAM: String = "1"
 @onready var OPPONENT_TEAM: String = "2"
 @onready var ENVIRNOMENT_TEAM: String = "env"
-
+@onready var team_score_dict: Dictionary = {}
+@onready var SCORE_STR_TAMPLATE: String = "Team {team_1}: {team_1_score}\nTeam {team_2}: {team_2_score}"
 
 @onready var player_node: PlayerPhysicsShip = null
 @onready var ball_node: RigidBody3D = null
@@ -32,7 +35,11 @@ func _ready() -> void:
     targeting_logic.set_team_targetability(PLAYER_TEAM, ENVIRNOMENT_TEAM)
     targeting_logic.set_team_targetability(OPPONENT_TEAM, PLAYER_TEAM)
     targeting_logic.set_team_targetability(OPPONENT_TEAM, ENVIRNOMENT_TEAM)
-
+    # init scores
+    team_score_dict[PLAYER_TEAM] = 0
+    team_score_dict[OPPONENT_TEAM] = 0
+    update_score_ui()
+    
     # Instantiate player, npcs, objects (ball)
     player_node = player_scene.instantiate()
     actors_root.add_child(player_node)
@@ -59,22 +66,73 @@ func _ready() -> void:
     # get data values
     foce_field_force_newtons = Utilities.data_dict["Arena0"]["foce_field_force_newtons"]
     
-    SignalManager.directional_input_received.connect(_on_directional_input_recieved)
+    SignalManager.directional_input_received.connect(_on_directional_input_received)
     SignalManager.rotation_input_received.connect(_on_rotational_input_received)
     SignalManager.fire_input.connect(_on_fire_input)
     SignalManager.boost_input.connect(_on_boost_input)
     SignalManager.target_select_input.connect(_on_target_select_input)
     
+    # TODO init score ui and game timer
+    
+    
+func _on_boost_input(boosting: bool):
+    if player_node:
+        var boost_command: BoostCommand = BoostCommand.new(boosting)
+        boost_command.execute(player_node)
+        
+            
+func _on_fire_input():
+    if player_node:
+        var fire_command: FireCommand = FireCommand.new()
+        fire_command.execute(player_node)
+        
+        
+func _on_directional_input_received(direction: Vector3) -> void:
+    # command player node to move with input
+    if player_node:
+        var move_command: MoveCommand = MoveCommand.new(direction)
+        move_command.execute(player_node)    
+        
+        
+func _on_goal_zone_1_body_entered(body: Node3D) -> void:
+    #print_debug(body.name + " entered goal 1")
+    if body.is_in_group("ball"):
+        team_score_dict[OPPONENT_TEAM] += 1
+        # update score ui
+        update_score_ui()
+        # score effects
+        
+        # reset arena
+        
+
+func _on_goal_zone_2_body_entered(body: Node3D) -> void:
+    #print_debug(body.name + " entered goal 2")
+    if body.is_in_group("ball"):
+        team_score_dict[PLAYER_TEAM] += 1
+        update_score_ui()
+        goal2.play_goal_effect()
+
+            
 func _on_opponent_move_timer_timeout():
     opponent_input_dir *= -1 
     
     
+
+
+
+func _on_rotational_input_received(x_y_rotation: Vector2):
+    if player_node:
+        var rotate_command: RotationCommand = RotationCommand.new(x_y_rotation)
+        rotate_command.execute(player_node)
+
+
+
+
     
     
 func _on_target_select_input():
     # Set player's selected target
-    #targeting_logic.target
-    # TODO find target closest to center screen
+    # find target closest to center screen
     var closest_target: Node3D = get_closest_target_to_boresight(player_node.name, player_node.camera)
     var result: int = targeting_logic.set_selected_target(player_node.name, closest_target.name)
     if 0 != result:
@@ -116,6 +174,7 @@ func calculate_aim_location_3d(selected_target_global_pos: Vector3, selected_tar
     
 func draw_target_ui_for_cam(camera: Camera3D, targets: Array, selected_target: Node3D) -> void:
     # draw targets
+    # TODO: dont access hud anchor. instead go through hud logic?
     hud_anchor.update_target_indicators(camera, targets)
     # draw selected target
     hud_anchor.update_selected_target_indicator(camera, selected_target)
@@ -147,27 +206,14 @@ func get_closest_target_to_boresight(targeter_name: String, camera: Camera3D) ->
     return closest_target
 
 
-func _on_directional_input_recieved(direction: Vector3) -> void:
-    # command player node to move with input
-    if player_node:
-        var move_command: MoveCommand = MoveCommand.new(direction)
-        move_command.execute(player_node)
-
-
-func _on_rotational_input_received(x_y_rotation: Vector2):
-    if player_node:
-        var rotate_command: RotationCommand = RotationCommand.new(x_y_rotation)
-        rotate_command.execute(player_node)
-
-func _on_fire_input():
-    if player_node:
-        var fire_command: FireCommand = FireCommand.new()
-        fire_command.execute(player_node)
-
-func _on_boost_input(boosting: bool):
-    if player_node:
-        var boost_command: BoostCommand = BoostCommand.new(boosting)
-        boost_command.execute(player_node)
+func update_score_ui():
+    hud_anchor.set_objective_description(
+            SCORE_STR_TAMPLATE.format({"team_1": PLAYER_TEAM,\
+                    "team_1_score": team_score_dict[PLAYER_TEAM],
+                    "team_2": OPPONENT_TEAM,
+                    "team_2_score": team_score_dict[OPPONENT_TEAM]
+            })
+    )
 
 
 func remove_object_in_force_field(obj: RigidBody3D) -> void:

@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://bqvwiqc7qedjb"]
+[gd_scene load_steps=14 format=3 uid="uid://bqvwiqc7qedjb"]
 
 [ext_resource type="PackedScene" uid="uid://cxq3gebh28avn" path="res://Scenes/Levels/arena_0_base.tscn" id="2_u7hmd"]
+[ext_resource type="Script" uid="uid://dx0ves6s5tivi" path="res://Scripts/goal.gd" id="3_siku3"]
 [ext_resource type="Script" uid="uid://dg3o36dud77ye" path="res://Scripts/force_field.gd" id="3_sknsq"]
 [ext_resource type="Script" uid="uid://bcg8wh7x4ypqo" path="res://Scripts/hud_logic.gd" id="5_eyewj"]
 [ext_resource type="Script" uid="uid://cish1ai34pm5i" path="res://Scripts/arena_0_level_logic.gd" id="5_u7hmd"]
@@ -11,6 +12,9 @@
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_u7hmd"]
 height = 20.0
 radius = 130.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d2txi"]
+size = Vector3(87.37793, 82.21564, 50)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_paxhc"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -49,6 +53,51 @@ script = ExtResource("3_sknsq")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -79.55515, 0)
 shape = SubResource("CylinderShape3D_u7hmd")
 
+[node name="Goal1" type="Node3D" parent="Environment/Arena2"]
+
+[node name="GoalZone1" type="Area3D" parent="Environment/Arena2/Goal1"]
+transform = Transform3D(1, 0, 0, 0, 0.9914449, -0.1305262, 0, 0.1305262, 0.9914449, 0, 26, -150.79599)
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Arena2/Goal1/GoalZone1"]
+transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0)
+shape = SubResource("BoxShape3D_d2txi")
+
+[node name="Goal2" type="Node3D" parent="Environment/Arena2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 26, 150.7304)
+script = ExtResource("3_siku3")
+
+[node name="GoalZone2" type="Area3D" parent="Environment/Arena2/Goal2"]
+transform = Transform3D(1, 0, 0, 0, 0.98162717, 0.190809, 0, -0.190809, 0.98162717, 0, 0, 0)
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Arena2/Goal2/GoalZone2"]
+transform = Transform3D(1, 0, 0, 0, 1.0000031, 2.8312206e-07, 0, -2.8312206e-07, 1.0000031, 0, 5.894596, -1.655777)
+shape = SubResource("BoxShape3D_d2txi")
+
+[node name="GoalLight" type="Node3D" parent="Environment/Arena2/Goal2"]
+transform = Transform3D(0.7721927, 0.5769386, 0.26619548, -0.59853435, 0.8010971, 0, -0.21324842, -0.15932713, 0.96391904, 41.79047, -30.671965, -22.806961)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Environment/Arena2/Goal2/GoalLight"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+light_energy = 16.0
+light_size = 1.0
+spot_range = 70.0
+spot_attenuation = 0.0
+spot_angle = 30.0
+spot_angle_attenuation = 0.094732344
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Environment/Arena2/Goal2/GoalLight"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+light_energy = 16.0
+light_size = 1.0
+spot_range = 70.0
+spot_attenuation = 0.0
+spot_angle = 30.0
+spot_angle_attenuation = 0.094732344
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
 transform = Transform3D(0.839432, -0.245678, -0.484765, 0.133262, -0.771708, 0.621859, -0.526874, -0.586609, -0.615056, 0, 0, 0)
 visible = false
@@ -86,3 +135,5 @@ metadata/_edit_use_anchors_ = true
 
 [connection signal="body_entered" from="Environment/Arena2/ForceField" to="Environment/Arena2/ForceField" method="_on_body_entered"]
 [connection signal="body_exited" from="Environment/Arena2/ForceField" to="Environment/Arena2/ForceField" method="_on_body_exited"]
+[connection signal="body_entered" from="Environment/Arena2/Goal1/GoalZone1" to="Services/LevelLogic" method="_on_goal_zone_1_body_entered"]
+[connection signal="body_entered" from="Environment/Arena2/Goal2/GoalZone2" to="Services/LevelLogic" method="_on_goal_zone_2_body_entered"]

@@ -5,10 +5,12 @@ var aim_ui_elemet: PackedScene = preload("res://Scenes/GUI/aim_indicator.tscn")
 #@export var player_ship: PhysicsBody3D 
 
 #@onready var nav_arrow_point: Node3D = player_ship
-@onready var overlay: CanvasLayer = $NavArrowOverlay
-@onready var nav_arrow_drawer: Control = $NavArrowOverlay/Draw3d
 @onready var boresight: Control = $PlayerVectorOverlay/Boresight
 @onready var hud_anchor: Control = self
+@onready var nav_arrow_drawer: Control = $NavArrowOverlay/Draw3d
+@export var objective_description: RichTextLabel 
+@onready var objective_title: RichTextLabel = $ObjectiveBox/ObjectveTitle
+@onready var overlay: CanvasLayer = $NavArrowOverlay
 @onready var velocity_marker: Control = $PlayerVectorOverlay/VelocityMarker
 
 # Key: node name, Value: target ui element assigned to that node
@@ -20,6 +22,10 @@ func _ready() -> void:
     aim_indicator = aim_ui_elemet.instantiate()
     aim_indicator.hide()
     add_child(aim_indicator)
+
+    objective_title.text = "Score"
+
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -47,6 +53,10 @@ func remove_target_indicator(node_name: String) -> void:
 
 func set_boresight_position(hud_pos: Vector2) -> void:
     boresight.set_position(hud_pos)
+
+
+func set_objective_description(description: String) -> void:
+    objective_description.text = description
 
 
 func set_velocity_marker_pos(hud_pos: Vector2) -> void:
