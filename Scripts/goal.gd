@@ -2,7 +2,7 @@ class_name Goal extends Node3D
 
 @onready var sparks: PackedScene = preload("res://Scenes/sparks1.tscn")
 
-@onready var goal_light: Node3D = $GoalLight
+@onready var goal_lights: Node3D = $GoalLights
 
 @onready var rotate_lights: bool = false
 # TODO data driven
@@ -17,7 +17,8 @@ func _ready() -> void:
     
 func _physics_process(delta: float) -> void:
     if rotate_lights:
-        goal_light.rotate_object_local(Vector3.FORWARD, 2*PI*delta)
+        for goal_light in goal_lights.get_children():
+            goal_light.rotate_object_local(Vector3.FORWARD, 2*PI*delta)
 
 func _on_lights_timer_timeout():
     rotate_lights = false

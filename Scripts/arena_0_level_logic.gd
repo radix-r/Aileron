@@ -1,5 +1,6 @@
 class_name LevelLogic extends Node3D
 
+# TODO orginize varables. make private?
 @onready var objects_in_force_field: Dictionary = {}
 @onready var foce_field_force_newtons: float = 1000
 @onready var player_scene: PackedScene = preload("res://Scenes/Actors/ship_physics.tscn")
@@ -19,13 +20,22 @@ class_name LevelLogic extends Node3D
 @onready var OPPONENT_TEAM: String = "2"
 @onready var ENVIRNOMENT_TEAM: String = "env"
 @onready var team_score_dict: Dictionary = {}
-@onready var SCORE_STR_TAMPLATE: String = "Team {team_1}: {team_1_score}\nTeam {team_2}: {team_2_score}"
+@onready var SCORE_STR_TAMPLATE: String = "Team {team_1}: {team_1_score}\n" + \
+        "Team {team_2}: {team_2_score}"
+@onready var player_starting_pos: Vector3 = Vector3(0, 0, -96)
+@onready var player_starting_rotation: Vector3 = Vector3(0, PI, 0)
+@onready var opponent_starting_pos: Vector3 = Vector3(0, 0, 96)
+@onready var opponent_starting_rotation: Vector3 = Vector3(0, 0, 0)
+@onready var ball_starting_position: Vector3 = Vector3(0, 20, 0)
 
 @onready var player_node: PlayerPhysicsShip = null
 @onready var ball_node: RigidBody3D = null
 @onready var opponent_node: BasePhysicsActor = null
 @onready var opponent_move_timer: Timer = Timer.new()
 @onready var opponent_input_dir: Vector3 = Vector3.UP
+
+# Delay between a goal beiong scored and the arena reseting
+@onready var arena_reset_timer: Timer = Timer.new()
 
 func _ready() -> void:
     SignalManager.arena_force_field_entered.connect(add_object_in_force_field)
@@ -43,18 +53,18 @@ func _ready() -> void:
     # Instantiate player, npcs, objects (ball)
     player_node = player_scene.instantiate()
     actors_root.add_child(player_node)
-    player_node.global_position = Vector3(0, 0, -96)
-    player_node.global_rotation = Vector3(0, -180, 0)
+    player_node.global_position = player_starting_pos
+    player_node.global_rotation = player_starting_rotation
     targeting_logic.add_targetable_node(player_node, PLAYER_TEAM)
     
     ball_node = ball_scene.instantiate()
     env_root.add_child(ball_node)
-    ball_node.global_position = Vector3(0, 20, 0)
+    ball_node.global_position = ball_starting_position
     targeting_logic.add_targetable_node(ball_node, ENVIRNOMENT_TEAM)
     
     opponent_node = opponent_scene.instantiate()
     actors_root.add_child(opponent_node)
-    opponent_node.global_position = Vector3(0, 0, 96)
+    opponent_node.global_position = opponent_starting_pos
     targeting_logic.add_targetable_node(opponent_node, OPPONENT_TEAM)
     
     opponent_move_timer.wait_time = 3
@@ -62,6 +72,11 @@ func _ready() -> void:
     add_child(opponent_move_timer)
     opponent_move_timer.connect("timeout", _on_opponent_move_timer_timeout)
     opponent_move_timer.start()
+    
+    arena_reset_timer.wait_time = 4
+    arena_reset_timer.one_shot = true
+    add_child(arena_reset_timer)
+    arena_reset_timer.timeout.connect(_on_arena_reset_timer_timeout)
     
     # get data values
     foce_field_force_newtons = Utilities.data_dict["Arena0"]["foce_field_force_newtons"]
@@ -73,6 +88,11 @@ func _ready() -> void:
     SignalManager.target_select_input.connect(_on_target_select_input)
     
     # TODO init score ui and game timer
+    
+    
+    
+func _on_arena_reset_timer_timeout() -> void:
+    reset_arena()
     
     
 func _on_boost_input(boosting: bool):
@@ -101,9 +121,9 @@ func _on_goal_zone_1_body_entered(body: Node3D) -> void:
         # update score ui
         update_score_ui()
         # score effects
-        
+        goal1.play_goal_effect()
         # reset arena
-        
+        arena_reset_timer.start()
 
 func _on_goal_zone_2_body_entered(body: Node3D) -> void:
     #print_debug(body.name + " entered goal 2")
@@ -111,6 +131,7 @@ func _on_goal_zone_2_body_entered(body: Node3D) -> void:
         team_score_dict[PLAYER_TEAM] += 1
         update_score_ui()
         goal2.play_goal_effect()
+        arena_reset_timer.start()
 
             
 func _on_opponent_move_timer_timeout():
@@ -208,7 +229,7 @@ func get_closest_target_to_boresight(targeter_name: String, camera: Camera3D) ->
 
 func update_score_ui():
     hud_anchor.set_objective_description(
-            SCORE_STR_TAMPLATE.format({"team_1": PLAYER_TEAM,\
+            SCORE_STR_TAMPLATE.format({"team_1": PLAYER_TEAM,
                     "team_1_score": team_score_dict[PLAYER_TEAM],
                     "team_2": OPPONENT_TEAM,
                     "team_2_score": team_score_dict[OPPONENT_TEAM]
@@ -218,3 +239,12 @@ func update_score_ui():
 
 func remove_object_in_force_field(obj: RigidBody3D) -> void:
     objects_in_force_field.erase(obj.name)
+
+
+func reset_arena() -> void:
+    player_node.global_position = player_starting_pos
+    player_node.global_rotation = player_starting_rotation
+    
+    opponent_node.global_position = opponent_starting_pos
+    
+    ball_node.global_position = ball_starting_position
