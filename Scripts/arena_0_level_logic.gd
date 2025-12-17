@@ -7,13 +7,15 @@ class_name LevelLogic extends Node3D
 @onready var ball_scene: PackedScene = preload("res://Scenes/ball.tscn") 
 @onready var opponent_scene: PackedScene = preload("res://Scenes/Actors/base_physics_actor.tscn")
 
+@export var ai_logic: AiLogic = null
 @export var targeting_logic: TargetingLogic = null # $"../TargetingLogic"
 @export var hud_logic: HudLogic = null
 @export var hud_anchor: HudAnchor = null #$"../../UI/HudAnchor"
 @export var actors_root: Node3D = null
 @export var env_root: Node3D = null 
 
-@onready var goal1: Node3D = $"../../Environment/Arena2/Goal1"
+
+@onready var goal1: Goal = $"../../Environment/Arena2/Goal1"
 @onready var goal2: Goal = $"../../Environment/Arena2/Goal2"
 
 @onready var PLAYER_TEAM: String = "1"
@@ -29,6 +31,7 @@ class_name LevelLogic extends Node3D
 @onready var ball_starting_position: Vector3 = Vector3(0, 20, 0)
 
 @onready var player_node: PlayerPhysicsShip = null
+@onready var teammate_node: BasePhysicsActor = null
 @onready var ball_node: RigidBody3D = null
 @onready var opponent_node: BasePhysicsActor = null
 @onready var opponent_move_timer: Timer = Timer.new()
@@ -56,6 +59,12 @@ func _ready() -> void:
     player_node.global_position = player_starting_pos
     player_node.global_rotation = player_starting_rotation
     targeting_logic.add_targetable_node(player_node, PLAYER_TEAM)
+    
+    teammate_node = opponent_scene.instantiate()
+    actors_root.add_child(teammate_node)
+    teammate_node.global_position = player_starting_pos + Vector3(10, 0, 0)
+    teammate_node.global_rotation = player_starting_rotation
+    targeting_logic.add_targetable_node(teammate_node, PLAYER_TEAM)
     
     ball_node = ball_scene.instantiate()
     env_root.add_child(ball_node)
@@ -162,8 +171,40 @@ func _on_target_select_input():
     
 func _physics_process(delta: float) -> void:
     apply_force_field_effects(delta)
-
-    opponent_node.set_input_direction(opponent_input_dir)
+    
+    if opponent_node && teammate_node && ball_node && goal1 && goal2:
+        var opponent_move_command: MoveCommand = \
+                ai_logic.get_input_direction_command(
+                        opponent_node, 
+                        ball_node.global_position, 
+                        goal2.global_position, 
+                        goal1.global_position)
+        opponent_move_command.execute(opponent_node)
+        
+        var opponent_aim_location: Vector3 = \
+                calculate_aim_location_3d(
+                        ball_node.global_position, 
+                        ball_node.linear_velocity, 
+                        opponent_node.global_position, 
+                        opponent_node.linear_velocity, 
+                        opponent_node.weapon.projectile_speed)
+        opponent_node.look_at(opponent_aim_location)
+        
+        var fire_command: FireCommand = FireCommand.new()
+        fire_command.execute(opponent_node)
+        
+        var teammate_move_command: MoveCommand = \
+                ai_logic.get_input_direction_command(
+                        teammate_node,
+                        ball_node.global_position,
+                        goal2.global_position,
+                        goal1.global_position)
+        teammate_move_command.execute(teammate_node)
+        
+        teammate_node.look_at(opponent_aim_location)
+        fire_command.execute(teammate_node)
+        
+    #opponent_node.set_input_direction(opponent_input_dir)
 
 func _process(_delta: float) -> void:
     draw_target_ui_for_cam(player_node.get_camera(), targeting_logic.get_targetable(player_node.name), targeting_logic.get_selected_target(player_node.name))
