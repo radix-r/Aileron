@@ -54,9 +54,6 @@ func get_input_direction_command(ai_node: BasePhysicsActor,
         own_goal_location: Vector3) -> MoveCommand:
     var behavior: BehaviorMode = _determine_behavior_mode(ball_location, enemy_goal_location, own_goal_location)
     var target_location: Vector3 = _calculate_target_location(ball_location, enemy_goal_location, own_goal_location, behavior)
-    #var move_direction: Vector3 = ai_node.global_position.direction_to(target_location)
     var move_direction: Vector3 = ai_node.to_local(target_location).normalized()
-    #var move_direction_local = move_direction * ai_node.global_basis#.inverse()
     
-    #move_direction = ai_node.to_local(move_direction).normalized()
     return MoveCommand.new(move_direction)

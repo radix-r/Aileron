@@ -1,10 +1,23 @@
 extends Node3D
 
+@onready var controller_horizontal_turn_sensitivity: float = 0
+@onready var controller_vertical_turn_sensitivity: float = 0
+@onready var mouse_horizontal_turn_sensitivity: float = 0
+@onready var mouse_vertical_turn_sensitivity: float = 0
+
+
 var boosting: bool = false
 var tick_y_rotation_input_sum: float = 0
 var tick_x_rotation_input_sum: float = 0
 
 var fire: bool = false
+
+func _ready() -> void:
+    controller_horizontal_turn_sensitivity = Utilities.data_dict["settings"]["controller_horizontal_turn_sensitivity"]
+    controller_vertical_turn_sensitivity = Utilities.data_dict["settings"]["controller_vertical_turn_sensitivity"]
+    mouse_horizontal_turn_sensitivity = Utilities.data_dict["settings"]["mouse_horizontal_turn_sensitivity"]
+    mouse_vertical_turn_sensitivity = Utilities.data_dict["settings"]["mouse_vertical_turn_sensitivity"]
+
 
 # TODO: Controler support
 func _input(event: InputEvent) -> void:
@@ -16,10 +29,13 @@ func _input(event: InputEvent) -> void:
 
     if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
         if event is InputEventMouseMotion:
-            tick_y_rotation_input_sum += -event.relative.x 
-            tick_x_rotation_input_sum += -event.relative.y
+            # TODO sensitivity setting
+            tick_y_rotation_input_sum += -event.relative.x * mouse_horizontal_turn_sensitivity
+            tick_x_rotation_input_sum += -event.relative.y * mouse_vertical_turn_sensitivity
             
-    
+    #if event is InputEventJoypadMotion:
+        #tick_y_rotation_input_sum += Input.get_axis("turn_right", "turn_left")
+        #tick_x_rotation_input_sum += Input.get_axis("turn_down", "turn_up")
     
     
 func _physics_process(_delta: float) -> void:
@@ -27,8 +43,8 @@ func _physics_process(_delta: float) -> void:
     # emmit signals
     SignalManager.directional_input_received.emit(input_dir_local)
     SignalManager.rotation_input_received.emit(Vector2(tick_x_rotation_input_sum, tick_y_rotation_input_sum))
-    tick_x_rotation_input_sum = 0
-    tick_y_rotation_input_sum = 0
+    tick_x_rotation_input_sum = Input.get_axis("turn_down", "turn_up") * controller_vertical_turn_sensitivity # 0
+    tick_y_rotation_input_sum = Input.get_axis("turn_right", "turn_left") * controller_horizontal_turn_sensitivity # 0
     
     # Trigger pulled
     # Change to trigger?

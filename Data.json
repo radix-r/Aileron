@@ -40,8 +40,10 @@
         "yaw_sensitivity": 5.0
     },
     "settings": {
-        "horizontal_look_sensitivity": 0.01,
-        "vertical_look_sensitivity": 0.01
+        "controller_horizontal_turn_sensitivity": 20,
+        "controller_vertical_turn_sensitivity": 20, 
+        "mouse_horizontal_turn_sensitivity": 1,
+        "mouse_vertical_turn_sensitivity": 1, 
     }
     
 }

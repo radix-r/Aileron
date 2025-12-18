@@ -191,7 +191,7 @@ func _physics_process(delta: float) -> void:
         opponent_node.look_at(opponent_aim_location)
         
         var fire_command: FireCommand = FireCommand.new()
-        #fire_command.execute(opponent_node)
+        fire_command.execute(opponent_node)
         
         var teammate_move_command: MoveCommand = \
                 ai_logic.get_input_direction_command(
@@ -202,7 +202,7 @@ func _physics_process(delta: float) -> void:
         teammate_move_command.execute(teammate_node)
         
         teammate_node.look_at(opponent_aim_location)
-        #fire_command.execute(teammate_node)
+        fire_command.execute(teammate_node)
         
     #opponent_node.set_input_direction(opponent_input_dir)
 
@@ -285,6 +285,8 @@ func remove_object_in_force_field(obj: RigidBody3D) -> void:
 func reset_arena() -> void:
     player_node.global_position = player_starting_pos
     player_node.global_rotation = player_starting_rotation
+    
+    teammate_node.global_position = player_starting_pos + Vector3(10, 0, 0)
     
     opponent_node.global_position = opponent_starting_pos
     
