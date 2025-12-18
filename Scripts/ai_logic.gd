@@ -13,14 +13,14 @@ enum BehaviorMode{
     
 func _calculate_defensive_target_location(ball_location: Vector3, own_goal_location: Vector3) -> Vector3:
     var ball_to_goal_vector: Vector3 = (ball_location - own_goal_location)
-    return ball_location + ball_to_goal_vector/2
+    return ball_location - (ball_to_goal_vector/2)
     
     
 func _calculate_offensive_target_location(ball_location: Vector3, enemy_goal_location: Vector3) -> Vector3:
     # return location opposite ball and enemy goal
     var goal_to_ball_direction: Vector3 = (enemy_goal_location - ball_location).normalized()
-    var target_distance_from_ball: float = 5
-    return ball_location + goal_to_ball_direction * target_distance_from_ball
+    var target_distance_from_ball: float = 20
+    return ball_location - (goal_to_ball_direction * target_distance_from_ball)
 
 
 func _calculate_target_location(ball_location: Vector3, enemy_goal_location: Vector3, own_goal_location: Vector3, behavior: BehaviorMode) -> Vector3:
@@ -32,7 +32,9 @@ func _calculate_target_location(ball_location: Vector3, enemy_goal_location: Vec
     return target_location
 
 func _determine_behavior_mode(
-        ball_location: Vector3, enemy_goal_location: Vector3, own_goal_location: Vector3) -> BehaviorMode:
+        ball_location: Vector3, 
+        enemy_goal_location: Vector3, 
+        own_goal_location: Vector3) -> BehaviorMode:
     var ball_to_own_goal_dist: float = (ball_location - own_goal_location).length()
     var ball_to_enemy_goal_dist: float = (ball_location - enemy_goal_location).length()
     
@@ -52,6 +54,9 @@ func get_input_direction_command(ai_node: BasePhysicsActor,
         own_goal_location: Vector3) -> MoveCommand:
     var behavior: BehaviorMode = _determine_behavior_mode(ball_location, enemy_goal_location, own_goal_location)
     var target_location: Vector3 = _calculate_target_location(ball_location, enemy_goal_location, own_goal_location, behavior)
-    var move_direction: Vector3 = (ai_node.global_position - target_location).normalized()
+    #var move_direction: Vector3 = ai_node.global_position.direction_to(target_location)
+    var move_direction: Vector3 = ai_node.to_local(target_location).normalized()
+    #var move_direction_local = move_direction * ai_node.global_basis#.inverse()
+    
     #move_direction = ai_node.to_local(move_direction).normalized()
     return MoveCommand.new(move_direction)

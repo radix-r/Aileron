@@ -177,8 +177,8 @@ func _physics_process(delta: float) -> void:
                 ai_logic.get_input_direction_command(
                         opponent_node, 
                         ball_node.global_position, 
-                        goal2.global_position, 
-                        goal1.global_position)
+                        goal1.global_position, 
+                        goal2.global_position)
         opponent_move_command.execute(opponent_node)
         
         var opponent_aim_location: Vector3 = \
@@ -191,7 +191,7 @@ func _physics_process(delta: float) -> void:
         opponent_node.look_at(opponent_aim_location)
         
         var fire_command: FireCommand = FireCommand.new()
-        fire_command.execute(opponent_node)
+        #fire_command.execute(opponent_node)
         
         var teammate_move_command: MoveCommand = \
                 ai_logic.get_input_direction_command(
@@ -202,7 +202,7 @@ func _physics_process(delta: float) -> void:
         teammate_move_command.execute(teammate_node)
         
         teammate_node.look_at(opponent_aim_location)
-        fire_command.execute(teammate_node)
+        #fire_command.execute(teammate_node)
         
     #opponent_node.set_input_direction(opponent_input_dir)
 
