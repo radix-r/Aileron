@@ -14,3 +14,5 @@ signal fire_input()
 # x, y. Quaternion?
 signal rotation_input_received(x_y_rotation: Vector2)
 signal target_select_input()
+
+signal hit_by_projectile(hit_node: Node3D, projectile: Node3D)

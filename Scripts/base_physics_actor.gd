@@ -176,3 +176,8 @@ func rotate_with_input(rotation_input: Vector2):
     tick_y_rotation_input_sum = rotation_input.y
     tick_x_rotation_input_sum = rotation_input.x
     
+
+
+func _on_body_entered(body: Node) -> void:
+    if "projectile" in body.get_groups():
+        SignalManager.hit_by_projectile.emit(self, body)  # Replace with function body.

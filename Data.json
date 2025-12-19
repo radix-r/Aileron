@@ -20,12 +20,17 @@
         "camera_chase": 0.05,
         "boost_factor": 2,
         "thrust_strength": 200000,
+        "hp": 10,
+        "stability": 10,
+        "stability_regen": 0.5,
     },
     "Bullet1": {
         "lifespan": 10
     },
     "Bullet2": {
-        "lifespan": 2
+        "lifespan": 2,
+        "hp_damage": 1,
+        "stability_damage": 2,
     },
     "Gun1": {
         "fire_cooldown": 0.1,

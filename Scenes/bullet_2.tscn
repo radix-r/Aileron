@@ -16,7 +16,7 @@ height = 0.2
 radius = 0.05
 height = 0.2
 
-[node name="BulletBody" type="RigidBody3D"]
+[node name="BulletBody" type="RigidBody3D" groups=["projectile"]]
 collision_layer = 2
 collision_mask = 12
 mass = 0.1
