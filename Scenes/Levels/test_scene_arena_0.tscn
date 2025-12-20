@@ -230,10 +230,9 @@ hud_anchor = NodePath("../../UI/HudAnchor")
 actors_root = NodePath("../../Actors")
 env_root = NodePath("../../Environment")
 
-[node name="TargetingLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("hud_anchor", "level_logic")]
+[node name="TargetingLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("hud_anchor")]
 script = ExtResource("6_d2txi")
 hud_anchor = NodePath("../../UI/HudAnchor")
-level_logic = NodePath("../LevelLogic")
 
 [node name="HudLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("hud_anchor")]
 script = ExtResource("5_eyewj")

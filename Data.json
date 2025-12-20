@@ -20,8 +20,8 @@
         "camera_chase": 0.05,
         "boost_factor": 2,
         "thrust_strength": 200000,
-        "hp": 10,
-        "stability": 10,
+        "max_hp": 10,
+        "max_stability": 10,
         "stability_regen": 0.5,
     },
     "Bullet1": {

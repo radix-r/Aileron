@@ -4,7 +4,15 @@ class_name LevelLogic extends Node3D
 @onready var objects_in_force_field: Dictionary = {}
 @onready var foce_field_force_newtons: float = 1000
 @onready var node_hp_dict: Dictionary = {}
+@onready var node_max_hp_dict: Dictionary = {}
 @onready var node_stability_dict: Dictionary = {}
+@onready var node_stability_regen_dict: Dictionary = {}
+@onready var node_max_stability_dict: Dictionary = {}
+## Delay between a goal beiong scored and the arena reseting
+@onready var arena_reset_timer: Timer = Timer.new()
+## When true teammates can dammage eachother
+@onready var friendly_fire: bool = false
+
 
 @onready var player_scene: PackedScene = preload("res://Scenes/Actors/ship_physics.tscn")
 @onready var ball_scene: PackedScene = preload("res://Scenes/ball.tscn") 
@@ -39,8 +47,7 @@ class_name LevelLogic extends Node3D
 @onready var opponent_node: BasePhysicsActor = null
 
 
-# Delay between a goal beiong scored and the arena reseting
-@onready var arena_reset_timer: Timer = Timer.new()
+
 
 func _ready() -> void:
     SignalManager.arena_force_field_entered.connect(add_object_in_force_field)
@@ -59,20 +66,15 @@ func _ready() -> void:
     
     # Instantiate player, npcs, objects (ball)
     player_node = player_scene.instantiate()
-    actors_root.add_child(player_node)
-    player_node.global_position = player_starting_pos
-    player_node.global_rotation = player_starting_rotation
-    targeting_logic.add_targetable_node(player_node, PLAYER_TEAM)
-    node_hp_dict[player_node] = 10
-    node_stability_dict[player_node] = 10
+    init_physics_actor(player_node, player_starting_pos, player_starting_rotation, PLAYER_TEAM)
+    
     
     teammate_node = opponent_scene.instantiate()
-    actors_root.add_child(teammate_node)
-    teammate_node.global_position = player_starting_pos + Vector3(10, 0, 0)
-    teammate_node.global_rotation = player_starting_rotation
-    targeting_logic.add_targetable_node(teammate_node, PLAYER_TEAM)
-    node_hp_dict[teammate_node] = 10
-    node_stability_dict[teammate_node] = 10
+    init_physics_actor(
+            teammate_node,
+            player_starting_pos + Vector3(10, 0, 0),
+            player_starting_rotation,
+            PLAYER_TEAM)
     
     ball_node = ball_scene.instantiate()
     env_root.add_child(ball_node)
@@ -80,11 +82,12 @@ func _ready() -> void:
     targeting_logic.add_targetable_node(ball_node, ENVIRNOMENT_TEAM)
     
     opponent_node = opponent_scene.instantiate()
-    actors_root.add_child(opponent_node)
-    opponent_node.global_position = opponent_starting_pos
-    targeting_logic.add_targetable_node(opponent_node, OPPONENT_TEAM)
-    node_hp_dict[opponent_node] = 10
-    node_stability_dict[opponent_node] = 10
+    init_physics_actor(
+            opponent_node,
+            opponent_starting_pos,
+            Vector3.ZERO,
+            OPPONENT_TEAM)
+
     
     arena_reset_timer.wait_time = 4
     arena_reset_timer.one_shot = true
@@ -104,6 +107,9 @@ func _ready() -> void:
     
     
     
+#func _is_same_team(node_a: Node, node_b: Node) -> bool:
+
+    
 func _on_arena_reset_timer_timeout() -> void:
     reset_arena()
     
@@ -113,14 +119,15 @@ func _on_boost_input(boosting: bool):
         var boost_command: BoostCommand = BoostCommand.new(boosting)
         boost_command.execute(player_node)
         
-        
+
+## command player node to move with input
 func _on_directional_input_received(direction: Vector3) -> void:
-    # command player node to move with input
     if player_node:
         var move_command: MoveCommand = MoveCommand.new(direction)
         move_command.execute(player_node)
         
                         
+## command player node to fire on input
 func _on_fire_input():
     if player_node:
         var fire_command: FireCommand = FireCommand.new()
@@ -149,14 +156,35 @@ func _on_goal_zone_2_body_entered(body: Node3D) -> void:
         goal2.play_goal_effect()
         arena_reset_timer.start()
 
+
 func _on_hit_by_projectile(hit_node: Node3D, projectile: Projectile) -> void:
     # print_debug(hit_node.name + " hit by " + projectile.name)
-    if node_hp_dict.has(hit_node):
-        node_hp_dict[hit_node] -= 1 # projectile damage
+    var hp_damage: float = projectile.hp_damage
+    var stability_damage: float = projectile.stability_damage
+    if node_hp_dict.has(hit_node) && node_stability_dict.has(hit_node):
+        if targeting_logic.is_same_team(hit_node, projectile.shot_by) \
+                && !friendly_fire:
+                hp_damage = 0
+                stability_damage = 0
+        node_hp_dict[hit_node] -= hp_damage # projectile damage
+        node_stability_dict[hit_node] -= stability_damage
         # print_debug(hit_node.name + " hp: " + str(node_hp_dict[hit_node]))
-        # who shot it? hit marker?
-        print_debug(projectile.shot_by.name + " shot " + hit_node.name)
-        
+        if node_hp_dict[hit_node] <= 0:
+            print_debug(hit_node.name + " HP 0!")
+            node_hp_dict[hit_node] = 0
+            
+        if node_stability_dict[hit_node] <= 0:
+            print_debug(hit_node.name + " Stability 0!")
+            node_stability_dict[hit_node] = 0
+            
+        # TODO draw hit effect to player screen
+        # refresh health and stability bar
+        hud_anchor.update_hp_bar(
+                node_hp_dict[hit_node] / node_max_hp_dict[hit_node], hit_node)
+        hud_anchor.update_stability_bar(
+                node_stability_dict[hit_node] / node_max_stability_dict[hit_node], hit_node)
+                
+                
 func _on_rotational_input_received(x_y_rotation: Vector2):
     if player_node:
         var rotate_command: RotationCommand = RotationCommand.new(x_y_rotation)
@@ -166,9 +194,9 @@ func _on_rotational_input_received(x_y_rotation: Vector2):
 
 
     
-    
+## Set player's selected target
 func _on_target_select_input():
-    # Set player's selected target
+    
     # find target closest to center screen
     var closest_target: Node3D = get_closest_target_to_boresight(player_node.name, player_node.camera)
     var result: int = targeting_logic.set_selected_target(player_node.name, closest_target.name)
@@ -210,14 +238,26 @@ func _physics_process(delta: float) -> void:
         
         teammate_node.look_at(opponent_aim_location)
         #fire_command.execute(teammate_node)
-        
-    #opponent_node.set_input_direction(opponent_input_dir)
+    
+    # regen stability
+    _regen_stability(delta)
+    
 
 func _process(_delta: float) -> void:
     draw_target_ui_for_cam(player_node.get_camera(), targeting_logic.get_targetable(player_node.name), targeting_logic.get_selected_target(player_node.name))
     hud_logic.update_velocity_marker(player_node)
     hud_logic.update_boresight(player_node)
 
+
+func _regen_stability(delta:float) -> void:
+    for actor in node_stability_regen_dict:
+        if node_stability_dict[actor] < node_max_stability_dict[actor]:
+            node_stability_dict[actor] += node_stability_regen_dict[actor] * delta
+            # Update stability ui
+            hud_anchor.update_stability_bar(
+                node_stability_dict[actor] / node_max_stability_dict[actor], actor)
+
+            
 func add_object_in_force_field(obj: RigidBody3D) -> void:
     objects_in_force_field[obj.name] = obj
     #print_debug(obj.name + " entered")
@@ -241,6 +281,7 @@ func calculate_aim_location_3d(selected_target_global_pos: Vector3, selected_tar
     return aim_location
     
     
+## Draw target indicators for given targets on given camera
 func draw_target_ui_for_cam(camera: Camera3D, targets: Array, selected_target: Node3D) -> void:
     # draw targets
     # TODO: dont access hud anchor. instead go through hud logic?
@@ -254,6 +295,18 @@ func draw_target_ui_for_cam(camera: Camera3D, targets: Array, selected_target: N
     if selected_target:
         var aim_point_hud_pos: Vector2 = calculate_aim_indicator_location(camera,selected_target.global_position, selected_target_velocity ,player_node.global_position, player_node.linear_velocity, player_node.weapon.projectile_speed)
         hud_anchor.update_aim_indicator(camera, aim_point_hud_pos, selected_target.position)
+
+func init_physics_actor(actor: BasePhysicsActor, init_location: Vector3, init_rotation: Vector3, team: String) -> void:
+    actors_root.add_child(actor)
+    actor.global_position = init_location
+    actor.global_rotation = init_rotation
+    targeting_logic.add_targetable_node(actor, team)
+    # data driven max hp and stability
+    node_hp_dict[actor] = actor.max_hp
+    node_max_hp_dict[actor] = actor.max_hp
+    node_stability_dict[actor] = actor.max_stability
+    node_stability_regen_dict[actor] = actor.stability_regen
+    node_max_stability_dict[actor] = actor.max_stability
 
 
 func get_closest_target_to_boresight(targeter_name: String, camera: Camera3D) -> Node3D:
@@ -283,6 +336,7 @@ func update_score_ui():
                     "team_2_score": team_score_dict[OPPONENT_TEAM]
             })
     )
+
 
 
 func remove_object_in_force_field(obj: RigidBody3D) -> void:

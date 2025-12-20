@@ -32,7 +32,6 @@ enum FlightModes{
 var flight_mode: FlightModes = FlightModes.HOVER
 var tick_y_rotation_input_sum: float = 0
 var tick_x_rotation_input_sum: float = 0
-#var command_queue: Array = []
 var input_dir_local: Vector3 = Vector3.ZERO
 #####################################
 # ONREADY VARIABLES
@@ -42,11 +41,9 @@ var input_dir_local: Vector3 = Vector3.ZERO
 @onready var forward: Vector3 = Vector3()
 @onready var up_point: Node3D = $PitchPoint/UpPoint
 @onready var up_relative: Vector3 = Vector3()
-#@onready var camera_control: Node3D = $PitchPoint/CameraControl
-#@onready var camera: Camera3D = $PitchPoint/CameraControl/Camera3D
+
 @onready var thrust_vector: Node3D = $ThrustVector
 
-#@onready var camera_chase: float = 0
 @onready var contact_point: Vector3 = Vector3.ZERO
 
 @onready var boost_factor: float = 1
@@ -56,6 +53,15 @@ var input_dir_local: Vector3 = Vector3.ZERO
 @onready var rotation_speed: float = 0
 @onready var thrust_strength: float = 2000
 @onready var boosting: bool = false
+
+@onready var max_hp: float = 0
+@onready var max_stability: float = 0
+@onready var stability_regen: float = 0
+
+
+func _ready() -> void:
+    _default_init()
+
 
 func _apply_flight_effects(delta: float):
     forward = _calc_forward()
@@ -125,9 +131,10 @@ func _default_init():
     spark_lifetime_coeficent = Utilities.data_dict[unit_name]["spark_lifetime_coeficent"]
     boost_factor = Utilities.data_dict[unit_name]["boost_factor"]
     thrust_strength = Utilities.data_dict[unit_name]["thrust_strength"]
-
-func _ready() -> void:
-    _default_init()
+    max_hp = Utilities.data_dict[unit_name]["max_hp"]
+    max_stability = Utilities.data_dict[unit_name]["max_stability"]
+    stability_regen = Utilities.data_dict[unit_name]["stability_regen"]
+    
 
 # TODO: spark effect factor out of ship code
 func apply_spark_effect(global_location: Vector3) -> void:

@@ -26,6 +26,9 @@ func _ready() -> void:
     objective_title.text = "Score"
 
 
+func _physics_process(delta: float) -> void:
+    # decay hit marker opacity
+    pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -70,18 +73,6 @@ func show_boresight() -> void:
 func show_velocity_marker() -> void:
     velocity_marker.show()
 
-#func update_boresight(ship: PlayerPhysicsShip) -> void:
-    ## var cam_rotation: Vector3 = camera_control.rotation
-#
-    #var hud_pos: Vector2 = transform_to_hud_space(ship.get_camera().global_position + ship.forward, ship.get_camera() )
-#
-    #if !ship.get_camera().is_position_behind(ship.get_camera().global_position + ship.forward):
-        #boresight.show()
-        #boresight.position = hud_pos
-#
-    #else:
-        #boresight.hide()
-#func update_aim_indicator(camera: Camera3D, selected_target: Node3D, player_node.linear_velocity, player_node.weapon.projectile_speed)
 
 func update_aim_indicator(camera: Camera3D, aim_point_hud_pos: Vector2, selected_target_global_position: Vector3):
     # if target is in front of camera update aim indicator pos
@@ -90,6 +81,12 @@ func update_aim_indicator(camera: Camera3D, aim_point_hud_pos: Vector2, selected
         aim_indicator.show()
     else:
         aim_indicator.hide()
+
+
+func update_hp_bar(fraction_full: float, target: Node3D) -> void:
+    if target:
+        target_ui_element_dict[target.name].set_hp(fraction_full)
+
 
 func update_nav_arrow() -> void:
     if nav_arrow_drawer:
@@ -101,18 +98,9 @@ func update_selected_target_indicator(_camera: Camera3D, target: Node3D) -> void
         target_ui_element_dict[target.name].show_selected_indicator()
 
 
-#func update_velocity_marker(ship: PlayerPhysicsShip) -> void:
-    #if ship.linear_velocity.length() > 0.01:
-        #var hud_pos: Vector2 = transform_to_hud_space(ship.get_camera().global_position + ship.linear_velocity, ship.get_camera())
-#
-        #if ship.get_camera().is_position_behind(ship.get_camera().global_position + ship.linear_velocity):
-            #velocity_marker.hide()
-        #else:
-            #velocity_marker.show()
-            #velocity_marker.position = hud_pos
-    #else:
-        #velocity_marker.hide()
-
+func update_stability_bar(fraction_full: float, target: Node3D) -> void:
+    if target:
+        target_ui_element_dict[target.name].set_stability(fraction_full)
 
 
 func update_target_indicators(camera: Camera3D, target_list: Array) -> void:
@@ -129,3 +117,8 @@ func update_target_indicators(camera: Camera3D, target_list: Array) -> void:
 # in what way is this tranforming the angle?
 func transform_angle(angel: float, fov: float, pixel_height: float) -> float:
     return (tan(angel) / tan(fov / 2)) * pixel_height / 2
+
+#TODO
+func trigger_hit_marker() -> void:
+    # set opacity
+    pass

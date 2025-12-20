@@ -1,5 +1,5 @@
 class_name Projectile extends RigidBody3D
-
+# TODO maybe inherit from BasePhysicsActor?
 
 #####################################
 # SIGNALS
@@ -16,10 +16,12 @@ class_name Projectile extends RigidBody3D
 #####################################
 # PUBLIC VARIABLES
 #####################################
-@onready var speed: float = 0
+# TODO make lifespan private and make getters and setters?
 @onready var lifespan: Timer = Timer.new()
-@onready var initial_velocity: Vector3 = Vector3.ZERO
 @onready var shot_by: Node = null
+@onready var hp_damage: float = 0
+@onready var stability_damage: float = 0
+
 #####################################
 # PRIVATE VARIABLES
 #####################################
@@ -31,9 +33,8 @@ class_name Projectile extends RigidBody3D
 #####################################
 # OVERRIDE FUNCTIONS
 #####################################
-func _init(_shot_by: Node = null, _initial_velocity: Vector3 = Vector3.ZERO) -> void:
-    shot_by = _shot_by
-    initial_velocity = _initial_velocity
+func _init() -> void:
+    pass
 
 #func _physics_process(_delta: float) -> void:
     ## move forward
@@ -56,6 +57,9 @@ func _ready() -> void:
     lifespan.connect("timeout", _on_lifespan_timeout)
     add_child(lifespan)
     lifespan.start()
+    
+    hp_damage = Utilities.data_dict[unit_name]["hp_damage"]
+    stability_damage = Utilities.data_dict[unit_name]["stability_damage"]
     #velocity = to_global(Vector3.FORWARD * speed)
 
 
@@ -66,5 +70,7 @@ func _ready() -> void:
 #####################################
 # HELPER FUNCTIONS
 #####################################
+# TODO init variables func?
+
 func _on_lifespan_timeout() -> void:
     queue_free()
