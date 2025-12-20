@@ -4,6 +4,7 @@
 extends Node
 
 # Emmited when a physics object enters an arena forcefield
+@warning_ignore_start("unused_signal")
 signal arena_force_field_entered(object: RigidBody3D)
 signal arena_force_field_exited(object: RigidBody3D)
 
@@ -15,4 +16,4 @@ signal fire_input()
 signal rotation_input_received(x_y_rotation: Vector2)
 signal target_select_input()
 
-signal hit_by_projectile(hit_node: Node3D, projectile: Node3D)
+signal hit_by_projectile(hit_node: Node3D, projectile: Projectile)

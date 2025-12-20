@@ -16,7 +16,7 @@ class_name Weapon extends Node3D
 #####################################
 # PUBLIC VARIABLES
 #####################################
-var bullet: PackedScene = preload("res://Scenes/bullet_2.tscn")
+var bullet_scene: PackedScene = preload("res://Scenes/bullet_2.tscn")
 
 #####################################
 # PRIVATE VARIABLES
@@ -60,16 +60,18 @@ func _on_cooldown():
     can_fire = true
 
 
-func fire():
+func fire(shooter: Node):
     if can_fire:
         can_fire = false
         # start timer for firing cooldown
         cooldown.start()
         # spawn a bullet
-        var bullet_instace: RigidBody3D = bullet.instantiate()
+        var bullet_instace: Projectile = bullet_scene.instantiate()
+        
         # I have no idea why platform velocity needs to be devided by 60
         bullet_instace.linear_velocity = platform.linear_velocity/60 + (platform.forward * projectile_speed)
         root.add_child(bullet_instace)
+        bullet_instace.shot_by = shooter
         bullet_instace.global_position = fire_point.global_position
         bullet_instace.global_rotation = fire_point.global_rotation
         muzzel_flash.get_node("AnimationPlayer").play("Fire")

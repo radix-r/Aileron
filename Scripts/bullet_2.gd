@@ -1,4 +1,4 @@
-extends RigidBody3D
+class_name Projectile extends RigidBody3D
 
 
 #####################################
@@ -19,6 +19,7 @@ extends RigidBody3D
 @onready var speed: float = 0
 @onready var lifespan: Timer = Timer.new()
 @onready var initial_velocity: Vector3 = Vector3.ZERO
+@onready var shot_by: Node = null
 #####################################
 # PRIVATE VARIABLES
 #####################################
@@ -30,7 +31,8 @@ extends RigidBody3D
 #####################################
 # OVERRIDE FUNCTIONS
 #####################################
-func _init(_initial_velocity: Vector3 = Vector3.ZERO) -> void:
+func _init(_shot_by: Node = null, _initial_velocity: Vector3 = Vector3.ZERO) -> void:
+    shot_by = _shot_by
     initial_velocity = _initial_velocity
 
 #func _physics_process(_delta: float) -> void:

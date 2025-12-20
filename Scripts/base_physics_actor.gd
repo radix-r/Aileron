@@ -161,7 +161,7 @@ func calc_thrust(input_dir: Vector3, delta: float) -> Vector3:
     
 func fire_weapon():
     if weapon:
-        weapon.fire()
+        weapon.fire(self)
 
 
 func set_boosting(boosting_: bool):
@@ -179,5 +179,6 @@ func rotate_with_input(rotation_input: Vector2):
 
 
 func _on_body_entered(body: Node) -> void:
-    if "projectile" in body.get_groups():
-        SignalManager.hit_by_projectile.emit(self, body)  # Replace with function body.
+    if body is Projectile:
+        SignalManager.hit_by_projectile.emit(self, body) 
+        

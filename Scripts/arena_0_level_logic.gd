@@ -113,18 +113,21 @@ func _on_boost_input(boosting: bool):
         var boost_command: BoostCommand = BoostCommand.new(boosting)
         boost_command.execute(player_node)
         
-            
+        
+func _on_directional_input_received(direction: Vector3) -> void:
+    # command player node to move with input
+    if player_node:
+        var move_command: MoveCommand = MoveCommand.new(direction)
+        move_command.execute(player_node)
+        
+                        
 func _on_fire_input():
     if player_node:
         var fire_command: FireCommand = FireCommand.new()
         fire_command.execute(player_node)
         
         
-func _on_directional_input_received(direction: Vector3) -> void:
-    # command player node to move with input
-    if player_node:
-        var move_command: MoveCommand = MoveCommand.new(direction)
-        move_command.execute(player_node)    
+
         
         
 func _on_goal_zone_1_body_entered(body: Node3D) -> void:
@@ -146,9 +149,14 @@ func _on_goal_zone_2_body_entered(body: Node3D) -> void:
         goal2.play_goal_effect()
         arena_reset_timer.start()
 
-func _on_hit_by_projectile(hit_node: Node3D, projectile: Node3D) -> void:
-    print_debug(hit_node.name + " hit by " + projectile.name)
-
+func _on_hit_by_projectile(hit_node: Node3D, projectile: Projectile) -> void:
+    # print_debug(hit_node.name + " hit by " + projectile.name)
+    if node_hp_dict.has(hit_node):
+        node_hp_dict[hit_node] -= 1 # projectile damage
+        # print_debug(hit_node.name + " hp: " + str(node_hp_dict[hit_node]))
+        # who shot it? hit marker?
+        print_debug(projectile.shot_by.name + " shot " + hit_node.name)
+        
 func _on_rotational_input_received(x_y_rotation: Vector2):
     if player_node:
         var rotate_command: RotationCommand = RotationCommand.new(x_y_rotation)
