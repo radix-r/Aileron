@@ -12,6 +12,7 @@ var aim_ui_elemet: PackedScene = preload("res://Scenes/GUI/aim_indicator.tscn")
 @onready var objective_title: RichTextLabel = $ObjectiveBox/ObjectveTitle
 @onready var overlay: CanvasLayer = $NavArrowOverlay
 @onready var velocity_marker: Control = $PlayerVectorOverlay/VelocityMarker
+@onready var stopwatch_label: Label = $StopwatchLabel
 
 # Key: node name, Value: target ui element assigned to that node
 var target_ui_element_dict: Dictionary = {}
@@ -61,6 +62,8 @@ func set_boresight_position(hud_pos: Vector2) -> void:
 func set_objective_description(description: String) -> void:
     objective_description.text = description
 
+func set_timer(time_str: String) -> void:
+    stopwatch_label.text = time_str
 
 func set_velocity_marker_pos(hud_pos: Vector2) -> void:
     velocity_marker.set_position(hud_pos)

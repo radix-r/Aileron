@@ -10,6 +10,10 @@ class_name LevelLogic extends Node3D
 @onready var node_max_stability_dict: Dictionary = {}
 ## Delay between a goal beiong scored and the arena reseting
 @onready var arena_reset_timer: Timer = Timer.new()
+## Timer for the game. Game is over when the timer reaches 0
+@onready var game_timer: Timer = Timer.new()
+## Timer to update time lable once a second
+@onready var time_label_update_timer: Timer = Timer.new()
 ## When true teammates can dammage eachother
 @onready var friendly_fire: bool = false
 
@@ -104,8 +108,17 @@ func _ready() -> void:
     SignalManager.target_select_input.connect(_on_target_select_input)
     
     # TODO init score ui and game timer
+    game_timer.wait_time = 60 * Utilities.data_dict["Arena0"]["game_time"]
+    game_timer.one_shot = true
+    add_child(game_timer)
+    game_timer.timeout.connect(_on_game_timer_timeout)
+    game_timer.start()
     
-    
+    time_label_update_timer.wait_time = 1
+    time_label_update_timer.one_shot = false
+    add_child(time_label_update_timer)
+    time_label_update_timer.timeout.connect(update_time_label)
+    time_label_update_timer.start()
     
 #func _is_same_team(node_a: Node, node_b: Node) -> bool:
 
@@ -134,7 +147,27 @@ func _on_fire_input():
         fire_command.execute(player_node)
         
         
-
+func _on_game_timer_timeout():
+    var highest_score: int = 0
+    var winning_team: String = ""
+    var score_team_dict: Dictionary = {}
+    for team in team_score_dict:
+        if score_team_dict.has(team_score_dict[team]):
+            score_team_dict[team_score_dict[team]].append(team)
+        else:
+            score_team_dict[team_score_dict[team]] = [team]
+    
+    var scores: Array = score_team_dict.keys()
+    scores.sort()
+    highest_score = scores[-1]
+    
+    var winner = score_team_dict[highest_score]
+    #print_debug("Team " + winner + " wins!")
+    print(winner)
+    if PLAYER_TEAM in winner:
+        # Display win on screen
+        pass
+        
         
         
 func _on_goal_zone_1_body_entered(body: Node3D) -> void:
@@ -172,11 +205,13 @@ func _on_hit_by_projectile(hit_node: Node3D, projectile: Projectile) -> void:
         if node_hp_dict[hit_node] <= 0:
             print_debug(hit_node.name + " HP 0!")
             node_hp_dict[hit_node] = 0
+            # TODO apply effect
             
         if node_stability_dict[hit_node] <= 0:
             print_debug(hit_node.name + " Stability 0!")
             node_stability_dict[hit_node] = 0
-            
+            # TODO apply effect
+
         # TODO draw hit effect to player screen
         # refresh health and stability bar
         hud_anchor.update_hp_bar(
@@ -241,13 +276,14 @@ func _physics_process(delta: float) -> void:
     
     # regen stability
     _regen_stability(delta)
-    
+    # 
 
 func _process(_delta: float) -> void:
     draw_target_ui_for_cam(player_node.get_camera(), targeting_logic.get_targetable(player_node.name), targeting_logic.get_selected_target(player_node.name))
     hud_logic.update_velocity_marker(player_node)
     hud_logic.update_boresight(player_node)
-
+    # update timer
+    
 
 func _regen_stability(delta:float) -> void:
     for actor in node_stability_regen_dict:
@@ -337,6 +373,11 @@ func update_score_ui():
             })
     )
 
+func update_time_label():
+    @warning_ignore("narrowing_conversion")
+    var mins: int = game_timer.time_left / 60
+    var secs: int =  int(game_timer.time_left) % 60
+    hud_anchor.set_timer(str(mins) + ":" + str(secs))
 
 
 func remove_object_in_force_field(obj: RigidBody3D) -> void:

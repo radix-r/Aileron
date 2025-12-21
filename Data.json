@@ -1,6 +1,7 @@
 {
     "Arena0": {
         "foce_field_force_newtons": 1000,
+        "game_time": 10,
     },
     "Ship1": {
         "speed_default": 10,
