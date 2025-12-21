@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://b6ab04h32aky1"]
+[gd_scene load_steps=8 format=3 uid="uid://b6ab04h32aky1"]
 
 [ext_resource type="Script" uid="uid://drh10lr4krkv2" path="res://Scripts/player_gui.gd" id="1_fenuy"]
 [ext_resource type="Texture2D" uid="uid://bbkctg0eejnj2" path="res://Assets/HUD/boresight.png" id="2_klokj"]
@@ -11,6 +11,12 @@ outline_color = Color(0.00392157, 0.00392157, 0.00392157, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_xq3t2"]
 font_size = 60
+
+[sub_resource type="Gradient" id="Gradient_xq3t2"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_36jgu"]
+gradient = SubResource("Gradient_xq3t2")
 
 [node name="HudAnchor" type="Control" node_paths=PackedStringArray("objective_description")]
 layout_mode = 3
@@ -118,4 +124,40 @@ offset_right = 117.0
 offset_bottom = 90.0
 text = "Objective Description"
 
-[node name="TargetingOverlay" type="CanvasLayer" parent="."]
+[node name="HitMarkerOverlay" type="CanvasLayer" parent="."]
+
+[node name="HitMarker" type="Control" parent="HitMarkerOverlay"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.7853982
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="HitMarkerOverlay/HitMarker"]
+position = Vector2(15, 0)
+scale = Vector2(0.05, 3)
+texture = SubResource("GradientTexture1D_36jgu")
+
+[node name="Sprite2D2" type="Sprite2D" parent="HitMarkerOverlay/HitMarker"]
+position = Vector2(-15, 0)
+scale = Vector2(0.05, 3)
+texture = SubResource("GradientTexture1D_36jgu")
+
+[node name="Sprite2D3" type="Sprite2D" parent="HitMarkerOverlay/HitMarker"]
+position = Vector2(0, 15)
+rotation = 1.5707964
+scale = Vector2(0.05, 3)
+texture = SubResource("GradientTexture1D_36jgu")
+
+[node name="Sprite2D4" type="Sprite2D" parent="HitMarkerOverlay/HitMarker"]
+position = Vector2(0, -15)
+rotation = 1.5707964
+scale = Vector2(0.05, 3)
+texture = SubResource("GradientTexture1D_36jgu")

@@ -14,7 +14,7 @@ var aim_ui_elemet: PackedScene = preload("res://Scenes/GUI/aim_indicator.tscn")
 @onready var velocity_marker: Control = $PlayerVectorOverlay/VelocityMarker
 @onready var stopwatch_label: Label = $StopwatchLabel
 @onready var center_screen_label: Label = $CenterScreenLabel
-
+@onready var hit_marker: Control = $HitMarkerOverlay/HitMarker
 # Key: node name, Value: target ui element assigned to that node
 var target_ui_element_dict: Dictionary = {}
 var aim_indicator: Control = null
@@ -24,7 +24,8 @@ func _ready() -> void:
     aim_indicator = aim_ui_elemet.instantiate()
     aim_indicator.hide()
     add_child(aim_indicator)
-
+    # Set hit marker to be transparent
+    hit_marker.modulate = Color(1,1,1,0)
     objective_title.text = "Score"
 
 
@@ -34,7 +35,9 @@ func _physics_process(delta: float) -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-    pass
+    if 0 < hit_marker.modulate.a:
+        hit_marker.modulate.a -= _delta
+
 
 func add_target_indicator(target: Node3D) -> void:
     var new_target_ui_element = target_ui_element.instantiate()
@@ -133,4 +136,5 @@ func transform_angle(angel: float, fov: float, pixel_height: float) -> float:
 #TODO
 func trigger_hit_marker() -> void:
     # set opacity
-    pass
+    hit_marker.modulate.a = 1
+    hit_marker.set_position(boresight.position)

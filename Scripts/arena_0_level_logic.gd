@@ -41,6 +41,7 @@ class_name LevelLogic extends Node3D
 
 @onready var goal1: Goal = $"../../Environment/Arena2/Goal1"
 @onready var goal2: Goal = $"../../Environment/Arena2/Goal2"
+@onready var pause_menu: CanvasLayer = $"../../UI/PauseMenu"
 
 @onready var PLAYER_TEAM: String = "Player"
 @onready var OPPONENT_TEAM: String = "CPU"
@@ -72,6 +73,7 @@ func _ready() -> void:
     SignalManager.fire_input.connect(_on_fire_input)
     SignalManager.boost_input.connect(_on_boost_input)
     SignalManager.target_select_input.connect(_on_target_select_input)
+    SignalManager.ui_cancel_input.connect(_on_ui_cancel_input)
     # Instantiate team relations
     targeting_logic.set_team_targetability(PLAYER_TEAM, ENVIRNOMENT_TEAM)
     targeting_logic.set_team_targetability(OPPONENT_TEAM, PLAYER_TEAM)
@@ -151,7 +153,7 @@ func _on_boost_input(boosting: bool):
 func _on_burst_duration_timeout(actor: BasePhysicsActor) -> void:
     if actor in actors_ready_to_fire:
         actors_ready_to_fire.erase(actor)
-    # TODO start burst cooldoen timer
+    # start burst cooldoen timer
     var new_timer: Timer= burst_cooldown_timer.duplicate()
     new_timer.timeout.connect(_on_burst_cooldown_timeout.bind(actor))
     add_child(new_timer)
@@ -160,7 +162,7 @@ func _on_burst_duration_timeout(actor: BasePhysicsActor) -> void:
 func _on_burst_cooldown_timeout(actor: BasePhysicsActor) -> void:
     if !(actor in actors_ready_to_fire):
         actors_ready_to_fire.append(actor)
-    # TODO Start burst duration timer
+    # Start burst duration timer
     var new_timer: Timer= burst_duration_timer.duplicate()
     new_timer.timeout.connect(_on_burst_duration_timeout.bind(actor))
     add_child(new_timer)
@@ -258,6 +260,10 @@ func _on_hit_by_projectile(hit_node: Node3D, projectile: Projectile) -> void:
             apply_destabilize_effect(hit_node)
 
         # TODO draw hit effect to player screen
+        if projectile.shot_by == player_node:
+            hud_anchor.trigger_hit_marker()
+            pass
+            
         # refresh health and stability bar
         update_hp_bar(hit_node)
         update_stability_bar(hit_node)
@@ -282,6 +288,16 @@ func _on_target_select_input():
         print_debug("Failed to select next player target")
     
     
+func _on_ui_cancel_input():
+    if pause_menu.visible:
+        pause_menu.hide()
+        # TODO resume time
+        get_tree().paused = false
+    else:
+        pause_menu.show()
+        # TODO pause time
+        get_tree().paused = true
+        
 func _physics_process(delta: float) -> void:
     apply_force_field_effects(delta)
     
