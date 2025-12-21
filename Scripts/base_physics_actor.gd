@@ -186,6 +186,14 @@ func rotate_with_input(rotation_input: Vector2):
 
 
 func _on_body_entered(body: Node) -> void:
+    _process_collision(body)
+    
+        
+func _on_body_exited(body: Node) -> void:
+    #_process_collision(body)
+    pass
+    
+func _process_collision(body: Node) -> void:
     if body is Projectile:
         SignalManager.hit_by_projectile.emit(self, body) 
-        
+        #body.queue_free()

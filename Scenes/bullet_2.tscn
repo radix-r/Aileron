@@ -13,8 +13,9 @@ radius = 0.05
 height = 0.2
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rugkm"]
-radius = 0.05
-height = 0.2
+margin = 0.08
+radius = 0.1
+height = 0.4
 
 [node name="BulletBody" type="RigidBody3D" groups=["projectile"]]
 collision_layer = 2

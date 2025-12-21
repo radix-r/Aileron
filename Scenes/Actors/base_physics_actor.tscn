@@ -42,7 +42,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("2_dqm2u")
 
 [node name="FirePoint" type="Node3D" parent="PitchPoint/Gun1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
 
 [node name="MuzzleFlash1" parent="PitchPoint/Gun1/FirePoint" instance=ExtResource("3_lsky4")]
 
@@ -63,3 +63,4 @@ axis = 0
 texture = ExtResource("4_yw28e")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

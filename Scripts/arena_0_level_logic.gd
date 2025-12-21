@@ -8,6 +8,10 @@ class_name LevelLogic extends Node3D
 @onready var node_stability_dict: Dictionary = {}
 @onready var node_stability_regen_dict: Dictionary = {}
 @onready var node_max_stability_dict: Dictionary = {}
+## How long actor shoots for
+@onready var burst_duration_timer: Timer = Timer.new()
+## How long actor holds fire for
+@onready var burst_cooldown_timer: Timer = Timer.new()
 ## Delay between a goal beiong scored and the arena reseting
 @onready var arena_reset_timer: Timer = Timer.new()
 ## Timer for the game. Game is over when the timer reaches 0
@@ -18,6 +22,10 @@ class_name LevelLogic extends Node3D
 @onready var friendly_fire: bool = false
 ## Base format for timer label
 @onready var timer_format: String = "%02d:%02d"
+## array with all destabilized actors
+@onready var actorts_destabilized: Array = []
+## actors that are ready to fire a burst
+@onready var actors_ready_to_fire: Array = []
 
 @onready var player_scene: PackedScene = preload("res://Scenes/Actors/ship_physics.tscn")
 @onready var ball_scene: PackedScene = preload("res://Scenes/ball.tscn") 
@@ -34,8 +42,8 @@ class_name LevelLogic extends Node3D
 @onready var goal1: Goal = $"../../Environment/Arena2/Goal1"
 @onready var goal2: Goal = $"../../Environment/Arena2/Goal2"
 
-@onready var PLAYER_TEAM: String = "1"
-@onready var OPPONENT_TEAM: String = "2"
+@onready var PLAYER_TEAM: String = "Player"
+@onready var OPPONENT_TEAM: String = "CPU"
 @onready var ENVIRNOMENT_TEAM: String = "env"
 @onready var team_score_dict: Dictionary = {}
 @onready var SCORE_STR_TAMPLATE: String = "Team {team_1}: {team_1_score}\n" + \
@@ -73,6 +81,16 @@ func _ready() -> void:
     team_score_dict[OPPONENT_TEAM] = 0
     update_score_ui()
     
+    # get data values
+    foce_field_force_newtons = Utilities.data_dict["Arena0"]["foce_field_force_newtons"]
+    burst_cooldown_timer.wait_time = Utilities.data_dict["Arena0"]["burst_cooldown"]
+    burst_duration_timer.wait_time = Utilities.data_dict["Arena0"]["burst_duration"]
+    game_timer.wait_time = 60 * Utilities.data_dict["Arena0"]["game_time"]
+    
+    # config burst timers
+    burst_cooldown_timer.one_shot = true
+    burst_duration_timer.one_shot = true
+    
     # Instantiate player, npcs, objects (ball)
     player_node = player_scene.instantiate()
     init_physics_actor(player_node, player_starting_pos, player_starting_rotation, PLAYER_TEAM)
@@ -83,6 +101,9 @@ func _ready() -> void:
             player_starting_pos + Vector3(10, 0, 0),
             player_starting_rotation,
             PLAYER_TEAM)
+    actors_ready_to_fire.append(teammate_node)
+    # start burst timer
+    _on_burst_cooldown_timeout(teammate_node)
     
     ball_node = ball_scene.instantiate()
     env_root.add_child(ball_node)
@@ -95,24 +116,20 @@ func _ready() -> void:
             opponent_starting_pos,
             Vector3.ZERO,
             OPPONENT_TEAM)
-
+    actors_ready_to_fire.append(opponent_node)
+    _on_burst_cooldown_timeout(opponent_node)
     
     arena_reset_timer.wait_time = 4
     arena_reset_timer.one_shot = true
     add_child(arena_reset_timer)
     arena_reset_timer.timeout.connect(_on_arena_reset_timer_timeout)
     
-    # get data values
-    foce_field_force_newtons = Utilities.data_dict["Arena0"]["foce_field_force_newtons"]
-    
-
-    
     # init game timer
-    game_timer.wait_time = 60 * Utilities.data_dict["Arena0"]["game_time"]
     game_timer.one_shot = true
     add_child(game_timer)
     game_timer.timeout.connect(_on_game_timer_timeout)
     game_timer.start()
+    
     
     time_label_update_timer.wait_time = 1
     time_label_update_timer.one_shot = false
@@ -130,6 +147,24 @@ func _on_boost_input(boosting: bool):
         var boost_command: BoostCommand = BoostCommand.new(boosting)
         boost_command.execute(player_node)
         
+
+func _on_burst_duration_timeout(actor: BasePhysicsActor) -> void:
+    if actor in actors_ready_to_fire:
+        actors_ready_to_fire.erase(actor)
+    # TODO start burst cooldoen timer
+    var new_timer: Timer= burst_cooldown_timer.duplicate()
+    new_timer.timeout.connect(_on_burst_cooldown_timeout.bind(actor))
+    add_child(new_timer)
+    new_timer.start(burst_cooldown_timer.wait_time + randf() *2) # random variation
+
+func _on_burst_cooldown_timeout(actor: BasePhysicsActor) -> void:
+    if !(actor in actors_ready_to_fire):
+        actors_ready_to_fire.append(actor)
+    # TODO Start burst duration timer
+    var new_timer: Timer= burst_duration_timer.duplicate()
+    new_timer.timeout.connect(_on_burst_duration_timeout.bind(actor))
+    add_child(new_timer)
+    new_timer.start(burst_duration_timer.wait_time + randf() *2)
 
 ## command player node to move with input
 func _on_directional_input_received(direction: Vector3) -> void:
@@ -201,6 +236,8 @@ func _on_hit_by_projectile(hit_node: Node3D, projectile: Projectile) -> void:
     # print_debug(hit_node.name + " hit by " + projectile.name)
     var hp_damage: float = projectile.hp_damage
     var stability_damage: float = projectile.stability_damage
+    if hit_node in actorts_destabilized:
+        stability_damage = 0
     if node_hp_dict.has(hit_node) && node_stability_dict.has(hit_node):
         if targeting_logic.is_same_team(hit_node, projectile.shot_by) \
                 && !friendly_fire:
@@ -210,22 +247,21 @@ func _on_hit_by_projectile(hit_node: Node3D, projectile: Projectile) -> void:
         node_stability_dict[hit_node] -= stability_damage
         # print_debug(hit_node.name + " hp: " + str(node_hp_dict[hit_node]))
         if node_hp_dict[hit_node] <= 0:
-            print_debug(hit_node.name + " HP 0!")
+            #print_debug(hit_node.name + " HP 0!")
             node_hp_dict[hit_node] = 0
             # TODO apply effect
             
         if node_stability_dict[hit_node] <= 0:
-            print_debug(hit_node.name + " Stability 0!")
+            # print_debug(hit_node.name + " Stability 0!")
             node_stability_dict[hit_node] = 0
-            # TODO apply effect
+            # apply effect
+            apply_destabilize_effect(hit_node)
 
         # TODO draw hit effect to player screen
         # refresh health and stability bar
-        hud_anchor.update_hp_bar(
-                node_hp_dict[hit_node] / node_max_hp_dict[hit_node], hit_node)
-        hud_anchor.update_stability_bar(
-                node_stability_dict[hit_node] / node_max_stability_dict[hit_node], hit_node)
-                
+        update_hp_bar(hit_node)
+        update_stability_bar(hit_node)
+                        
                 
 func _on_rotational_input_received(x_y_rotation: Vector2):
     if player_node:
@@ -268,7 +304,8 @@ func _physics_process(delta: float) -> void:
         opponent_node.look_at(opponent_aim_location)
         
         var fire_command: FireCommand = FireCommand.new()
-        #fire_command.execute(opponent_node)
+        if opponent_node in actors_ready_to_fire:
+            fire_command.execute(opponent_node)
         
         var teammate_move_command: MoveCommand = \
                 ai_logic.get_input_direction_command(
@@ -276,11 +313,12 @@ func _physics_process(delta: float) -> void:
                         ball_node.global_position,
                         goal2.global_position,
                         goal1.global_position)
-        #teammate_move_command.execute(teammate_node)
+        teammate_move_command.execute(teammate_node)
         
         teammate_node.look_at(opponent_aim_location)
-        #fire_command.execute(teammate_node)
-    
+        if teammate_node in actors_ready_to_fire:
+            fire_command.execute(teammate_node)
+        
     # regen stability
     _regen_stability(delta)
     # 
@@ -297,14 +335,36 @@ func _regen_stability(delta:float) -> void:
         if node_stability_dict[actor] < node_max_stability_dict[actor]:
             node_stability_dict[actor] += node_stability_regen_dict[actor] * delta
             # Update stability ui
-            hud_anchor.update_stability_bar(
-                node_stability_dict[actor] / node_max_stability_dict[actor], actor)
-
+            update_stability_bar(actor)
+            
             
 func add_object_in_force_field(obj: RigidBody3D) -> void:
     objects_in_force_field[obj.name] = obj
     #print_debug(obj.name + " entered")
 
+
+func apply_destabilize_effect(actor: BasePhysicsActor) -> void:
+    # print_debug(actor.name + " Destabilized!")
+    actor.flight_mode = BasePhysicsActor.FlightModes.OFF
+    actor.linear_damp = 0
+    # start timer to remove effect
+    var destabilize_timer: Timer = Timer.new()
+    destabilize_timer.one_shot = true
+    destabilize_timer.timeout.connect(remove_destabilize_effect.bind(actor))
+    add_child(destabilize_timer)
+    # TODO time durraton data driven
+    destabilize_timer.start(5)
+    # keep track of who is destabilized
+    actorts_destabilized.push_back(actor)
+
+func remove_destabilize_effect(actor: BasePhysicsActor) -> void:
+    # print_debug(actor.name + " Stabilized!")
+    actor.flight_mode = BasePhysicsActor.FlightModes.HOVER
+    actor.linear_damp = 1
+    node_stability_dict[actor] = node_max_stability_dict[actor]
+    actorts_destabilized.erase(actor)
+    # refrfesh stability bar
+    update_stability_bar(actor)
 
 func apply_force_field_effects(_delta: float) -> void:
     for obj_name in objects_in_force_field:
@@ -379,6 +439,15 @@ func update_score_ui():
                     "team_2_score": team_score_dict[OPPONENT_TEAM]
             })
     )
+
+func update_stability_bar(actor: BasePhysicsActor) -> void:
+    hud_anchor.update_stability_bar(
+                node_stability_dict[actor] / node_max_stability_dict[actor], actor)
+
+func update_hp_bar(actor: BasePhysicsActor) -> void:
+    hud_anchor.update_hp_bar(
+                node_hp_dict[actor] / node_max_hp_dict[actor], actor)
+
 
 func update_time_label():
     @warning_ignore("narrowing_conversion")

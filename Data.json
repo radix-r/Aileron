@@ -1,7 +1,10 @@
 {
     "Arena0": {
+    	"burst_cooldown": 3,
+        "burst_duration": 3,
         "foce_field_force_newtons": 1000,
         "game_time": 10,
+        
     },
     "Ship1": {
         "speed_default": 10,
@@ -39,7 +42,7 @@
     },
     "Gun2": {
         "fire_cooldown": 0.1,
-        "projectile_speed": 700
+        "projectile_speed": 200
     },
     "Ship2": {
         "pitch_sensitivity": 5.0,
