@@ -13,6 +13,7 @@ var aim_ui_elemet: PackedScene = preload("res://Scenes/GUI/aim_indicator.tscn")
 @onready var overlay: CanvasLayer = $NavArrowOverlay
 @onready var velocity_marker: Control = $PlayerVectorOverlay/VelocityMarker
 @onready var stopwatch_label: Label = $StopwatchLabel
+@onready var center_screen_label: Label = $CenterScreenLabel
 
 # Key: node name, Value: target ui element assigned to that node
 var target_ui_element_dict: Dictionary = {}
@@ -46,6 +47,10 @@ func hide_boresight() -> void:
     boresight.hide()
 
 
+func hide_center_screen_label() -> void:
+    center_screen_label.hide()
+
+
 func hide_velocity_marker() -> void:
     velocity_marker.hide()
 
@@ -54,6 +59,8 @@ func remove_target_indicator(node_name: String) -> void:
     if target_ui_element_dict.has(node_name):
         target_ui_element_dict.erase(node_name)
 
+func set_center_screen_label(text: String) -> void:
+    center_screen_label.text = text
 
 func set_boresight_position(hud_pos: Vector2) -> void:
     boresight.set_position(hud_pos)
@@ -72,6 +79,8 @@ func set_velocity_marker_pos(hud_pos: Vector2) -> void:
 func show_boresight() -> void:
     boresight.show()
 
+func show_center_screen_label() -> void:
+    center_screen_label.show()
 
 func show_velocity_marker() -> void:
     velocity_marker.show()

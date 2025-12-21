@@ -16,7 +16,8 @@ class_name LevelLogic extends Node3D
 @onready var time_label_update_timer: Timer = Timer.new()
 ## When true teammates can dammage eachother
 @onready var friendly_fire: bool = false
-
+## Base format for timer label
+@onready var timer_format: String = "%02d:%02d"
 
 @onready var player_scene: PackedScene = preload("res://Scenes/Actors/ship_physics.tscn")
 @onready var ball_scene: PackedScene = preload("res://Scenes/ball.tscn") 
@@ -54,11 +55,15 @@ class_name LevelLogic extends Node3D
 
 
 func _ready() -> void:
+    #init signals
     SignalManager.arena_force_field_entered.connect(add_object_in_force_field)
     SignalManager.arena_force_field_exited.connect(remove_object_in_force_field)
-    
     SignalManager.hit_by_projectile.connect(_on_hit_by_projectile)
-    
+    SignalManager.directional_input_received.connect(_on_directional_input_received)
+    SignalManager.rotation_input_received.connect(_on_rotational_input_received)
+    SignalManager.fire_input.connect(_on_fire_input)
+    SignalManager.boost_input.connect(_on_boost_input)
+    SignalManager.target_select_input.connect(_on_target_select_input)
     # Instantiate team relations
     targeting_logic.set_team_targetability(PLAYER_TEAM, ENVIRNOMENT_TEAM)
     targeting_logic.set_team_targetability(OPPONENT_TEAM, PLAYER_TEAM)
@@ -71,7 +76,6 @@ func _ready() -> void:
     # Instantiate player, npcs, objects (ball)
     player_node = player_scene.instantiate()
     init_physics_actor(player_node, player_starting_pos, player_starting_rotation, PLAYER_TEAM)
-    
     
     teammate_node = opponent_scene.instantiate()
     init_physics_actor(
@@ -101,13 +105,9 @@ func _ready() -> void:
     # get data values
     foce_field_force_newtons = Utilities.data_dict["Arena0"]["foce_field_force_newtons"]
     
-    SignalManager.directional_input_received.connect(_on_directional_input_received)
-    SignalManager.rotation_input_received.connect(_on_rotational_input_received)
-    SignalManager.fire_input.connect(_on_fire_input)
-    SignalManager.boost_input.connect(_on_boost_input)
-    SignalManager.target_select_input.connect(_on_target_select_input)
+
     
-    # TODO init score ui and game timer
+    # init game timer
     game_timer.wait_time = 60 * Utilities.data_dict["Arena0"]["game_time"]
     game_timer.one_shot = true
     add_child(game_timer)
@@ -120,8 +120,6 @@ func _ready() -> void:
     time_label_update_timer.timeout.connect(update_time_label)
     time_label_update_timer.start()
     
-#func _is_same_team(node_a: Node, node_b: Node) -> bool:
-
     
 func _on_arena_reset_timer_timeout() -> void:
     reset_arena()
@@ -149,7 +147,6 @@ func _on_fire_input():
         
 func _on_game_timer_timeout():
     var highest_score: int = 0
-    var winning_team: String = ""
     var score_team_dict: Dictionary = {}
     for team in team_score_dict:
         if score_team_dict.has(team_score_dict[team]):
@@ -161,14 +158,24 @@ func _on_game_timer_timeout():
     scores.sort()
     highest_score = scores[-1]
     
-    var winner = score_team_dict[highest_score]
+    var winner: Array = score_team_dict[highest_score]
     #print_debug("Team " + winner + " wins!")
     print(winner)
-    if PLAYER_TEAM in winner:
+    if PLAYER_TEAM in winner && winner.size() == 1:
         # Display win on screen
-        pass
+        hud_anchor.set_center_screen_label("WIN")
+
+    elif PLAYER_TEAM in winner && winner.size() > 1:
+        # tie
+        hud_anchor.set_center_screen_label("TIE")
+
+    else:
+        # lose
+        hud_anchor.set_center_screen_label("LOSE")
         
+    hud_anchor.show_center_screen_label()
         
+    # Go back to menu?
         
 func _on_goal_zone_1_body_entered(body: Node3D) -> void:
     #print_debug(body.name + " entered goal 1")
@@ -377,7 +384,7 @@ func update_time_label():
     @warning_ignore("narrowing_conversion")
     var mins: int = game_timer.time_left / 60
     var secs: int =  int(game_timer.time_left) % 60
-    hud_anchor.set_timer(str(mins) + ":" + str(secs))
+    hud_anchor.set_timer(timer_format % [mins, secs])
 
 
 func remove_object_in_force_field(obj: RigidBody3D) -> void:
