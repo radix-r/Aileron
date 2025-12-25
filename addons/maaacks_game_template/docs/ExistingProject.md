@@ -1,57 +1,50 @@
 # Existing Project
 
-These instructions assume starting with just the contents of `addons/`. This will be the case when installing the *plugin* version in the Godot Asset Library.
+These instructions assume starting with just the contents of `addons/` and going through the installer to copy the examples content into your project. This will be the case when installing the *plugin* version in the Godot Asset Library.
 
+To revisit any part of the initial setup, find the `Setup Wizard` at `Project > Tools > Run Maaack's Game Template Setup...`. Example files can be re-copied from the `Setup Wizard`, assuming they have not been deleted.
 
-1.  Update the project’s main scene (if skipped during plugin install).
+1.  Update the project’s name in the main menu.
     
 
-    1.  Go to `Project > Project Settings… > General > Application > Run`.
-    2.  Update `Main Scene` to `MainMenu.tscn` or `Opening.tscn`.
-        1.  Alternatively, any scene the inherits from one of these. A few exist in the `examples/` folder.
-    3.  Close the window.
+    1.  Open `main_menu_with_animations.tscn`.
+    2.  Select the `TitleLabel` node.
+    3.  The `Text` should match the project's name (in the project's settings).
+        1. If `Text` is customized, set `Auto Update` to false.
+    4.  Select the `SubtitleLabelNode` node and customize the `Text` as desired.
+    5.  Save the scene.
     
 
-2.  Update the project’s name in the main menu.
+2.  Link the main menu to a custom game scene (skip if using the example game scene).
     
 
-    1.  Open `MainMenu.tscn`.
-    2.  Select the `Title` node.
-    3.  Update the `Text` to your project's title.
-    4.  Select the `Subtitle` node.
-    5.  Update the `Text` to a desired subtitle or empty.
-    6.  Save the scene.
-    
-
-3.  Link the main menu to the game scene.
-    
-
-    1.  Open `MainMenu.tscn`.
+    1.  Open `main_menu_with_animations.tscn`.
     2.  Select the `MainMenu` node.
     3.  Update `Game Scene Path` to the path of the project's game scene.
     4.  Save the scene.
     
 
-4.  Add background music and sound effects to the UI.
+3.  Add background music and sound effects to the UI.
 
-    1.  Add `Music` and `SFX` to the project's default audio busses.
+    1.  Verify the `Music` and `SFX` audio busses.
 
         1.  Open the Audio bus editor.
-        2.  Click the button "Add Bus" twice (x2).
-        3.  Name the two new busses `Music` and `SFX`.
-        4.  Save the project.
+        2.  Confirm that `Music` and `SFX` audio busses are available.
+            1.  If the last bus is `New Bus`, try restarting the editor and checking again.
+        3.  If the audio bus doesn't exist, add it and save the project.
 
     2.  Add background music to the Main Menu.
 
         1.  Import the music asset into the project.
-        2.  Open `MainMenu.tscn`.
+        2.  Open `main_menu_with_animations.tscn`.
         3.  Select the `BackgroundMusicPlayer` node.
         4.  Assign the music asset to the `stream` property.
-        5.  Save the scene.
-        6.  Optionally, repeat steps 3-5 for background music nodes in:
-            1.  `Opening.tscn`
-            2.  `GameUI.tscn`
-            3.  `EndCredits.tscn`
+        5.  Make sure that the `bus` property is set to `Music`.
+        6.  Save the scene.
+        7.  Optionally, repeat steps 3-5 for background music nodes in:
+            1.  `opening.tscn`
+            2.  `game_ui.tscn`
+            3.  `end_credits.tscn`
 
 
     3.  Add sound effects to UI elements.
@@ -59,59 +52,54 @@ These instructions assume starting with just the contents of `addons/`. This wil
         1.  By scene.
 
 
-            1.  Open `MainMenu.tscn` and `PauseMenu.tscn`.
+            1.  Open `main_menu_with_animations.tscn` and `pause_menu.tscn`.
             2.  Select the `UISoundController` node.
             3.  Add audio streams to the various UI node events.
-            4.  Save the scenes.
+            4.  Save the scenes.  
 
 
         2.  Project-wide.
 
 
-            1.  Open `ProjectUISoundController.tscn`.
+            1.  Open `project_ui_sound_controller.tscn`.
             2.  Select the `UISoundController` node.
             3.  Add audio streams to the various UI node events.
-            4.  Save the scene.
-   
+            4.  Save the scene.  
 
-5.  Add readable names for input actions to the controls menu.
+
+4.  Add readable names for input actions to the controls menu.
     
 
-    1.  Open `InputOptionsMenu.tscn` (or `MasterOptionsMenu`, which contains an instance of the scene).
-    2.  Select the `Controls` node.
-    3.  Update the `Action Name Map` to show readable names for the project's input actions.  
-        1.  The keys are the project's input action names, while the values are the names shown in the controls menu.  
-        2.  An example is provided. It can be updated or removed, either in the inspector for the node, or in the code of `InputOptionsMenu.gd`.  
-    4.  Save the scene.  
+    1.  Open `input_options_menu.tscn`.
+    2.  In the scene tree, select the `Controls` node.  
+    3.  In the node inspector, select the desired input remapping mode (defaults to `List`).  
+    4.  In the scene tree, select `InputActionsList` or `InputActionsTree`, depending on the choice of input remapping. The other node should be hidden.  
+    5.  In the node inspector, update the `Input Action Names` and corresponding `Readable Action Names` to show user-friendly names for the project's input actions.  
+    6.  Save the scene.  
 
-
-6.  Add / remove configurable settings to / from menus.
+5.  Add / remove configurable settings to / from menus.
     
 
-    1.  Open `MiniOptionsMenu.tscn` or `[Audio|Visual|Input|Game]OptionsMenu.tscn` scenes to edit their options.
+    1.  Open `mini_options_menu.tscn` or `[audio|visual|input|game]_options_menu.tscn` scenes to edit their options.
     2.  If an option is not desired, it can always be hidden, or removed entirely (sometimes with some additional work).
-    3.  If a new option is desired, it can be added without writing code.
-        1.  Find the node that contains the existing list of options. Usually, it's a `VBoxContainer`.
-        2.  Add an `OptionControl.tscn` node as a child to the container.
-            1.  `SliderOptionControl.tscn` or `ToggleOptionControl.tscn` can be used if those types match requirements. In that case, skip step 6.
-            2.  `ListOptionControl.tscn` and `Vector2ListOptionControl.tscn` are also available, but more complicated. See the `ScreenResolution` example.
-        3.  Select the `OptionControl` node just added, to edit it in the inspector.
-        4.  Add an `Option Name`. This prefills the `Key` string.
-        5.  Select an `Option Section`. This prefills the `Section` string.
-        6.  Add any kind of `Button`, `Slider`, `LineEdit`, or `TextEdit` to the `OptionControl` node.
-        7.  Save the scene.
-    4.  For options to have an effect outside of the menu, it will need to be referenced by its `key` and `section` from `Config.gd`.
-        1.  `Config.get_config(section, key, default_value)`
-    5.  Validate the values being stored in your local `config.cfg` file.
-        1.  Refer to [Accessing Persistent User Data User](https://docs.godotengine.org/en/stable/tutorials/io/data_paths.html#accessing-persistent-user-data-user) to find Godot user data on your machine.
-        2.  Find the directory that matches your project's name.  
-        3.  `config.cfg` should be in the top directory of the project.
+    3.  If a new option is desired, refer to [Adding Custom Options.](/addons/maaacks_game_template/docs/AddingCustomOptions.md)
 
 
-7.  Update the game credits / attribution.
+6.  Update the game credits / attribution.
     
 
     1.  Update the example `ATTRIBUTION.md` with the project's credits.
-    2.  Open `Credits.tscn`.
+    2.  Open `credits_label.tscn`.
     3.  Check the `CreditsLabel` has updated with the text.
-    4.  Save the scene.
+    4.  Optionally, disable `Auto Update` and customize the text.
+    5.  Save the scene (even if it shows no changes).
+
+
+7.  Continue with:
+
+    1.  [Setting up the Main Menu.](/addons/maaacks_game_template/docs/MainMenuSetup.md)  
+    2.  [Setting up a Game Scene.](/addons/maaacks_game_template/docs/GameSceneSetup.md)  
+    3.  [Loading scenes asynchronously.](/addons/maaacks_game_template/docs/LoadingScenes.md)  
+    4.  [Adding icons to the Input Options.](/addons/maaacks_game_template/docs/InputIconMapping.md)  
+    5.  [Adding Custom Options.](/addons/maaacks_game_template/docs/AddingCustomOptions.md)
+    6.  [Utilizing Game Saving.](/addons/maaacks_game_template/docs/GameSaving.md)  

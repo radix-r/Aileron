@@ -1,0 +1,63 @@
+[gd_scene load_steps=10 format=3 uid="uid://cf3ax47pnurtj"]
+
+[ext_resource type="Texture2D" uid="uid://btqhk8548bjb0" path="res://assets/HUD/square.png" id="1_5e8ml"]
+[ext_resource type="Script" path="res://scripts/target_ui_element.gd" id="1_8fdjr"]
+[ext_resource type="Texture2D" uid="uid://cbnk6vdtjm7nl" path="res://assets/HUD/circle.png" id="2_8fdjr"]
+
+[sub_resource type="Gradient" id="Gradient_8fdjr"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bylfw"]
+gradient = SubResource("Gradient_8fdjr")
+
+[sub_resource type="Gradient" id="Gradient_xblae"]
+colors = PackedColorArray(1, 0, 0, 1, 1, 0.03137255, 0.05882353, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_84tt0"]
+gradient = SubResource("Gradient_xblae")
+
+[sub_resource type="Gradient" id="Gradient_bylfw"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xblae"]
+gradient = SubResource("Gradient_bylfw")
+
+[node name="TargetUiElement" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.2, 0.2)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_8fdjr")
+
+[node name="TargetIndicator" type="Sprite2D" parent="."]
+texture = ExtResource("1_5e8ml")
+
+[node name="SelectedIndicator" type="Sprite2D" parent="."]
+texture = ExtResource("2_8fdjr")
+
+[node name="HpBar" type="Sprite2D" parent="."]
+position = Vector2(0, 150)
+scale = Vector2(1, 30)
+texture = SubResource("GradientTexture1D_bylfw")
+
+[node name="Fill" type="Sprite2D" parent="HpBar"]
+position = Vector2(-128, -0.5)
+texture = SubResource("GradientTexture1D_84tt0")
+centered = false
+
+[node name="StabilityBar" type="Sprite2D" parent="."]
+position = Vector2(0, 170)
+scale = Vector2(0.9, 16)
+texture = SubResource("GradientTexture1D_bylfw")
+
+[node name="Fill" type="Sprite2D" parent="StabilityBar"]
+position = Vector2(-128, -0.5)
+texture = SubResource("GradientTexture1D_xblae")
+centered = false
