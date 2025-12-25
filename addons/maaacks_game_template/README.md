@@ -1,20 +1,30 @@
 # Godot Game Template
-For Godot 4.2
+For Godot 4.5 (4.3+ compatible)
 
-This template has a main menu, options menus, pause menu, credits, scene loader, extra tools, and an example game scene.
+This template has a main menu, options menus, pause menu, credits, scene loader, extra tools, and an example game scene.  
 
-[Example on itch.io](https://maaack.itch.io/godot-game-template)
+[Example on itch.io](https://maaack.itch.io/godot-game-template)  
 
-![Main Menu](/addons/maaacks_game_template/media/Screenshot-3-1.png)  
-![Key Rebinding](/addons/maaacks_game_template/media/Screenshot-3-2.png)  
-![Audio Controls](/addons/maaacks_game_template/media/Screenshot-3-4.png)  
-![Pause Menu](/addons/maaacks_game_template/media/Screenshot-3-6.png)  
-[All screenshots](/addons/maaacks_game_template/docs/Screenshots.md)
+[Featured Games](#featured-games)  
 
-## Use Case
+### Videos
+
+[![Quick Intro Video](https://img.youtube.com/vi/U9CB3vKINVw/hqdefault.jpg)](https://youtu.be/U9CB3vKINVw)  
+[More Videos](/addons/maaacks_game_template/docs/Videos.md)
+
+### Screenshots
+![Main Menu](/addons/maaacks_game_template/media/screenshot-6-main-menu-5.png)  
+![Key Rebinding](/addons/maaacks_game_template/media/screenshot-6-input-list-8.png)  
+![Audio Controls](/addons/maaacks_game_template/media/screenshot-6-audio-options-2.png)  
+![Video Controls](/addons/maaacks_game_template/media/screenshot-6-video-options-5.png)  
+![Pause Menu](/addons/maaacks_game_template/media/screenshot-6-pause-menu-3.png)  
+[More Screenshots](/addons/maaacks_game_template/docs/Screenshots.md)  
+
+## Objective
+
 Setup menus and accessibility features in about 15 minutes.
 
-The core components can support a larger project, but the template was originally built to support smaller projects and game jams.
+The template can be the start of a new project, or plug into an existing one. It is game agnostic (2D or 3D) and can work with multiple target resolutions, up to 4k and down to 640x360. It's meant to cover the needs for a typical game jam, while remaining scalable and extensible enough to support commercial games.
 
 ## Features
 
@@ -24,10 +34,13 @@ The `base/` folder holds the core components of the menus application.
 
 -   Main Menu    
 -   Options Menus
+-   Pause Menu
 -   Credits
 -   Loading Screen
+-   Opening Scene
 -   Persistent Settings
 -   Simple Config Interface
+-   Extensible Overlay Menus
 -   Keyboard/Mouse Support
 -   Gamepad Support
 -   UI Sound Controller
@@ -37,46 +50,35 @@ The `base/` folder holds the core components of the menus application.
 
 The `extras/` folder holds components that extend the core application.
 
--   Pause Menu
--   Opening Scene
--   Win & Lose Scenes
--   Logging Scripts
--   Additional Autoloaded Classes
--   Scripts for Testing & Releasing
+-   Level Loaders
+-   Level Progress Manager
+-   Win / Lose Manager
+-   Script for Releasing on [itch.io](https://itch.io/) with [butler](https://itch.io/docs/butler/)
  
 ### Examples 
 
 The `examples/` folder contains an example project using inherited scenes from the `base/` and `extras/`.
 
--   Example Game Scene
--   Level Advancement
+-   Game Scene
+-   Level Class & 3 Levels
+-   Tutorial Windows & 3 Tutorial Messages
+-   Win & Lose Windows
+-   Master Options Menu
 -   End Credits
--   Additional Inherited Scenes:
-    -   Game Options Menu w/ Reset button
-    -   Master Options Menu w/ Game Options tab 
-    -   Main Menu w/ Animations
-    -   Pause Menu w/ Linked Scenes
-    -   Loading Screen w/ Shader Pre-caching 
+-   Main Menu w/ Animations
+-   Opening w/ Godot Logo
 
-### How it Works
-- `AppConfig.tscn` is set as the first autoload. It calls `AppSettings.gd` to load all the configuration settings from the config file (if it exists) through `Config.gd`.
-- `SceneLoader.tscn` is set as the second autoload.  It can load scenes in the background or with a loading screen (`LoadingScreen.tscn` by default).   
-- `Opening.tscn` is a simple scene for fading in/out a few images at the start of the game. It then loads the next scene (`MainMenu.tscn`).  
-- `MainMenu.tscn` is where a player can start the game, change settings, watch credits, or quit. It can link to the path of a game scene to play, and the packed scene of an options menu to use.  
-- `OptionControl.tscn` and its inherited scenes are used for most configurable options in the menus. They work with `Config.gd` to keep settings persistent between runs.
-- `Credits.tscn` reads from `ATTRIBUTION.md` to automatically generate the content for it's scrolling text label.  
-- The `UISoundController` node automatically attaches sounds to buttons, tab bars, sliders, and line edits in the scene. `ProjectUISoundController.tscn` is an autload used to apply UI sounds project-wide.
-- `ProjectMusicController.tscn` is an autoload that keeps music playing between scenes. It detects music stream players as they are added to the scene tree, reparents them to itself, and blends the tracks.  
-- `InGameMenuController.gd` controls opening and closing a menu and pausing the game in the background.
-- The `PauseMenuController` node loads the `PauseMenu.tscn` (using `InGameMenuController.gd`) when triggering `ui-cancel`.
-- `GameUI.tscn` is a demo game scene that displays recognized action inputs, and features the `PauseMenuController` node, the `LevelLoader` node to advance through levels, and `InGameMenuController.gd` to show `WinScreen.tscn` or `LoseScreen.tscn`.
-  
+### Minimal
+
+Users that want a minimal set of features can try [Maaack's Menus Template](https://github.com/Maaack/Godot-Menus-Template) or other options from the [plugin suite](/addons/maaacks_game_template/docs/PluginSuite.md).  
+
+
 ## Installation
 
 ### Godot Asset Library
 This package is available as both a template and a plugin, meaning it can be used to start a new project, or added to an existing project. 
 
-![Package Icon](/addons/maaacks_game_template/media/Game-Icon-black-transparent-256x256.png)  
+![Package Icon](/addons/maaacks_game_template/media/game-icon-black-transparent-256x256.png)  
 
 When starting a new project:
 
@@ -117,15 +119,8 @@ When editing an existing project:
     2.  Another dialogue window will ask to update the project's main scene.
 6.  Continue with the [Existing Project Instructions](/addons/maaacks_game_template/docs/ExistingProject.md) 
 
-#### Minimal
-
-Users that want a minimal set of features can try [Maaack's Menus Template](https://github.com/Maaack/Godot-Menus-Template).  
 
 ## Usage
-
-Changes can be made directly to scenes and scripts outside of `addons/`. 
-
-A copy of the `examples/` directory is made outside of `addons/` when the plugin is enabled for the first time. However, if this is skipped, it is recommended developers inherit from scenes they want to use, and save the inherited scene outside of `addons/`. This avoids changes getting lost either from the package updating, or because of a `.gitignore`.
 
 ### New Project
 These instructions assume starting with the entire contents of the project folder. This will be the case when cloning the repo, or starting from the *template* version in the Godot Asset Library.
@@ -139,7 +134,40 @@ These instructions assume starting with just the contents of `addons/`. This wil
 
 [Existing Project Instructions](/addons/maaacks_game_template/docs/ExistingProject.md)  
    
+### More Documentation
 
+[Main Menu Setup](/addons/maaacks_game_template/docs/MainMenuSetup.md)  
+[Game Scene Setup](/addons/maaacks_game_template/docs/GameSceneSetup.md)  
+[Loading Scenes](/addons/maaacks_game_template/docs/LoadingScenes.md)  
+[Input Icon Mapping](/addons/maaacks_game_template/docs/InputIconMapping.md)  
+[Joypad Inputs](/addons/maaacks_game_template/docs/JoypadInputs.md)  
+[Blending Music](/addons/maaacks_game_template/docs/BlendingMusic.md)  
+[Add Custom Options](/addons/maaacks_game_template/docs/AddingCustomOptions.md)  
+[Game Saving](/addons/maaacks_game_template/docs/GameSaving.md)  
+[How Parts Work](/addons/maaacks_game_template/docs/HowPartsWork.md)  
+[Moving Files](/addons/maaacks_game_template/docs/MovingFiles.md)  
+[Uploading to itch.io](/addons/maaacks_game_template/docs/UploadingToItchIo.md)  
+[Build and Publish Your Game Using CICD](/addons/maaacks_game_template/docs/BuildAndPublish.md)  
+[Automatic Updating](/addons/maaacks_game_template/docs/AutomaticUpdating.md)  
+[Exhibiting Your Game](/addons/maaacks_game_template/docs/Exhibiting.md)  
+
+---
+
+## Featured Games
+
+| Baking Godium | Spud Customs | Rent Seek Kill |  
+| :-------:| :-------: | :-------: |
+| ![Baking Godium](/addons/maaacks_game_template/media/thumbnail-game-baking-godium.png) | ![Spud Customs](/addons/maaacks_game_template/media/thumbnail-game-spud-customs.png) | ![Rent-Seek-Kill](/addons/maaacks_game_template/media/thumbnail-game-rent-seek-kill.png) |
+|  [Play on itch.io](https://maaack.itch.io/baking-godium) | [Find on Steam](https://store.steampowered.com/app/3291880/Spud_Customs/) | [Play on itch.io](https://xandruher.itch.io/rent-seek-kill)  |
+
+
+[All Shared Games](/addons/maaacks_game_template/docs/GamesMade.md)  
+
+
+## Community
+
+Join the [Discord server](https://discord.gg/AyZrJh5AMp ) and share your work with others. It's also a space for getting or giving feedback, and asking for help. 
+ 
 
 ## Links
 [Attribution](/addons/maaacks_game_template/ATTRIBUTION.md)  

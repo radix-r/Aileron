@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://cxq3gebh28avn"]
+
+[ext_resource type="PackedScene" uid="uid://bvh0oiol7fec" path="res://Assets/Blender/Arena.glb" id="1_rgqy5"]
+[ext_resource type="Texture2D" uid="uid://dmhca0rk2k06m" path="res://Assets/kenney_prototype-textures/PNG/Dark/texture_04.png" id="2_3g5eh"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ffj27"]
+albedo_texture = ExtResource("2_3g5eh")
+
+[node name="Arena2" instance=ExtResource("1_rgqy5")]
+
+[node name="Arena" parent="." index="0"]
+material_override = SubResource("StandardMaterial3D_ffj27")
+
+[node name="StaticBody3D" parent="Arena" index="0"]
+collision_layer = 8
+collision_mask = 15

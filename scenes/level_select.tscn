@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://b123qrymwqa3e"]
+
+[ext_resource type="Script" uid="uid://c00qlfiebhst" path="res://Scripts/level_select.gd" id="1_lc4wm"]
+
+[node name="LevelSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lc4wm")
+button_level_dict = {
+"Arena Ball": "res://Scenes/Levels/test_scene_arena_0.tscn",
+"Arena Race": "res://Scenes/Levels/obstical_level.tscn",
+"Demo Level 1": "res://Scenes/Levels/test_scene_1.tscn",
+"Grand Canyon Race": "res://Scenes/Levels/canyon_race_level.tscn"
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2

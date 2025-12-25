@@ -1,6 +1,10 @@
 {
     "Arena0": {
+        "burst_cooldown": 3,
+        "burst_duration": 3,
         "foce_field_force_newtons": 1000,
+        "game_time": 3,
+        
     },
     "Ship1": {
         "speed_default": 10,
@@ -20,12 +24,17 @@
         "camera_chase": 0.05,
         "boost_factor": 2,
         "thrust_strength": 200000,
+        "max_hp": 10,
+        "max_stability": 10,
+        "stability_regen": 0.5,
     },
     "Bullet1": {
         "lifespan": 10
     },
     "Bullet2": {
-        "lifespan": 2
+        "lifespan": 2,
+        "hp_damage": 1,
+        "stability_damage": 2,
     },
     "Gun1": {
         "fire_cooldown": 0.1,
@@ -33,15 +42,17 @@
     },
     "Gun2": {
         "fire_cooldown": 0.1,
-        "projectile_speed": 700
+        "projectile_speed": 200
     },
     "Ship2": {
         "pitch_sensitivity": 5.0,
         "yaw_sensitivity": 5.0
     },
     "settings": {
-        "horizontal_look_sensitivity": 0.01,
-        "vertical_look_sensitivity": 0.01
+        "controller_horizontal_turn_sensitivity": 20,
+        "controller_vertical_turn_sensitivity": 20, 
+        "mouse_horizontal_turn_sensitivity": 1,
+        "mouse_vertical_turn_sensitivity": 1, 
     }
     
 }

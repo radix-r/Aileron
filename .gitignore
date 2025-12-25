@@ -15,8 +15,8 @@ export_presets.cfg
 .mono/
 data_*/
 mono_crash.*.json
-Assets/archive/
+assets/archive/
 
-Assets/
+assets/
 
 addons/

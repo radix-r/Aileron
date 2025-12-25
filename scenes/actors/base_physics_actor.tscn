@@ -1,0 +1,66 @@
+[gd_scene load_steps=7 format=3 uid="uid://cav4nmaj3xs4e"]
+
+[ext_resource type="Script" uid="uid://bghlyri6712ru" path="res://scripts/base_physics_actor.gd" id="1_hg5mo"]
+[ext_resource type="Script" uid="uid://cis08mftfnn2u" path="res://scripts/gun2.gd" id="2_dqm2u"]
+[ext_resource type="PackedScene" path="res://scenes/muzzle_flash_1.tscn" id="3_lsky4"]
+[ext_resource type="Texture2D" uid="uid://be0lvcs65l2bd" path="res://assets/Images/Thrust.png" id="4_yw28e"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rtrmn"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6iifb"]
+
+[node name="BasePhysicsActor" type="RigidBody3D" node_paths=PackedStringArray("weapon") groups=["targeter"]]
+physics_interpolation_mode = 1
+collision_layer = 4
+collision_mask = 15
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+mass = 100.0
+linear_damp = 1.0
+script = ExtResource("1_hg5mo")
+weapon = NodePath("PitchPoint/Gun1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_rtrmn")
+debug_color = Color(0, 0.6, 0.701961, 1)
+
+[node name="PitchPoint" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PitchPoint"]
+mesh = SubResource("BoxMesh_6iifb")
+skeleton = NodePath("../../CollisionShape3D")
+
+[node name="ForwardPoint" type="Node3D" parent="PitchPoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="UpPoint" type="Node3D" parent="PitchPoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Gun1" type="Node3D" parent="PitchPoint"]
+script = ExtResource("2_dqm2u")
+
+[node name="FirePoint" type="Node3D" parent="PitchPoint/Gun1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
+
+[node name="MuzzleFlash1" parent="PitchPoint/Gun1/FirePoint" instance=ExtResource("3_lsky4")]
+
+[node name="ThrustVector" type="Node3D" parent="."]
+
+[node name="ThrustSprite" type="Sprite3D" parent="ThrustVector"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 1)
+modulate = Color(1, 1, 1, 0.45882353)
+pixel_size = 0.002
+texture = ExtResource("4_yw28e")
+
+[node name="ThrustSprite2" type="Sprite3D" parent="ThrustVector"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 1)
+sorting_offset = 0.1
+modulate = Color(1, 1, 1, 0.45882353)
+pixel_size = 0.002
+axis = 0
+texture = ExtResource("4_yw28e")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
