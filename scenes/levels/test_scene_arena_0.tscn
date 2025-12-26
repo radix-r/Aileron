@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bqvwiqc7qedjb"]
+[gd_scene load_steps=16 format=3 uid="uid://bqvwiqc7qedjb"]
 
 [ext_resource type="PackedScene" uid="uid://cxq3gebh28avn" path="res://scenes/levels/arena_0_base.tscn" id="2_u7hmd"]
 [ext_resource type="Script" uid="uid://dx0ves6s5tivi" path="res://scripts/goal.gd" id="3_siku3"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://b6ab04h32aky1" path="res://scenes/hud/hud_anchor.tscn" id="6_eyewj"]
 [ext_resource type="Script" path="res://scripts/input_handler.gd" id="6_siku3"]
 [ext_resource type="Script" path="res://scripts/ai_logic.gd" id="8_e1dyn"]
+[ext_resource type="Script" uid="uid://b6wnx1n5hlqi" path="res://scripts/combat_logic.gd" id="9_ohmka"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_u7hmd"]
 height = 20.0
@@ -221,11 +222,12 @@ environment = SubResource("Environment_2lh4p")
 
 [node name="Services" type="Node3D" parent="."]
 
-[node name="LevelLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("ai_logic", "targeting_logic", "hud_logic", "hud_anchor", "actors_root", "env_root")]
+[node name="LevelLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("ai_logic", "targeting_logic", "hud_logic", "combat_logic", "hud_anchor", "actors_root", "env_root")]
 script = ExtResource("5_u7hmd")
 ai_logic = NodePath("../AiLogic")
 targeting_logic = NodePath("../TargetingLogic")
 hud_logic = NodePath("../HudLogic")
+combat_logic = NodePath("../CombatLogic")
 hud_anchor = NodePath("../../UI/HudAnchor")
 actors_root = NodePath("../../Actors")
 env_root = NodePath("../../Environment")
@@ -243,6 +245,10 @@ script = ExtResource("6_siku3")
 
 [node name="AiLogic" type="Node3D" parent="Services"]
 script = ExtResource("8_e1dyn")
+
+[node name="CombatLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("level_logic")]
+script = ExtResource("9_ohmka")
+level_logic = NodePath("../LevelLogic")
 
 [node name="UI" type="Node3D" parent="."]
 

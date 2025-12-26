@@ -1,35 +1,255 @@
-[gd_scene load_steps=6 format=3 uid="uid://csvp1gxkngosx"]
+[gd_scene load_steps=15 format=3 uid="uid://csvp1gxkngosx"]
 
-[ext_resource type="Script" path="res://scripts/bullet_1.gd" id="1_041cw"]
-[ext_resource type="PackedScene" uid="uid://d1iqn0kgh3k0k" path="res://scenes/trail_3d_1.tscn" id="2_84hoq"]
+[ext_resource type="PackedScene" uid="uid://cxq3gebh28avn" path="res://scenes/levels/arena_0_base.tscn" id="1_8cixe"]
+[ext_resource type="Script" path="res://scripts/force_field.gd" id="2_nuuv1"]
+[ext_resource type="Script" uid="uid://dx0ves6s5tivi" path="res://scripts/goal.gd" id="3_bbjts"]
+[ext_resource type="Script" uid="uid://cish1ai34pm5i" path="res://scripts/arena_0_level_logic.gd" id="4_jj4bn"]
+[ext_resource type="Script" path="res://scripts/targeting_logic.gd" id="5_kilcg"]
+[ext_resource type="Script" path="res://scripts/hud_logic.gd" id="6_ssb10"]
+[ext_resource type="Script" path="res://scripts/input_handler.gd" id="7_ciban"]
+[ext_resource type="Script" path="res://scripts/ai_logic.gd" id="8_nnam1"]
+[ext_resource type="PackedScene" uid="uid://b6ab04h32aky1" path="res://scenes/hud/hud_anchor.tscn" id="9_s1kkt"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3myqu"]
-emission_enabled = true
-emission = Color(0.988235, 1, 0, 1)
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_u7hmd"]
+height = 20.0
+radius = 130.0
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_4voj3"]
-material = SubResource("StandardMaterial3D_3myqu")
-radius = 0.05
-height = 0.2
+[sub_resource type="BoxShape3D" id="BoxShape3D_d2txi"]
+size = Vector3(87.37793, 82.21564, 50)
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rugkm"]
-radius = 0.05
-height = 0.2
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_paxhc"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
 
-[node name="BulletBody" type="CharacterBody3D"]
-collision_layer = 2
-collision_mask = 12
-script = ExtResource("1_041cw")
+[sub_resource type="Sky" id="Sky_you74"]
+sky_material = SubResource("ProceduralSkyMaterial_paxhc")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-mesh = SubResource("CapsuleMesh_4voj3")
+[sub_resource type="Environment" id="Environment_2lh4p"]
+background_mode = 2
+sky = SubResource("Sky_you74")
+tonemap_mode = 2
+glow_enabled = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_rugkm")
+[node name="LevelRoot" type="Node3D"]
 
-[node name="Trail3D1" parent="." instance=ExtResource("2_84hoq")]
-_from_width = 0.1
-_lifespan = 0.1
-_start_color = Color(1, 1, 0, 1)
+[node name="Actors" type="Node3D" parent="."]
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="Arena2" parent="Environment" instance=ExtResource("1_8cixe")]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Environment/Arena2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 78.32895, 0)
+light_color = Color(0.69591635, 0.8540437, 0.9748439, 1)
+light_energy = 16.0
+omni_range = 540.592
+omni_attenuation = 0.5
+
+[node name="ForceField" type="Area3D" parent="Environment/Arena2"]
+collision_layer = 8
+collision_mask = 15
+script = ExtResource("2_nuuv1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Arena2/ForceField"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -79.55515, 0)
+shape = SubResource("CylinderShape3D_u7hmd")
+
+[node name="Goal1" type="Node3D" parent="Environment/Arena2"]
+transform = Transform3D(1, 0, 0, 0, 0.9914449, -0.1305262, 0, 0.1305262, 0.9914449, 0, 26, -150.79599)
+script = ExtResource("3_bbjts")
+
+[node name="GoalZone1" type="Area3D" parent="Environment/Arena2/Goal1"]
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Arena2/Goal1/GoalZone1"]
+transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0)
+shape = SubResource("BoxShape3D_d2txi")
+
+[node name="GoalLights" type="Node3D" parent="Environment/Arena2/Goal1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8051577, 28.903046)
+
+[node name="GoalLight" type="Node3D" parent="Environment/Arena2/Goal1/GoalLights"]
+transform = Transform3D(0.77198136, 0.57751584, -0.2655561, -0.5990235, 0.8007313, 0, 0.21263911, 0.15907437, 0.96409535, 41.79, -30.672, 0)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Environment/Arena2/Goal1/GoalLights/GoalLight"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+light_energy = 16.0
+light_size = 1.0
+spot_range = 70.0
+spot_attenuation = 0.0
+spot_angle = 30.0
+spot_angle_attenuation = 0.094732344
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Environment/Arena2/Goal1/GoalLights/GoalLight"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+light_energy = 16.0
+light_size = 1.0
+spot_range = 70.0
+spot_attenuation = 0.0
+spot_angle = 30.0
+spot_angle_attenuation = 0.094732344
+
+[node name="GoalLight2" type="Node3D" parent="Environment/Arena2/Goal1/GoalLights"]
+transform = Transform3D(0.7719813, -0.57751584, 0.2655561, 0.5990235, 0.8007313, 0, -0.2126391, 0.15907437, 0.96409535, -41.359, -30.672, 0)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Environment/Arena2/Goal1/GoalLights/GoalLight2"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+light_energy = 16.0
+light_size = 1.0
+spot_range = 70.0
+spot_attenuation = 0.0
+spot_angle = 30.0
+spot_angle_attenuation = 0.094732344
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Environment/Arena2/Goal1/GoalLights/GoalLight2"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+light_energy = 16.0
+light_size = 1.0
+spot_range = 70.0
+spot_attenuation = 0.0
+spot_angle = 30.0
+spot_angle_attenuation = 0.094732344
+
+[node name="GoalLight3" type="Node3D" parent="Environment/Arena2/Goal1/GoalLights"]
+transform = Transform3D(-4.3711385e-08, -0.99999994, 0, 1, -4.37114e-08, 0, 0, 1.3322676e-15, 1, 0.179, 29.460049, -0.4743271)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Environment/Arena2/Goal1/GoalLights/GoalLight3"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+light_energy = 16.0
+light_size = 1.0
+spot_range = 70.0
+spot_attenuation = 0.0
+spot_angle = 30.0
+spot_angle_attenuation = 0.094732344
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Environment/Arena2/Goal1/GoalLights/GoalLight3"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+light_energy = 16.0
+light_size = 1.0
+spot_range = 70.0
+spot_attenuation = 0.0
+spot_angle = 30.0
+spot_angle_attenuation = 0.094732344
+
+[node name="Goal2" type="Node3D" parent="Environment/Arena2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 26, 150.7304)
+script = ExtResource("3_bbjts")
+
+[node name="GoalZone2" type="Area3D" parent="Environment/Arena2/Goal2"]
+transform = Transform3D(1, 0, 0, 0, 0.98162717, 0.190809, 0, -0.190809, 0.98162717, 0, 0, 0)
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Arena2/Goal2/GoalZone2"]
+transform = Transform3D(1, 0, 0, 0, 1.0000031, 2.8312206e-07, 0, -2.8312206e-07, 1.0000031, 0, 5.894596, -1.655777)
+shape = SubResource("BoxShape3D_d2txi")
+
+[node name="GoalLights" type="Node3D" parent="Environment/Arena2/Goal2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.329132)
+
+[node name="GoalLight" type="Node3D" parent="Environment/Arena2/Goal2/GoalLights"]
+transform = Transform3D(0.7721927, 0.5769386, 0.26619548, -0.59853435, 0.8010971, 0, -0.21324842, -0.15932713, 0.96391904, 41.79047, -30.671965, -22.806961)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Environment/Arena2/Goal2/GoalLights/GoalLight"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+light_energy = 16.0
+light_size = 1.0
+spot_range = 70.0
+spot_attenuation = 0.0
+spot_angle = 30.0
+spot_angle_attenuation = 0.094732344
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Environment/Arena2/Goal2/GoalLights/GoalLight"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+light_energy = 16.0
+light_size = 1.0
+spot_range = 70.0
+spot_attenuation = 0.0
+spot_angle = 30.0
+spot_angle_attenuation = 0.094732344
+
+[node name="GoalLight2" type="Node3D" parent="Environment/Arena2/Goal2/GoalLights"]
+transform = Transform3D(0.77198136, -0.57751584, -0.2655561, 0.5990235, 0.8007313, 0, 0.21263911, -0.15907437, 0.96409535, -41.358807, -30.671965, -22.806961)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Environment/Arena2/Goal2/GoalLights/GoalLight2"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+light_energy = 16.0
+light_size = 1.0
+spot_range = 70.0
+spot_attenuation = 0.0
+spot_angle = 30.0
+spot_angle_attenuation = 0.094732344
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Environment/Arena2/Goal2/GoalLights/GoalLight2"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+light_energy = 16.0
+light_size = 1.0
+spot_range = 70.0
+spot_attenuation = 0.0
+spot_angle = 30.0
+spot_angle_attenuation = 0.094732344
+
+[node name="GoalLight3" type="Node3D" parent="Environment/Arena2/Goal2/GoalLights"]
+transform = Transform3D(-4.3711385e-08, -0.99999994, 0, 0.9999999, -4.3711385e-08, 0, 0, 0, 0.99999994, 0.17927828, 40.113564, -36.24563)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Environment/Arena2/Goal2/GoalLights/GoalLight3"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+light_energy = 16.0
+light_size = 1.0
+spot_range = 70.0
+spot_attenuation = 0.0
+spot_angle = 30.0
+spot_angle_attenuation = 0.094732344
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Environment/Arena2/Goal2/GoalLights/GoalLight3"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+light_energy = 16.0
+light_size = 1.0
+spot_range = 70.0
+spot_attenuation = 0.0
+spot_angle = 30.0
+spot_angle_attenuation = 0.094732344
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(0.839432, -0.245678, -0.484765, 0.133262, -0.771708, 0.621859, -0.526874, -0.586609, -0.615056, 0, 0, 0)
+visible = false
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_2lh4p")
+
+[node name="Services" type="Node3D" parent="."]
+
+[node name="LevelLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("ai_logic", "targeting_logic", "hud_logic", "hud_anchor", "actors_root", "env_root")]
+script = ExtResource("4_jj4bn")
+ai_logic = NodePath("../AiLogic")
+targeting_logic = NodePath("../TargetingLogic")
+hud_logic = NodePath("../HudLogic")
+hud_anchor = NodePath("../../UI/HudAnchor")
+actors_root = NodePath("../../Actors")
+env_root = NodePath("../../Environment")
+
+[node name="TargetingLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("hud_anchor")]
+script = ExtResource("5_kilcg")
+hud_anchor = NodePath("../../UI/HudAnchor")
+
+[node name="HudLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("hud_anchor")]
+script = ExtResource("6_ssb10")
+hud_anchor = NodePath("../../UI/HudAnchor")
+
+[node name="InputHandler" type="Node3D" parent="Services"]
+script = ExtResource("7_ciban")
+
+[node name="AiLogic" type="Node3D" parent="Services"]
+script = ExtResource("8_nnam1")
+
+[node name="UI" type="Node3D" parent="."]
+
+[node name="HudAnchor" parent="UI" instance=ExtResource("9_s1kkt")]
+metadata/_edit_use_anchors_ = true
+
+[connection signal="body_entered" from="Environment/Arena2/ForceField" to="Environment/Arena2/ForceField" method="_on_body_entered"]
+[connection signal="body_exited" from="Environment/Arena2/ForceField" to="Environment/Arena2/ForceField" method="_on_body_exited"]
+[connection signal="body_entered" from="Environment/Arena2/Goal1/GoalZone1" to="Services/LevelLogic" method="_on_goal_zone_1_body_entered"]
+[connection signal="body_entered" from="Environment/Arena2/Goal2/GoalZone2" to="Services/LevelLogic" method="_on_goal_zone_2_body_entered"]

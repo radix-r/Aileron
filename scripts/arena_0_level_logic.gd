@@ -3,11 +3,7 @@ class_name LevelLogic extends Node3D
 # TODO orginize varables. make private?
 @onready var objects_in_force_field: Dictionary = {}
 @onready var foce_field_force_newtons: float = 1000
-@onready var node_hp_dict: Dictionary = {}
-@onready var node_max_hp_dict: Dictionary = {}
-@onready var node_stability_dict: Dictionary = {}
-@onready var node_stability_regen_dict: Dictionary = {}
-@onready var node_max_stability_dict: Dictionary = {}
+
 ## How long actor shoots for
 @onready var burst_duration_timer: Timer = Timer.new()
 ## How long actor holds fire for
@@ -18,12 +14,10 @@ class_name LevelLogic extends Node3D
 @onready var game_timer: Timer = Timer.new()
 ## Timer to update time lable once a second
 @onready var time_label_update_timer: Timer = Timer.new()
-## When true teammates can dammage eachother
-@onready var friendly_fire: bool = false
+
 ## Base format for timer label
 @onready var timer_format: String = "%02d:%02d"
-## array with all destabilized actors
-@onready var actorts_destabilized: Array = []
+
 ## actors that are ready to fire a burst
 @onready var actors_ready_to_fire: Array = []
 
@@ -34,6 +28,7 @@ class_name LevelLogic extends Node3D
 @export var ai_logic: AiLogic = null
 @export var targeting_logic: TargetingLogic = null # $"../TargetingLogic"
 @export var hud_logic: HudLogic = null
+@export var combat_logic: CombatLogic = null
 @export var hud_anchor: HudAnchor = null #$"../../UI/HudAnchor"
 @export var actors_root: Node3D = null
 @export var env_root: Node3D = null 
@@ -67,7 +62,7 @@ func _ready() -> void:
     #init signals
     SignalManager.arena_force_field_entered.connect(add_object_in_force_field)
     SignalManager.arena_force_field_exited.connect(remove_object_in_force_field)
-    SignalManager.hit_by_projectile.connect(_on_hit_by_projectile)
+
     SignalManager.directional_input_received.connect(_on_directional_input_received)
     SignalManager.rotation_input_received.connect(_on_rotational_input_received)
     SignalManager.fire_input.connect(_on_fire_input)
@@ -234,39 +229,7 @@ func _on_goal_zone_2_body_entered(body: Node3D) -> void:
         arena_reset_timer.start()
 
 
-func _on_hit_by_projectile(hit_node: Node3D, projectile: Projectile) -> void:
-    # print_debug(hit_node.name + " hit by " + projectile.name)
-    var hp_damage: float = projectile.hp_damage
-    var stability_damage: float = projectile.stability_damage
-    if hit_node in actorts_destabilized:
-        stability_damage = 0
-    if node_hp_dict.has(hit_node) && node_stability_dict.has(hit_node):
-        if targeting_logic.is_same_team(hit_node, projectile.shot_by) \
-                && !friendly_fire:
-                hp_damage = 0
-                stability_damage = 0
-        node_hp_dict[hit_node] -= hp_damage # projectile damage
-        node_stability_dict[hit_node] -= stability_damage
-        # print_debug(hit_node.name + " hp: " + str(node_hp_dict[hit_node]))
-        if node_hp_dict[hit_node] <= 0:
-            #print_debug(hit_node.name + " HP 0!")
-            node_hp_dict[hit_node] = 0
-            # TODO apply effect
-            
-        if node_stability_dict[hit_node] <= 0:
-            # print_debug(hit_node.name + " Stability 0!")
-            node_stability_dict[hit_node] = 0
-            # apply effect
-            apply_destabilize_effect(hit_node)
 
-        # TODO draw hit effect to player screen
-        if projectile.shot_by == player_node:
-            hud_anchor.trigger_hit_marker()
-            pass
-            
-        # refresh health and stability bar
-        update_hp_bar(hit_node)
-        update_stability_bar(hit_node)
                         
                 
 func _on_rotational_input_received(x_y_rotation: Vector2):
@@ -335,8 +298,7 @@ func _physics_process(delta: float) -> void:
         if teammate_node in actors_ready_to_fire:
             fire_command.execute(teammate_node)
         
-    # regen stability
-    _regen_stability(delta)
+
     # 
 
 func _process(_delta: float) -> void:
@@ -346,12 +308,7 @@ func _process(_delta: float) -> void:
     # update timer
     
 
-func _regen_stability(delta:float) -> void:
-    for actor in node_stability_regen_dict:
-        if node_stability_dict[actor] < node_max_stability_dict[actor]:
-            node_stability_dict[actor] += node_stability_regen_dict[actor] * delta
-            # Update stability ui
-            update_stability_bar(actor)
+
             
             
 func add_object_in_force_field(obj: RigidBody3D) -> void:
@@ -359,28 +316,9 @@ func add_object_in_force_field(obj: RigidBody3D) -> void:
     #print_debug(obj.name + " entered")
 
 
-func apply_destabilize_effect(actor: BasePhysicsActor) -> void:
-    # print_debug(actor.name + " Destabilized!")
-    actor.flight_mode = BasePhysicsActor.FlightModes.OFF
-    actor.linear_damp = 0
-    # start timer to remove effect
-    var destabilize_timer: Timer = Timer.new()
-    destabilize_timer.one_shot = true
-    destabilize_timer.timeout.connect(remove_destabilize_effect.bind(actor))
-    add_child(destabilize_timer)
-    # TODO time durraton data driven
-    destabilize_timer.start(5)
-    # keep track of who is destabilized
-    actorts_destabilized.push_back(actor)
 
-func remove_destabilize_effect(actor: BasePhysicsActor) -> void:
-    # print_debug(actor.name + " Stabilized!")
-    actor.flight_mode = BasePhysicsActor.FlightModes.HOVER
-    actor.linear_damp = 1
-    node_stability_dict[actor] = node_max_stability_dict[actor]
-    actorts_destabilized.erase(actor)
-    # refrfesh stability bar
-    update_stability_bar(actor)
+
+
 
 func apply_force_field_effects(_delta: float) -> void:
     for obj_name in objects_in_force_field:
@@ -421,11 +359,8 @@ func init_physics_actor(actor: BasePhysicsActor, init_location: Vector3, init_ro
     actor.global_rotation = init_rotation
     targeting_logic.add_targetable_node(actor, team)
     # data driven max hp and stability
-    node_hp_dict[actor] = actor.max_hp
-    node_max_hp_dict[actor] = actor.max_hp
-    node_stability_dict[actor] = actor.max_stability
-    node_stability_regen_dict[actor] = actor.stability_regen
-    node_max_stability_dict[actor] = actor.max_stability
+    combat_logic.init_combat_actor(actor)
+    
 
 
 func get_closest_target_to_boresight(targeter_name: String, camera: Camera3D) -> Node3D:
@@ -456,13 +391,11 @@ func update_score_ui():
             })
     )
 
-func update_stability_bar(actor: BasePhysicsActor) -> void:
-    hud_anchor.update_stability_bar(
-                node_stability_dict[actor] / node_max_stability_dict[actor], actor)
+func update_stability_bar(actor: BasePhysicsActor, fraction_full: float) -> void:
+    hud_anchor.update_stability_bar(fraction_full, actor)
 
-func update_hp_bar(actor: BasePhysicsActor) -> void:
-    hud_anchor.update_hp_bar(
-                node_hp_dict[actor] / node_max_hp_dict[actor], actor)
+func update_hp_bar(actor: BasePhysicsActor, fraction_full: float) -> void:
+    hud_anchor.update_hp_bar(fraction_full, actor)
 
 
 func update_time_label():
