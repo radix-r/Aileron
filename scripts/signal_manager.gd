@@ -17,3 +17,5 @@ signal hit_by_projectile(hit_node: Node3D, projectile: Projectile)
 signal rotation_input_received(x_y_rotation: Vector2)
 signal target_select_input()
 signal ui_cancel_input()
+
+signal reached_0_hp(actor: BasePhysicsActor)

@@ -1,4 +1,4 @@
-class_name LevelLogic extends Node3D
+class_name LevelLogic extends BaseLevelLogic
 
 # TODO orginize varables. make private?
 @onready var objects_in_force_field: Dictionary = {}
@@ -68,7 +68,7 @@ func _ready() -> void:
     SignalManager.fire_input.connect(_on_fire_input)
     SignalManager.boost_input.connect(_on_boost_input)
     SignalManager.target_select_input.connect(_on_target_select_input)
-    #SignalManager.ui_cancel_input.connect(_on_ui_cancel_input)
+
     # Instantiate team relations
     targeting_logic.set_team_targetability(PLAYER_TEAM, ENVIRNOMENT_TEAM)
     targeting_logic.set_team_targetability(OPPONENT_TEAM, PLAYER_TEAM)
@@ -237,9 +237,6 @@ func _on_rotational_input_received(x_y_rotation: Vector2):
         var rotate_command: RotationCommand = RotationCommand.new(x_y_rotation)
         rotate_command.execute(player_node)
 
-
-
-
     
 ## Set player's selected target
 func _on_target_select_input():
@@ -264,6 +261,7 @@ func _on_target_select_input():
 func _physics_process(delta: float) -> void:
     apply_force_field_effects(delta)
     
+    # Calculate AI movements and actions
     if opponent_node && teammate_node && ball_node && goal1 && goal2:
         var opponent_move_command: MoveCommand = \
                 ai_logic.get_input_direction_command(
@@ -274,7 +272,7 @@ func _physics_process(delta: float) -> void:
         opponent_move_command.execute(opponent_node)
         
         var opponent_aim_location: Vector3 = \
-                calculate_aim_location_3d(
+                Utilities.calculate_aim_location_3d(
                         ball_node.global_position, 
                         ball_node.linear_velocity, 
                         opponent_node.global_position, 
@@ -325,17 +323,7 @@ func apply_force_field_effects(_delta: float) -> void:
         objects_in_force_field[obj_name].apply_central_force(Vector3.UP * foce_field_force_newtons)
     
     
-func calculate_aim_indicator_location(camera: Camera3D, selected_target_global_pos: Vector3, selected_target_velocity: Vector3, player_golbal_pos: Vector3, player_velocity: Vector3, player_weapon_projectile_speed: float) -> Vector2:
-    var aim_location_3d: Vector3 = calculate_aim_location_3d(selected_target_global_pos, selected_target_velocity, player_golbal_pos, player_velocity, player_weapon_projectile_speed)
-    return Utilities.transform_to_hud_space(aim_location_3d, camera)
 
-
-func calculate_aim_location_3d(selected_target_global_pos: Vector3, selected_target_velocity: Vector3, player_golbal_pos: Vector3, player_velocity: Vector3, player_weapon_projectile_speed: float):
-    var vector_to_target: Vector3 = player_golbal_pos - selected_target_global_pos
-    var distance_to_target: float = vector_to_target.length()
-    var time_to_target: float = distance_to_target / (player_weapon_projectile_speed + (player_velocity * player_velocity.normalized().dot(vector_to_target.normalized())).length())
-    var aim_location: Vector3 = selected_target_global_pos + selected_target_velocity * time_to_target
-    return aim_location
     
     
 ## Draw target indicators for given targets on given camera
@@ -350,7 +338,7 @@ func draw_target_ui_for_cam(camera: Camera3D, targets: Array, selected_target: N
         selected_target_velocity = selected_target.linear_velocity
     
     if selected_target:
-        var aim_point_hud_pos: Vector2 = calculate_aim_indicator_location(camera,selected_target.global_position, selected_target_velocity ,player_node.global_position, player_node.linear_velocity, player_node.weapon.projectile_speed)
+        var aim_point_hud_pos: Vector2 = Utilities.calculate_aim_indicator_location(camera,selected_target.global_position, selected_target_velocity ,player_node.global_position, player_node.linear_velocity, player_node.weapon.projectile_speed)
         hud_anchor.update_aim_indicator(camera, aim_point_hud_pos, selected_target.position)
 
 func init_physics_actor(actor: BasePhysicsActor, init_location: Vector3, init_rotation: Vector3, team: String) -> void:

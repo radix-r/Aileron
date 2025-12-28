@@ -3,7 +3,7 @@ extends Node3D
 class_name CombatLogic
 
 ## Level logic node to pass information up to
-@export var level_logic: LevelLogic = null
+@export var level_logic: BaseLevelLogic = null
 
 
 var node_hp_dict: Dictionary = {}
@@ -38,7 +38,8 @@ func _on_hit_by_projectile(hit_node: Node3D, projectile: Projectile) -> void:
         if node_hp_dict[hit_node] <= 0:
             #print_debug(hit_node.name + " HP 0!")
             node_hp_dict[hit_node] = 0
-            # TODO apply effect
+            # emmit signal to level logic to apply effects
+            SignalManager.reached_0_hp.emit(hit_node)
             
         if node_stability_dict[hit_node] <= 0:
             # print_debug(hit_node.name + " Stability 0!")
@@ -98,6 +99,15 @@ func remove_destabilize_effect(actor: BasePhysicsActor) -> void:
     actor.flight_mode = BasePhysicsActor.FlightModes.HOVER
     actor.linear_damp = 1
     node_stability_dict[actor] = node_max_stability_dict[actor]
-    actorts_destabilized.erase(actor)
-    # refrfesh stability bar
+    if actorts_destabilized.has(actor):
+        actorts_destabilized.erase(actor)
+    # refrfesh stability bar. TODO use signal?
     level_logic.update_stability_bar(actor, node_stability_dict[actor]/node_max_stability_dict[actor])
+
+## Resets given combat actor to max hp and stability and removes effects
+func reset_actor(actor: BasePhysicsActor) -> void:
+    #
+    node_hp_dict[actor] = node_max_hp_dict[actor]
+    # TODO signal hp bar change?
+    level_logic.update_hp_bar(actor, 1.0)
+    remove_destabilize_effect(actor)

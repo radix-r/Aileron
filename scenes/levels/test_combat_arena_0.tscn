@@ -1,0 +1,100 @@
+[gd_scene load_steps=13 format=3 uid="uid://bu0c6futlsxm5"]
+
+[ext_resource type="PackedScene" uid="uid://cxq3gebh28avn" path="res://scenes/levels/arena_0_base.tscn" id="1_arsgv"]
+[ext_resource type="Script" uid="uid://cbh83yh5u1ihr" path="res://scripts/combat_arena_level_logic.gd" id="2_ux2jd"]
+[ext_resource type="Script" path="res://scripts/targeting_logic.gd" id="5_q8m87"]
+[ext_resource type="Script" uid="uid://bcg8wh7x4ypqo" path="res://scripts/hud_logic.gd" id="6_o8xmn"]
+[ext_resource type="Script" path="res://scripts/input_handler.gd" id="7_n17vu"]
+[ext_resource type="Script" path="res://scripts/ai_logic.gd" id="8_j4mi5"]
+[ext_resource type="Script" uid="uid://b6wnx1n5hlqi" path="res://scripts/combat_logic.gd" id="9_a66wu"]
+[ext_resource type="PackedScene" uid="uid://b6ab04h32aky1" path="res://scenes/hud/hud_anchor.tscn" id="10_qwysy"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ux2jd"]
+size = Vector3(29.57129, 31.312134, 20)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_paxhc"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_you74"]
+sky_material = SubResource("ProceduralSkyMaterial_paxhc")
+
+[sub_resource type="Environment" id="Environment_2lh4p"]
+background_mode = 2
+sky = SubResource("Sky_you74")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="LevelRoot" type="Node3D"]
+
+[node name="Actors" type="Node3D" parent="."]
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="Arena2" parent="Environment" instance=ExtResource("1_arsgv")]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Environment/Arena2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 78.32895, 0)
+light_color = Color(1, 0.85490197, 0.9764706, 1)
+light_energy = 16.0
+omni_range = 540.592
+omni_attenuation = 0.5
+
+[node name="SpawnArea1" type="Area3D" parent="Environment/Arena2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.938242, -143.3736)
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Arena2/SpawnArea1"]
+shape = SubResource("BoxShape3D_ux2jd")
+
+[node name="SpawnArea2" type="Area3D" parent="Environment/Arena2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15.861271, 141.36871)
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Arena2/SpawnArea2"]
+shape = SubResource("BoxShape3D_ux2jd")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(0.839432, -0.245678, -0.484765, 0.133262, -0.771708, 0.621859, -0.526874, -0.586609, -0.615056, 0, 0, 0)
+visible = false
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_2lh4p")
+
+[node name="Services" type="Node3D" parent="."]
+
+[node name="LevelLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("ai_logic", "targeting_logic", "hud_logic", "combat_logic", "hud_anchor", "actors_root", "env_root")]
+script = ExtResource("2_ux2jd")
+ai_logic = NodePath("../AiLogic")
+targeting_logic = NodePath("../TargetingLogic")
+hud_logic = NodePath("../HudLogic")
+combat_logic = NodePath("../CombatLogic")
+hud_anchor = NodePath("../../UI/HudAnchor")
+actors_root = NodePath("../../Actors")
+env_root = NodePath("../../Environment")
+
+[node name="TargetingLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("hud_anchor")]
+script = ExtResource("5_q8m87")
+hud_anchor = NodePath("../../UI/HudAnchor")
+
+[node name="HudLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("hud_anchor")]
+script = ExtResource("6_o8xmn")
+hud_anchor = NodePath("../../UI/HudAnchor")
+
+[node name="InputHandler" type="Node3D" parent="Services"]
+script = ExtResource("7_n17vu")
+
+[node name="AiLogic" type="Node3D" parent="Services"]
+script = ExtResource("8_j4mi5")
+
+[node name="CombatLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("level_logic")]
+script = ExtResource("9_a66wu")
+level_logic = NodePath("../LevelLogic")
+
+[node name="UI" type="Node3D" parent="."]
+
+[node name="HudAnchor" parent="UI" instance=ExtResource("10_qwysy")]
+metadata/_edit_use_anchors_ = true
