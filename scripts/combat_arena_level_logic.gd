@@ -11,6 +11,7 @@ class_name CombatLevelLogic
 
 @onready var player_scene: PackedScene = preload("res://scenes/actors/ship_physics.tscn")
 @onready var opponent_scene: PackedScene = preload("res://scenes/actors/base_physics_actor.tscn")
+@onready var explosion_scene: PackedScene = preload("res://scenes/fx/vfx_explosion.tscn")
 
 @onready var PLAYER_TEAM: String = "Player"
 @onready var OPPONENT_TEAM: String = "CPU"
@@ -136,12 +137,18 @@ func _on_game_timer_timeout():
 
 func _on_reached_0_hp(actor: BasePhysicsActor) -> void:
     # death animation
+    var new_explosion: Node3D = explosion_scene.instantiate()
+    
+    add_child(new_explosion)
+    new_explosion.global_position = actor.global_position
+    
+    
     # score update
     var team: String = targeting_logic.node_team_dict[actor]
     team_score_dict[team] -= 1
     update_score_ui()
     # move back to spawn
-    # reset hp ans stability
+    # reset hp and stability
     _respawn(actor)
 
 func _on_rotational_input_received(x_y_rotation: Vector2):

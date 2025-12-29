@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://be0lvcs65l2bd" path="res://assets/Images/Thrust.png" id="4_yw28e"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rtrmn"]
-size = Vector3(2, 2, 2)
 
 [sub_resource type="BoxMesh" id="BoxMesh_6iifb"]
 

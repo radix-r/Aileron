@@ -1,94 +1,13 @@
-[gd_scene load_steps=23 format=3 uid="uid://608eb2t770si"]
+[gd_scene load_steps=6 format=3 uid="uid://608eb2t770si"]
 
 [ext_resource type="Material" uid="uid://diw44sj7ksb6o" path="res://resources/materials/explosive_cloud_0.tres" id="1_4fofi"]
-[ext_resource type="Shader" uid="uid://bgg4ya68ij4kn" path="res://resources/shaders/s_streak.tres" id="2_ag830"]
 [ext_resource type="PackedScene" uid="uid://dvfdo1fnba51v" path="res://scenes/sparks1.tscn" id="2_dnrha"]
+[ext_resource type="PackedScene" uid="uid://bs8f2074cr6vk" path="res://scenes/fx/vfx_explosion.tscn" id="3_ag830"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_ag830"]
 
-[sub_resource type="Curve" id="Curve_dnrha"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.4929078, 0), 0.0, 0.0, 0, 0, Vector2(0.89716303, 1), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_ag830"]
-curve = SubResource("Curve_dnrha")
-
-[sub_resource type="Gradient" id="Gradient_juuml"]
-offsets = PackedFloat32Array(0.13671875, 0.4921875)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_yyena"]
-gradient = SubResource("Gradient_juuml")
-
-[sub_resource type="Curve" id="Curve_atr3u"]
-_data = [Vector2(0.07801418, 1), 0.0, 0.0, 0, 0, Vector2(0.31914893, 0.16496348), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_342lu"]
-curve = SubResource("Curve_atr3u")
-
-[sub_resource type="Curve" id="Curve_r4w1l"]
-_data = [Vector2(0, 0.08905101), 0.0, 2.908601, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_3oaqc"]
-curve = SubResource("Curve_r4w1l")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gkay8"]
-emission_shape = 1
-emission_sphere_radius = 0.2
-radial_velocity_min = 6.4999776
-radial_velocity_max = 7.4999776
-radial_velocity_curve = SubResource("CurveTexture_342lu")
-gravity = Vector3(0, 0, 0)
-scale_min = 1.6999999
-scale_max = 1.8
-scale_curve = SubResource("CurveTexture_3oaqc")
-color = Color(0.8047426, 0.80474263, 0.8047426, 1)
-color_ramp = SubResource("GradientTexture1D_yyena")
-alpha_curve = SubResource("CurveTexture_ag830")
-
-[sub_resource type="SphereMesh" id="SphereMesh_efwtj"]
-
 [sub_resource type="BoxMesh" id="BoxMesh_bi8si"]
 size = Vector3(10, 1, 10)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_juuml"]
-render_priority = 0
-shader = ExtResource("2_ag830")
-shader_parameter/ColorParameter = Color(1.8247963, 1.2024659, 0.42623138, 1)
-
-[sub_resource type="Curve" id="Curve_yyena"]
-_data = [Vector2(0, 0), 0.0, 2.7273724, 0, 0, Vector2(0.78014183, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_atr3u"]
-texture_mode = 1
-curve = SubResource("Curve_yyena")
-
-[sub_resource type="Curve" id="Curve_ag830"]
-_data = [Vector2(0, 0), 0.0, 6.0485115, 0, 0, Vector2(0.50709224, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_juuml"]
-curve = SubResource("Curve_ag830")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4fofi"]
-particle_flag_align_y = true
-direction = Vector3(1, 1, 0)
-spread = 90.0
-initial_velocity_min = 0.5
-initial_velocity_max = 1.0
-gravity = Vector3(0, 0, 0)
-scale_min = 5.0
-scale_max = 7.0
-scale_curve = SubResource("CurveTexture_juuml")
-alpha_curve = SubResource("CurveTexture_atr3u")
-hue_variation_min = -1.0
-hue_variation_max = 0.99999994
-
-[sub_resource type="QuadMesh" id="QuadMesh_dnrha"]
-size = Vector2(0.25, 1)
-center_offset = Vector3(0, 0.4, 0)
 
 [node name="Node3D" type="Node3D"]
 
@@ -97,25 +16,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.4523306)
 material_override = ExtResource("1_4fofi")
 mesh = SubResource("SphereMesh_ag830")
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
-material_override = ExtResource("1_4fofi")
-lifetime = 0.6
-explosiveness = 0.8
-fixed_fps = 60
-process_material = SubResource("ParticleProcessMaterial_gkay8")
-draw_pass_1 = SubResource("SphereMesh_efwtj")
-
 [node name="Floor" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+transform = Transform3D(0.99995136, 0.0098609505, 0, -0.0098609505, 0.99995136, 0, 0, 0, 1, 0, -1, 0)
 mesh = SubResource("BoxMesh_bi8si")
 
-[node name="GPUParticles3D2" type="GPUParticles3D" parent="."]
-material_override = SubResource("ShaderMaterial_juuml")
-lifetime = 0.4
-explosiveness = 0.9
-randomness = 0.58
-fixed_fps = 60
-process_material = SubResource("ParticleProcessMaterial_4fofi")
-draw_pass_1 = SubResource("QuadMesh_dnrha")
+[node name="Floor2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.097235456, 0.99526143, 0, -0.99526143, 0.097235456, 0, 0, 0, 1, -0.681721, -1, 0)
+mesh = SubResource("BoxMesh_bi8si")
 
 [node name="Sparks1" parent="." instance=ExtResource("2_dnrha")]
+visible = false
+
+[node name="VfxExplosion" parent="." instance=ExtResource("3_ag830")]
