@@ -12,22 +12,23 @@ signal level_selected
 var level_paths : Array[String]
 
 func _ready() -> void:
-	add_levels_to_container()
-	
+    add_levels_to_container()
+    
+    
 ## A fresh level list is propgated into the ItemList, and the file names are cleaned
 func add_levels_to_container() -> void:
-	level_buttons_container.clear()
-	level_paths.clear()
-	var game_state := GameState.get_or_create_state()
-	for file_path in game_state.level_states.keys():
-		var file_name : String = file_path.get_file()  # e.g., "level_1.tscn"
-		file_name = file_name.trim_suffix(".tscn")  # Remove the ".tscn" extension
-		file_name = file_name.replace("_", " ")  # Replace underscores with spaces
-		file_name = file_name.capitalize()  # Convert to proper case
-		var button_name := str(file_name)
-		level_buttons_container.add_item(button_name)
-		level_paths.append(file_path)
+    level_buttons_container.clear()
+    level_paths.clear()
+    var game_state := GameState.get_or_create_state()
+    for file_path in game_state.level_states.keys():
+        var file_name : String = file_path.get_file()  # e.g., "level_1.tscn"
+        file_name = file_name.trim_suffix(".tscn")  # Remove the ".tscn" extension
+        file_name = file_name.replace("_", " ")  # Replace underscores with spaces
+        file_name = file_name.capitalize()  # Convert to proper case
+        var button_name := str(file_name)
+        level_buttons_container.add_item(button_name)
+        level_paths.append(file_path)
 
 func _on_level_buttons_container_item_activated(index: int) -> void:
-	GameState.set_current_level(level_paths[index])
-	level_selected.emit()
+    GameState.set_current_level(level_paths[index])
+    level_selected.emit()

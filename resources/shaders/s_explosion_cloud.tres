@@ -5,12 +5,12 @@
 [ext_resource type="Texture2D" uid="uid://mitke4o0fpc" path="res://assets/explosion_textures/T_cloudy_noise_211c.png" id="2_hhoi2"]
 
 [sub_resource type="VisualShaderNodeFrame" id="VisualShaderNodeFrame_2ipg1"]
-size = Vector2(644.0002, 437)
+size = Vector2(644, 182)
 title = "Dark Base Color"
 attached_nodes = PackedInt32Array(2, 3)
 
 [sub_resource type="VisualShaderNodeFrame" id="VisualShaderNodeFrame_neu81"]
-size = Vector2(1324, 1469.0005)
+size = Vector2(1323.9999, 1022)
 title = "Emissive Bright Color"
 tint_color_enabled = true
 tint_color = Color(1, 0.42745098, 0.007843138, 0.34117648)
@@ -26,7 +26,7 @@ texture_type = 1
 linked_parent_graph_frame = 16
 
 [sub_resource type="VisualShaderNodeFrame" id="VisualShaderNodeFrame_awolb"]
-size = Vector2(704, 677.00006)
+size = Vector2(704, 362)
 title = "Transparency"
 attached_nodes = PackedInt32Array(14, 13, 17)
 

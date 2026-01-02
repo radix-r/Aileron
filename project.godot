@@ -40,6 +40,7 @@ import/blender/enabled=false
 
 [gui]
 
+theme/custom="uid://2qh3aix7i37a"
 common/drop_mouse_on_gui_input_disabled=true
 
 [input]
@@ -205,7 +206,7 @@ locale/translations=PackedStringArray("res://addons/maaacks_game_template/base/t
 
 [maaacks_game_template]
 
-copy_path="res://"
+copy_path="res://maaacks/"
 disable_update_check=false
 disable_install_wizard=true
 disable_install_audio_busses=true

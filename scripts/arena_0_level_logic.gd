@@ -196,15 +196,18 @@ func _on_game_timer_timeout():
     if PLAYER_TEAM in winner && winner.size() == 1:
         # Display win on screen
         hud_anchor.set_center_screen_label("WIN")
+        SignalManager.emit_signal("level_won")
 
     elif PLAYER_TEAM in winner && winner.size() > 1:
         # tie
         hud_anchor.set_center_screen_label("TIE")
+        SignalManager.emit_signal("level_lost")
 
     else:
         # lose
         hud_anchor.set_center_screen_label("LOSE")
-        
+        SignalManager.emit_signal("level_lost")
+
     hud_anchor.show_center_screen_label()
         
     # Go back to menu?

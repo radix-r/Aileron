@@ -70,7 +70,7 @@ func fire(shooter: Node):
         
         # I have no idea why platform velocity needs to be devided by 60
         bullet_instace.linear_velocity = platform.linear_velocity/60 + (platform.forward * projectile_speed)
-        root.add_child(bullet_instace)
+        get_tree().root.add_child(bullet_instace)
         bullet_instace.shot_by = shooter
         bullet_instace.global_position = fire_point.global_position
         bullet_instace.global_rotation = fire_point.global_rotation

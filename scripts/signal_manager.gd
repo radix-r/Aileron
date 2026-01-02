@@ -19,3 +19,8 @@ signal target_select_input()
 signal ui_cancel_input()
 
 signal reached_0_hp(actor: BasePhysicsActor)
+
+# TODO 
+signal level_lost
+signal level_won
+signal level_won_and_changed(level_path : String)
