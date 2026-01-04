@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://cf3ax47pnurtj"]
 
 [ext_resource type="Texture2D" uid="uid://btqhk8548bjb0" path="res://assets/HUD/square.png" id="1_5e8ml"]
-[ext_resource type="Script" path="res://scripts/target_ui_element.gd" id="1_8fdjr"]
+[ext_resource type="Script" uid="uid://bbjwean2827bk" path="res://scripts/target_ui_element.gd" id="1_8fdjr"]
 [ext_resource type="Texture2D" uid="uid://cbnk6vdtjm7nl" path="res://assets/HUD/circle.png" id="2_8fdjr"]
 
 [sub_resource type="Gradient" id="Gradient_8fdjr"]

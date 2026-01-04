@@ -245,8 +245,8 @@ func _on_rotational_input_received(x_y_rotation: Vector2):
 func _on_target_select_input():
     
     # find target closest to center screen
-    var closest_target: Node3D = get_closest_target_to_boresight(player_node.name, player_node.camera)
-    var result: int = targeting_logic.set_selected_target(player_node.name, closest_target.name)
+    var closest_target: Node3D = get_closest_target_to_boresight(player_node, player_node.camera)
+    var result: int = targeting_logic.set_selected_target(player_node, closest_target)
     if 0 != result:
         print_debug("Failed to select next player target")
     
@@ -303,7 +303,7 @@ func _physics_process(delta: float) -> void:
     # 
 
 func _process(_delta: float) -> void:
-    draw_target_ui_for_cam(player_node.get_camera(), targeting_logic.get_targetable(player_node.name), targeting_logic.get_selected_target(player_node.name))
+    draw_target_ui_for_cam(player_node.get_camera(), targeting_logic.get_targetable(player_node), targeting_logic.get_selected_target(player_node))
     hud_logic.update_velocity_marker(player_node)
     hud_logic.update_boresight(player_node)
     # update timer
@@ -354,13 +354,13 @@ func init_physics_actor(actor: BasePhysicsActor, init_location: Vector3, init_ro
     
 
 
-func get_closest_target_to_boresight(targeter_name: String, camera: Camera3D) -> Node3D:
+func get_closest_target_to_boresight(targeter_node: Node3D, camera: Camera3D) -> Node3D:
 
     var closest_target: Node3D = null
     var closest_dist: float = Utilities.MAX_FLOAT 
     var boresight_2d_pos: Vector2 = hud_anchor.boresight.position
 
-    var targets: Array = targeting_logic.node_targetable_dict[targeter_name]
+    var targets: Array = targeting_logic.get_targetable(targeter_node) #node_targetable_dict[targeter_name]
     for target: Node3D in targets:
         var target_2d_pos: Vector2 = Utilities.transform_to_hud_space(target.global_position, camera)
         var dist: float = (boresight_2d_pos - target_2d_pos).length()

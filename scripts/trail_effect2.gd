@@ -51,6 +51,7 @@ func _process(delta: float) -> void:
 
         var curr_width = _widths[i][0] - pow(1 - t, _scale_acceleration) * _widths[i][1]
 
+        @warning_ignore("integer_division")
         var t0 = i / _points.size()
         var t1 = t
 

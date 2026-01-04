@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://c0el5tf2xs2rd" path="res://scenes/menus/level_select_menu/level_select_menu.tscn" id="3_ixa71"]
 [ext_resource type="PackedScene" uid="uid://dnaejbfe1nvn1" path="res://scenes/windows/main_menu_credits_window.tscn" id="4_vsp5b"]
 [ext_resource type="PackedScene" uid="uid://cwt4p3bufkke5" path="res://addons/maaacks_game_template/base/nodes/windows/confirmation_overlaid_window.tscn" id="5_6xh1d"]
-[ext_resource type="AudioStream" uid="uid://4hdyutjbh3ii" path="res://assets/sfx/relaxing-guitar-loop-v5-245859.mp3" id="6_2k5l7"]
+[ext_resource type="AudioStream" uid="uid://bnas0cj4xxu1a" path="res://assets/sfx/relaxing-ambient-music-01-293925.mp3" id="6_2k5l7"]
 
 [sub_resource type="Animation" id="1"]
 resource_name = "Intro"

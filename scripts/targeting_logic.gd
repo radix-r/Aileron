@@ -6,14 +6,14 @@ class_name TargetingLogic extends Node3D
 # 3. The entitie's team
 # 4. The teams the entity can target
 
-## Key: Node name, Value: Node refference
+## Key: Node reff, Value: Node refference
 ## Dict of all targetable nodes in scene
-var all_targetable_dict: Dictionary = {}
+var all_targetable_array: Array = []
 
-## Key: Node name, Value: Array of targetable nodes
+## Key: Node reff, Value: Array of targetable nodes
 var node_targetable_dict: Dictionary = {}
 
-## Key: Node name, Value: Currently selected target node reff
+## Key: Node reff, Value: Currently selected target node reff
 var node_selected_target_dict: Dictionary = {}
 
 ## Key: Node, Value: Team node is on. 
@@ -26,15 +26,19 @@ var team_node_dict: Dictionary = {}
 ## Key: Team, Value: Array of team names given team can target
 var team_targetability_dict: Dictionary = {}
 
+# TODO dont go directly. interface through level logic
 @export var hud_anchor: HudAnchor = null #$"../../UI/HudAnchor"
 
 #@export var level_logic: LevelLogic = null # $"../LevelLogic"
+
+## Node retruned on errors
+@onready var error_node: Node3D = Node3D.new()
 
 func _ready() -> void:
     # get all nodes in targetable group. What teams are they? Handel in level logic?
     var target_list = get_tree().get_nodes_in_group("targetable")
     for target in target_list:
-        all_targetable_dict[target.name] = target
+        all_targetable_array.append(target)
     pass
 
 func _process(_delta: float) -> void:
@@ -42,9 +46,10 @@ func _process(_delta: float) -> void:
 
 # To be called whenever a targetable node is added to a scene
 # Assumes all targetable nodes can target
+# TODO use node reff in place of name
 func add_targetable_node(node: Node3D, team: String) -> void:
-    all_targetable_dict[node.name] = node
-    node_selected_target_dict[node.name] = null
+    all_targetable_array.append(node)
+    node_selected_target_dict[node] = null
     # Assume team name already init?
     add_to_team(node, team)
     var targetable: Array = []
@@ -54,8 +59,8 @@ func add_targetable_node(node: Node3D, team: String) -> void:
             # add new node to hostile team target dicts
             for hostile_node in team_node_dict[targetable_team]:
                 #print_debug("Adding " + node.name + " to " + hostile_node.name + "'s targets")
-                node_targetable_dict[hostile_node.name].append(node)
-    node_targetable_dict[node.name] = targetable
+                node_targetable_dict[hostile_node].append(node)
+    node_targetable_dict[node] = targetable
     # create new target indicator
     # TODO Should I pass this to level logic to then pass to hud?
     hud_anchor.add_target_indicator(node)
@@ -69,12 +74,21 @@ func add_to_team(node: Node3D, team: String) -> void:
     # TODO maybe array of teams in future?
     node_team_dict[node] = team
         
-# Return an array of all nodes given node can target   
-func get_targetable(node_name: String) -> Array:
+
+func get_random_target(targeter_node: BasePhysicsActor) -> Node3D:
+    var return_node = null
+    if node_targetable_dict[targeter_node]:
+        var can_target_array: Array= team_targetability_dict[targeter_node]
+        return_node = can_target_array.pick_random()
+    return return_node
+    
+
+## Return an array of all nodes given node can target   
+func get_targetable(node: Node3D) -> Array:
     # 
     var targets: Array = []
-    if node_targetable_dict.has(node_name):
-        targets = node_targetable_dict[node_name]
+    if node_targetable_dict.has(node):
+        targets = node_targetable_dict[node]
     return targets        
     
 
@@ -87,13 +101,13 @@ func get_team(node: Node3D) -> String:
     return team
     
     
-func get_closest_target(targeter_name: String) -> Node3D:
+func get_closest_target(targeter_node: Node3D) -> Node3D:
     var closest_target: Node3D = null
-    var targeter: Node3D = all_targetable_dict[targeter_name]
+    #var targeter: Node3D = all_targetable_dict[targeter_name]
     var closest_dist: float = 1.79769e308
-    if node_selected_target_dict.has(targeter_name):
-        for target: Node3D in node_targetable_dict[targeter_name]:
-            var dist: float = (targeter.global_position - target.global_position).length()
+    if node_selected_target_dict.has(targeter_node):
+        for target: Node3D in node_targetable_dict[targeter_node]:
+            var dist: float = (targeter_node.global_position - target.global_position).length()
             if closest_dist > dist:
                 closest_dist = dist
                 closest_target = target
@@ -103,7 +117,7 @@ func get_closest_target(targeter_name: String) -> Node3D:
 
 
 
-func get_next_closest_target(targeter_name: String) -> Node3D:
+func get_next_closest_target(targeter_node: Node3D) -> Node3D:
     # TODO
     # sort nodes by closest
     # find current target
@@ -111,10 +125,10 @@ func get_next_closest_target(targeter_name: String) -> Node3D:
     return null
 
 
-func get_selected_target(targeter_name: String) -> Node3D:
+func get_selected_target(targeter_node: Node3D) -> Node3D:
     var return_value: Node3D = null
-    if node_selected_target_dict.has(targeter_name):
-        return_value = node_selected_target_dict[targeter_name]
+    if node_selected_target_dict.has(targeter_node):
+        return_value = node_selected_target_dict[targeter_node]
     return return_value
 
 ## returns true if both node are on the same team
@@ -125,18 +139,19 @@ func is_same_team(node_a: Node3D, node_b: Node3D) -> bool:
     
     return node_a_team == node_b_team
 
-
+# TODO go throught level logic?
 func remove_targetable_node(node: Node3D) -> void:
-    hud_anchor.remove_target_indicator(node.name)
+    hud_anchor.remove_target_indicator(node)
     # TODO remove from target dicts
+    # level_logic.update_target_indicators 
 
 ## Attempts to set given targeter's selected target. 
 ## @returns 0 on sucess returns -1 on failure
-func set_selected_target(targeter_name: String, selected_target_name: String) -> int:
+func set_selected_target(targeter_node: Node3D, selected_target_node: Node3D) -> int:
     var return_val = -1
-    if node_targetable_dict.has(targeter_name) && \
-            node_targetable_dict[targeter_name].has(all_targetable_dict[selected_target_name]):
-        node_selected_target_dict[targeter_name] = all_targetable_dict[selected_target_name]
+    if node_targetable_dict.has(targeter_node) && \
+            node_targetable_dict[targeter_node].has(selected_target_node):
+        node_selected_target_dict[targeter_node] = selected_target_node
         return_val = 0
         #print_debug(targeter_name + "'s selected target is " + selected_target_name)
     return return_val

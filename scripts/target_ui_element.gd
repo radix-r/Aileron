@@ -5,6 +5,8 @@ extends Control
 @onready var selected_indicator: Sprite2D = $SelectedIndicator
 @onready var stability_bar: Sprite2D = $StabilityBar/Fill
 
+# TODO bar reduce effects. under bar that slowly moves to current fill when fill changed
+
 # TODO only show hp, stability when selected?
 func hide_hp_and_stability() -> void:
     $HpBar.hide()
@@ -18,11 +20,11 @@ func hide_target_indicator() -> void:
     target_indicator.hide()
     
     
-func set_hp(fraction_full: float) -> void:
+func set_hp_bar(fraction_full: float) -> void:
     hp_bar.scale.x = fraction_full
     
     
-func set_stability(fraction_full: float) -> void:
+func set_stability_bar(fraction_full: float) -> void:
     stability_bar.scale.x = fraction_full
     
 

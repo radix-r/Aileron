@@ -15,7 +15,7 @@ var aim_ui_elemet: PackedScene = preload("res://scenes/hud/aim_indicator.tscn")
 @onready var stopwatch_label: Label = $StopwatchLabel
 @onready var center_screen_label: Label = $CenterScreenLabel
 @onready var hit_marker: Control = $HitMarkerOverlay/HitMarker
-# Key: node name, Value: target ui element assigned to that node
+# Key: node reff, Value: target ui element assigned to that node
 var target_ui_element_dict: Dictionary = {}
 var aim_indicator: Control = null
 
@@ -42,9 +42,9 @@ func _process(_delta: float) -> void:
 func add_target_indicator(target: Node3D) -> void:
     var new_target_ui_element = target_ui_element.instantiate()
     add_child(new_target_ui_element)
-    target_ui_element_dict[target.name] = new_target_ui_element
-    target_ui_element_dict[target.name].hide()
-    target_ui_element_dict[target.name].hide_hp_and_stability()
+    target_ui_element_dict[target] = new_target_ui_element
+    target_ui_element_dict[target].hide()
+    target_ui_element_dict[target].hide_hp_and_stability()
 
 func hide_boresight() -> void:
     boresight.hide()
@@ -58,9 +58,9 @@ func hide_velocity_marker() -> void:
     velocity_marker.hide()
 
 
-func remove_target_indicator(node_name: String) -> void:
-    if target_ui_element_dict.has(node_name):
-        target_ui_element_dict.erase(node_name)
+func remove_target_indicator(node: Node3D) -> void:
+    if target_ui_element_dict.has(node):
+        target_ui_element_dict.erase(node)
 
 func set_center_screen_label(text: String) -> void:
     center_screen_label.text = text
@@ -100,8 +100,8 @@ func update_aim_indicator(camera: Camera3D, aim_point_hud_pos: Vector2, selected
 
 func update_hp_bar(fraction_full: float, target: Node3D) -> void:
     if target:
-        target_ui_element_dict[target.name].set_hp(fraction_full)
-        target_ui_element_dict[target.name].show_hp_and_stability()
+        target_ui_element_dict[target].set_hp_bar(fraction_full)
+        target_ui_element_dict[target].show_hp_and_stability()
 
 func update_nav_arrow() -> void:
     if nav_arrow_drawer:
@@ -110,24 +110,24 @@ func update_nav_arrow() -> void:
 
 func update_selected_target_indicator(_camera: Camera3D, target: Node3D) -> void:
     if target:
-        target_ui_element_dict[target.name].show_selected_indicator()
+        target_ui_element_dict[target].show_selected_indicator()
 
 
 func update_stability_bar(fraction_full: float, target: Node3D) -> void:
     if target:
-        target_ui_element_dict[target.name].set_stability(fraction_full)
-        target_ui_element_dict[target.name].show_hp_and_stability()
+        target_ui_element_dict[target].set_stability_bar(fraction_full)
+        target_ui_element_dict[target].show_hp_and_stability()
 
 
 func update_target_indicators(camera: Camera3D, target_list: Array) -> void:
     for target in target_list:
         if !camera.is_position_behind(target.global_position):
             var hud_pos: Vector2 = Utilities.transform_to_hud_space(target.global_position,camera)
-            target_ui_element_dict[target.name].position = hud_pos
-            target_ui_element_dict[target.name].hide_selected_indicator()
-            target_ui_element_dict[target.name].show()
+            target_ui_element_dict[target].position = hud_pos
+            target_ui_element_dict[target].hide_selected_indicator()
+            target_ui_element_dict[target].show()
         else:
-            target_ui_element_dict[target.name].hide()
+            target_ui_element_dict[target].hide()
             
             
 # in what way is this tranforming the angle?

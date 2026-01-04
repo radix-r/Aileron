@@ -6,6 +6,9 @@
         "game_time": 3,
         
     },
+    "ArenaCombat0": {
+    	"game_time": 3,
+    },
     "Ship1": {
         "speed_default": 10,
         "speed_max": 1200000,

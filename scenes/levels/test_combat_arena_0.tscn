@@ -2,10 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://cxq3gebh28avn" path="res://scenes/levels/arena_0_base.tscn" id="1_arsgv"]
 [ext_resource type="Script" uid="uid://cbh83yh5u1ihr" path="res://scripts/combat_arena_level_logic.gd" id="2_ux2jd"]
-[ext_resource type="Script" path="res://scripts/targeting_logic.gd" id="5_q8m87"]
+[ext_resource type="Script" uid="uid://cqsj6qbsjcc6a" path="res://scripts/targeting_logic.gd" id="5_q8m87"]
 [ext_resource type="Script" uid="uid://bcg8wh7x4ypqo" path="res://scripts/hud_logic.gd" id="6_o8xmn"]
+[ext_resource type="Script" uid="uid://cgxdf8chdkkxr" path="res://scripts/ai_combat_logic.gd" id="6_ux2jd"]
 [ext_resource type="Script" path="res://scripts/input_handler.gd" id="7_n17vu"]
-[ext_resource type="Script" path="res://scripts/ai_logic.gd" id="8_j4mi5"]
 [ext_resource type="Script" uid="uid://b6wnx1n5hlqi" path="res://scripts/combat_logic.gd" id="9_a66wu"]
 [ext_resource type="PackedScene" uid="uid://b6ab04h32aky1" path="res://scenes/hud/hud_anchor.tscn" id="10_qwysy"]
 
@@ -87,8 +87,9 @@ hud_anchor = NodePath("../../UI/HudAnchor")
 [node name="InputHandler" type="Node3D" parent="Services"]
 script = ExtResource("7_n17vu")
 
-[node name="AiLogic" type="Node3D" parent="Services"]
-script = ExtResource("8_j4mi5")
+[node name="AiLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("level_logic")]
+script = ExtResource("6_ux2jd")
+level_logic = NodePath("../LevelLogic")
 
 [node name="CombatLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("level_logic")]
 script = ExtResource("9_a66wu")

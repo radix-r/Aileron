@@ -45,7 +45,7 @@ func _determine_behavior_mode(
         
     return behavior
 
-#func move_tward_location(taget_location: Vector3) -> void:
+
     
 ## Determine what direction the AI player should be inputing
 func get_input_direction_command(ai_node: BasePhysicsActor, 

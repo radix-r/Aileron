@@ -34,9 +34,32 @@ class_name CombatLevelLogic
 @onready var spawn_area_1: Area3D = $"../../Environment/Arena2/SpawnArea1"
 @onready var spawn_area_2: Area3D = $"../../Environment/Arena2/SpawnArea2"
 
+## Timer for the game. Game is over when the timer reaches 0
+@onready var game_timer: Timer = Timer.new()
+## Timer to update time lable once a second
+@onready var time_label_update_timer: Timer = Timer.new()
 
+## Base format for timer label
+@onready var timer_format: String = "%02d:%02d"
 
 func _ready() -> void:
+    
+    # Get data
+    game_timer.wait_time = 60 * Utilities.data_dict["ArenaCombat0"]["game_time"]
+
+    
+    # Start game timer
+    game_timer.one_shot = true
+    add_child(game_timer)
+    game_timer.timeout.connect(_on_game_timer_timeout)
+    game_timer.start()
+    
+    
+    time_label_update_timer.wait_time = 1
+    time_label_update_timer.one_shot = false
+    add_child(time_label_update_timer)
+    time_label_update_timer.timeout.connect(update_time_label)
+    time_label_update_timer.start()
     
     SignalManager.directional_input_received.connect(_on_directional_input_received)
     SignalManager.rotation_input_received.connect(_on_rotational_input_received)
@@ -119,18 +142,19 @@ func _on_game_timer_timeout():
     
     var winner: Array = score_team_dict[highest_score]
     #print_debug("Team " + winner + " wins!")
-    print(winner)
     if PLAYER_TEAM in winner && winner.size() == 1:
         # Display win on screen
         hud_anchor.set_center_screen_label("WIN")
-
+        SignalManager.level_won.emit()
     elif PLAYER_TEAM in winner && winner.size() > 1:
         # tie
         hud_anchor.set_center_screen_label("TIE")
-
+        SignalManager.level_lost.emit()
     else:
         # lose
         hud_anchor.set_center_screen_label("LOSE")
+        SignalManager.level_lost.emit()
+
         
     hud_anchor.show_center_screen_label()
 
@@ -162,16 +186,16 @@ func _on_rotational_input_received(x_y_rotation: Vector2):
 func _on_target_select_input():
     
     # find target closest to center screen
-    var closest_target: Node3D = get_closest_target_to_boresight(player_node.name, player_node.camera)
+    var closest_target: Node3D = get_closest_target_to_boresight(player_node, player_node.camera)
     var result: int = -1
     if closest_target:
-        result = targeting_logic.set_selected_target(player_node.name, closest_target.name)
+        result = targeting_logic.set_selected_target(player_node, closest_target)
     if 0 != result:
         print_debug("Failed to select next player target")
 
 
 func _process(_delta: float) -> void:
-    hud_logic.draw_target_ui_for_cam(player_node, player_node.get_camera(), targeting_logic.get_targetable(player_node.name), targeting_logic.get_selected_target(player_node.name))
+    hud_logic.draw_target_ui_for_cam(player_node, player_node.get_camera(), targeting_logic.get_targetable(player_node), targeting_logic.get_selected_target(player_node))
     hud_logic.update_velocity_marker(player_node)
     hud_logic.update_boresight(player_node)
 
@@ -200,16 +224,17 @@ func init_physics_actor(actor: BasePhysicsActor, init_location: Vector3, init_ro
     targeting_logic.add_targetable_node(actor, team)
     # data driven max hp and stability
     combat_logic.init_combat_actor(actor)
+    # init ai behavior
+    
 
 
-
-func get_closest_target_to_boresight(targeter_name: String, camera: Camera3D) -> Node3D:
+func get_closest_target_to_boresight(targeter_node: Node3D, camera: Camera3D) -> Node3D:
 
     var closest_target: Node3D = null
     var closest_dist: float = Utilities.MAX_FLOAT 
     var boresight_2d_pos: Vector2 = hud_anchor.boresight.position
 
-    var targets: Array = targeting_logic.node_targetable_dict[targeter_name]
+    var targets: Array = targeting_logic.node_targetable_dict[targeter_node]
     for target: Node3D in targets:
         var target_2d_pos: Vector2 = Utilities.transform_to_hud_space(target.global_position, camera)
         var dist: float = (boresight_2d_pos - target_2d_pos).length()
@@ -238,3 +263,10 @@ func update_score_ui() -> void:
                     "team_2_score": team_score_dict[OPPONENT_TEAM]
             })
     )
+
+
+func update_time_label():
+    @warning_ignore("narrowing_conversion")
+    var mins: int = game_timer.time_left / 60
+    var secs: int =  int(game_timer.time_left) % 60
+    hud_anchor.set_timer(timer_format % [mins, secs])
