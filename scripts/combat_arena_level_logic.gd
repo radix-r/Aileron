@@ -1,7 +1,7 @@
 extends BaseLevelLogic
 class_name CombatLevelLogic
 
-@export var ai_logic: AiLogic = null
+@export var ai_logic: AiCombatLogic = null
 @export var targeting_logic: TargetingLogic = null # $"../TargetingLogic"
 @export var hud_logic: HudLogic = null
 @export var combat_logic: CombatLogic = null
@@ -11,6 +11,7 @@ class_name CombatLevelLogic
 
 @onready var player_scene: PackedScene = preload("res://scenes/actors/ship_physics.tscn")
 @onready var opponent_scene: PackedScene = preload("res://scenes/actors/base_physics_actor.tscn")
+@onready var nav_agent_scene: PackedScene = preload("res://scenes/actors/base_physics_actor_nav.tscn")
 @onready var explosion_scene: PackedScene = preload("res://scenes/fx/vfx_explosion.tscn")
 
 @onready var PLAYER_TEAM: String = "Player"
@@ -25,8 +26,8 @@ class_name CombatLevelLogic
 @onready var opponent_starting_rotation: Vector3 = Vector3(0, 0, 0)
 
 @onready var player_node: PlayerPhysicsShip = null
-@onready var teammate_node: BasePhysicsActor = null
-@onready var opponent_node: BasePhysicsActor = null
+@onready var teammate_nodes: Array = []
+@onready var opponent_nodes: Array = []
 
 # TODO data driven, changeable with menu option
 @onready var team_size: int = 4
@@ -89,7 +90,8 @@ func _ready() -> void:
         var init_pos = Utilities.get_random_point_in_area(spawn_area_1)
         init_pos += spawn_area_1.position
         init_physics_actor(new_teammate, init_pos, Vector3.ZERO, PLAYER_TEAM)
-    
+        teammate_nodes.append(new_teammate)
+        
     # init opponent team
     for i in range(team_size):
         var new_opponent: BasePhysicsActor = opponent_scene.instantiate()
@@ -97,9 +99,21 @@ func _ready() -> void:
         var init_pos = Utilities.get_random_point_in_area(spawn_area_2)
         init_pos += spawn_area_2.position
         init_physics_actor(new_opponent, init_pos, Vector3.ZERO, OPPONENT_TEAM)
+        opponent_nodes.append(new_opponent)
+        
+    # init ai logic for all actors
+    for actor in teammate_nodes:
+        ai_logic.init_ai_actor(actor)
+
+    for actor in opponent_nodes:
+        ai_logic.init_ai_actor(actor)
     
-    
-    
+    # TODO Testing nav agent
+    #var new_nav_agent: BasePhysicsActorNav = nav_agent_scene.instantiate()
+    #var init_pos_nav = Utilities.get_random_point_in_area(spawn_area_2)
+    #init_pos_nav += spawn_area_2.position
+    #init_physics_actor(new_nav_agent, init_pos_nav, Vector3.ZERO, OPPONENT_TEAM)
+    #new_nav_agent.set_target_node(player_node)
     
     
     

@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://du0ya3mwtloqm"]
 
-[ext_resource type="Script" path="res://scripts/bullet_2.gd" id="1_xs6d3"]
+[ext_resource type="Script" uid="uid://b2s0d5pydn1b8" path="res://scripts/bullet_2.gd" id="1_xs6d3"]
 [ext_resource type="PackedScene" uid="uid://d1iqn0kgh3k0k" path="res://scenes/trail_3d_1.tscn" id="2_mvdab"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3myqu"]
@@ -14,7 +14,6 @@ height = 0.2
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rugkm"]
 margin = 0.08
-radius = 0.25
 height = 1.0
 
 [node name="BulletBody" type="RigidBody3D" groups=["projectile"]]

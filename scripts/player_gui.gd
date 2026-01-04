@@ -29,8 +29,7 @@ func _ready() -> void:
     objective_title.text = "Score"
 
 
-func _physics_process(delta: float) -> void:
-    # decay hit marker opacity
+func _physics_process(_delta: float) -> void:
     pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

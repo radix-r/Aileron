@@ -78,7 +78,7 @@ func add_to_team(node: Node3D, team: String) -> void:
 func get_random_target(targeter_node: BasePhysicsActor) -> Node3D:
     var return_node = null
     if node_targetable_dict[targeter_node]:
-        var can_target_array: Array= team_targetability_dict[targeter_node]
+        var can_target_array: Array= node_targetable_dict[targeter_node]
         return_node = can_target_array.pick_random()
     return return_node
     
