@@ -1,4 +1,4 @@
-extends Node3D
+extends Control
 
 @onready var controller_horizontal_turn_sensitivity: float = 0
 @onready var controller_vertical_turn_sensitivity: float = 0
@@ -36,7 +36,7 @@ func _input(event: InputEvent) -> void:
     #if event is InputEventJoypadMotion:
         #tick_y_rotation_input_sum += Input.get_axis("turn_right", "turn_left")
         #tick_x_rotation_input_sum += Input.get_axis("turn_down", "turn_up")
-    
+
     
 func _physics_process(_delta: float) -> void:
     var input_dir_local: Vector3 = get_input_direction()
@@ -59,6 +59,7 @@ func _physics_process(_delta: float) -> void:
     if Input.is_action_just_pressed("target_select"):
         SignalManager.target_select_input.emit()
     
+
 
 func get_input_direction() -> Vector3:
     var input_right = Input.get_axis("left", "right")

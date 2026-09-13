@@ -1,4 +1,4 @@
-class_name LevelLogic extends BaseLevelLogic
+class_name ArenaBallLevelLogic extends BaseLevelLogic
 
 # TODO orginize varables. make private?
 @onready var objects_in_force_field: Dictionary = {}
@@ -8,7 +8,7 @@ class_name LevelLogic extends BaseLevelLogic
 @onready var burst_duration_timer: Timer = Timer.new()
 ## How long actor holds fire for
 @onready var burst_cooldown_timer: Timer = Timer.new()
-## Delay between a goal beiong scored and the arena reseting
+## Delay between a goal being scored and the arena reseting
 @onready var arena_reset_timer: Timer = Timer.new()
 ## Timer for the game. Game is over when the timer reaches 0
 @onready var game_timer: Timer = Timer.new()
@@ -21,15 +21,15 @@ class_name LevelLogic extends BaseLevelLogic
 ## actors that are ready to fire a burst
 @onready var actors_ready_to_fire: Array = []
 
-@onready var player_scene: PackedScene = preload("res://scenes/actors/ship_physics.tscn")
+#@onready var player_scene: PackedScene = preload("res://scenes/actors/ship_physics.tscn")
 @onready var ball_scene: PackedScene = preload("res://scenes/ball.tscn") 
 @onready var opponent_scene: PackedScene = preload("res://scenes/actors/base_physics_actor.tscn")
 
 @export var ai_logic: AiLogic = null
-@export var targeting_logic: TargetingLogic = null # $"../TargetingLogic"
-@export var hud_logic: HudLogic = null
+# targeting_logic defined in base class
+#@export var hud_logic: HudLogic = null
 @export var combat_logic: CombatLogic = null
-@export var hud_anchor: HudAnchor = null #$"../../UI/HudAnchor"
+# hud_anchor defined in base class
 @export var actors_root: Node3D = null
 @export var env_root: Node3D = null 
 
@@ -50,7 +50,7 @@ class_name LevelLogic extends BaseLevelLogic
 @onready var opponent_starting_rotation: Vector3 = Vector3(0, 0, 0)
 @onready var ball_starting_position: Vector3 = Vector3(0, 20, 0)
 
-@onready var player_node: PlayerPhysicsShip = null
+#player_node defined in base class
 @onready var teammate_node: BasePhysicsActor = null
 @onready var ball_node: RigidBody3D = null
 @onready var opponent_node: BasePhysicsActor = null
@@ -63,11 +63,7 @@ func _ready() -> void:
     SignalManager.arena_force_field_entered.connect(add_object_in_force_field)
     SignalManager.arena_force_field_exited.connect(remove_object_in_force_field)
 
-    SignalManager.directional_input_received.connect(_on_directional_input_received)
-    SignalManager.rotation_input_received.connect(_on_rotational_input_received)
-    SignalManager.fire_input.connect(_on_fire_input)
-    SignalManager.boost_input.connect(_on_boost_input)
-    SignalManager.target_select_input.connect(_on_target_select_input)
+    connect_input_signals()
 
     # Instantiate team relations
     targeting_logic.set_team_targetability(PLAYER_TEAM, ENVIRNOMENT_TEAM)
@@ -138,12 +134,6 @@ func _ready() -> void:
 func _on_arena_reset_timer_timeout() -> void:
     reset_arena()
     
-    
-func _on_boost_input(boosting: bool):
-    if player_node:
-        var boost_command: BoostCommand = BoostCommand.new(boosting)
-        boost_command.execute(player_node)
-        
 
 func _on_burst_duration_timeout(actor: BasePhysicsActor) -> void:
     if actor in actors_ready_to_fire:
@@ -154,6 +144,7 @@ func _on_burst_duration_timeout(actor: BasePhysicsActor) -> void:
     add_child(new_timer)
     new_timer.start(burst_cooldown_timer.wait_time + randf() *2) # random variation
 
+
 func _on_burst_cooldown_timeout(actor: BasePhysicsActor) -> void:
     if !(actor in actors_ready_to_fire):
         actors_ready_to_fire.append(actor)
@@ -163,20 +154,7 @@ func _on_burst_cooldown_timeout(actor: BasePhysicsActor) -> void:
     add_child(new_timer)
     new_timer.start(burst_duration_timer.wait_time + randf() *2)
 
-## command player node to move with input
-func _on_directional_input_received(direction: Vector3) -> void:
-    if player_node:
-        var move_command: MoveCommand = MoveCommand.new(direction)
-        move_command.execute(player_node)
-        
-                        
-## command player node to fire on input
-func _on_fire_input():
-    if player_node:
-        var fire_command: FireCommand = FireCommand.new()
-        fire_command.execute(player_node)
-        
-        
+
 func _on_game_timer_timeout():
     var highest_score: int = 0
     var score_team_dict: Dictionary = {}
@@ -211,7 +189,8 @@ func _on_game_timer_timeout():
     hud_anchor.show_center_screen_label()
         
     # Go back to menu?
-        
+
+
 func _on_goal_zone_1_body_entered(body: Node3D) -> void:
     #print_debug(body.name + " entered goal 1")
     if body.is_in_group("ball"):
@@ -223,6 +202,7 @@ func _on_goal_zone_1_body_entered(body: Node3D) -> void:
         # reset arena
         arena_reset_timer.start()
 
+
 func _on_goal_zone_2_body_entered(body: Node3D) -> void:
     #print_debug(body.name + " entered goal 2")
     if body.is_in_group("ball"):
@@ -232,35 +212,6 @@ func _on_goal_zone_2_body_entered(body: Node3D) -> void:
         arena_reset_timer.start()
 
 
-
-                        
-                
-func _on_rotational_input_received(x_y_rotation: Vector2):
-    if player_node:
-        var rotate_command: RotationCommand = RotationCommand.new(x_y_rotation)
-        rotate_command.execute(player_node)
-
-    
-## Set player's selected target
-func _on_target_select_input():
-    
-    # find target closest to center screen
-    var closest_target: Node3D = get_closest_target_to_boresight(player_node, player_node.camera)
-    var result: int = targeting_logic.set_selected_target(player_node, closest_target)
-    if 0 != result:
-        print_debug("Failed to select next player target")
-    
-    
-#func _on_ui_cancel_input():
-    #if pause_menu.visible:
-        #pause_menu.hide()
-        ## TODO resume time
-        #get_tree().paused = false
-    #else:
-        #pause_menu.show()
-        ## TODO pause time
-        #get_tree().paused = true
-        
 func _physics_process(delta: float) -> void:
     apply_force_field_effects(delta)
     
@@ -298,18 +249,10 @@ func _physics_process(delta: float) -> void:
         teammate_node.look_at(opponent_aim_location)
         if teammate_node in actors_ready_to_fire:
             fire_command.execute(teammate_node)
-        
 
-    # 
 
 func _process(_delta: float) -> void:
-    draw_target_ui_for_cam(player_node.get_camera(), targeting_logic.get_targetable(player_node), targeting_logic.get_selected_target(player_node))
-    hud_logic.update_velocity_marker(player_node)
-    hud_logic.update_boresight(player_node)
-    # update timer
-    
-
-
+    update_hud()
             
             
 func add_object_in_force_field(obj: RigidBody3D) -> void:
@@ -317,33 +260,11 @@ func add_object_in_force_field(obj: RigidBody3D) -> void:
     #print_debug(obj.name + " entered")
 
 
-
-
-
-
 func apply_force_field_effects(_delta: float) -> void:
     for obj_name in objects_in_force_field:
         objects_in_force_field[obj_name].apply_central_force(Vector3.UP * foce_field_force_newtons)
     
     
-
-    
-    
-## Draw target indicators for given targets on given camera
-func draw_target_ui_for_cam(camera: Camera3D, targets: Array, selected_target: Node3D) -> void:
-    # draw targets
-    # TODO: dont access hud anchor. instead go through hud logic?
-    hud_anchor.update_target_indicators(camera, targets)
-    # draw selected target
-    hud_anchor.update_selected_target_indicator(camera, selected_target)
-    var selected_target_velocity = Vector3.ZERO
-    if selected_target is RigidBody3D:
-        selected_target_velocity = selected_target.linear_velocity
-    
-    if selected_target:
-        var aim_point_hud_pos: Vector2 = Utilities.calculate_aim_indicator_location(camera,selected_target.global_position, selected_target_velocity ,player_node.global_position, player_node.linear_velocity, player_node.weapon.projectile_speed)
-        hud_anchor.update_aim_indicator(camera, aim_point_hud_pos, selected_target.position)
-
 func init_physics_actor(actor: BasePhysicsActor, init_location: Vector3, init_rotation: Vector3, team: String) -> void:
     actors_root.add_child(actor)
     actor.global_position = init_location
@@ -352,26 +273,6 @@ func init_physics_actor(actor: BasePhysicsActor, init_location: Vector3, init_ro
     # data driven max hp and stability
     combat_logic.init_combat_actor(actor)
     
-
-
-func get_closest_target_to_boresight(targeter_node: Node3D, camera: Camera3D) -> Node3D:
-
-    var closest_target: Node3D = null
-    var closest_dist: float = Utilities.MAX_FLOAT 
-    var boresight_2d_pos: Vector2 = hud_anchor.boresight.position
-
-    var targets: Array = targeting_logic.get_targetable(targeter_node) #node_targetable_dict[targeter_name]
-    for target: Node3D in targets:
-        var target_2d_pos: Vector2 = Utilities.transform_to_hud_space(target.global_position, camera)
-        var dist: float = (boresight_2d_pos - target_2d_pos).length()
-        # account for behind cam
-        if camera.is_position_behind(target.global_position):
-            dist = 10000 - dist
-        if dist < closest_dist:
-            closest_dist = dist
-            closest_target = target
-    return closest_target
-
 
 func update_score_ui():
     hud_anchor.set_objective_description(
@@ -382,8 +283,10 @@ func update_score_ui():
             })
     )
 
+
 func update_stability_bar(actor: BasePhysicsActor, fraction_full: float) -> void:
     hud_anchor.update_stability_bar(fraction_full, actor)
+
 
 func update_hp_bar(actor: BasePhysicsActor, fraction_full: float) -> void:
     hud_anchor.update_hp_bar(fraction_full, actor)

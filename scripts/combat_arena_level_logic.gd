@@ -2,14 +2,14 @@ extends BaseLevelLogic
 class_name CombatLevelLogic
 
 @export var ai_logic: AiCombatLogic = null
-@export var targeting_logic: TargetingLogic = null # $"../TargetingLogic"
+ # $"../TargetingLogic"
 @export var hud_logic: HudLogic = null
 @export var combat_logic: CombatLogic = null
-@export var hud_anchor: HudAnchor = null #$"../../UI/HudAnchor"
+#@export  #$"../../UI/HudAnchor"
 @export var actors_root: Node3D = null
 @export var env_root: Node3D = null 
 
-@onready var player_scene: PackedScene = preload("res://scenes/actors/ship_physics.tscn")
+#@onready var player_scene: PackedScene = preload("res://scenes/actors/ship_physics.tscn")
 @onready var opponent_scene: PackedScene = preload("res://scenes/actors/base_physics_actor.tscn")
 @onready var nav_agent_scene: PackedScene = preload("res://scenes/actors/base_physics_actor_nav.tscn")
 @onready var explosion_scene: PackedScene = preload("res://scenes/fx/vfx_explosion.tscn")
@@ -25,7 +25,7 @@ class_name CombatLevelLogic
 @onready var opponent_starting_pos: Vector3 = Vector3(0, 0, 96)
 @onready var opponent_starting_rotation: Vector3 = Vector3(0, 0, 0)
 
-@onready var player_node: PlayerPhysicsShip = null
+#@onready var player_node: PlayerPhysicsShip = null
 @onready var teammate_nodes: Array = []
 @onready var opponent_nodes: Array = []
 
@@ -45,6 +45,7 @@ class_name CombatLevelLogic
 
 func _ready() -> void:
     
+    targeting_logic = null
     # Get data
     game_timer.wait_time = 60 * Utilities.data_dict["ArenaCombat0"]["game_time"]
 
@@ -109,11 +110,11 @@ func _ready() -> void:
         ai_logic.init_ai_actor(actor)
     
     # TODO Testing nav agent
-    #var new_nav_agent: BasePhysicsActorNav = nav_agent_scene.instantiate()
-    #var init_pos_nav = Utilities.get_random_point_in_area(spawn_area_2)
-    #init_pos_nav += spawn_area_2.position
-    #init_physics_actor(new_nav_agent, init_pos_nav, Vector3.ZERO, OPPONENT_TEAM)
-    #new_nav_agent.set_target_node(player_node)
+    var new_nav_agent: BasePhysicsActorNav = nav_agent_scene.instantiate()
+    var init_pos_nav = Utilities.get_random_point_in_area(spawn_area_2)
+    init_pos_nav += spawn_area_2.position
+    init_physics_actor(new_nav_agent, init_pos_nav, Vector3.ZERO, OPPONENT_TEAM)
+    new_nav_agent.set_target_node(player_node)
     
     
     
