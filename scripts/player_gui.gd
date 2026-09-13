@@ -16,7 +16,7 @@ var aim_ui_elemet: PackedScene = preload("res://scenes/hud/aim_indicator.tscn")
 @onready var center_screen_label: Label = $CenterScreenLabel
 @onready var hit_marker: Control = $HitMarkerOverlay/HitMarker
 # Key: node reff, Value: target ui element assigned to that node
-var target_ui_element_dict: Dictionary = {}
+var target_ui_element_dict: Dictionary[Node, Node] = {}
 var aim_indicator: Control = null
 
 # Called when the node enters the scene tree for the first time.
@@ -59,7 +59,10 @@ func hide_velocity_marker() -> void:
 
 func remove_target_indicator(node: Node3D) -> void:
     if target_ui_element_dict.has(node):
+        var ui_element = target_ui_element_dict[node]
         target_ui_element_dict.erase(node)
+        ui_element.queue_free()
+        aim_indicator.hide()
 
 func set_center_screen_label(text: String) -> void:
     center_screen_label.text = text

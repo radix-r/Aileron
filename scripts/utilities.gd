@@ -53,6 +53,14 @@ func calculate_aim_location_3d(selected_target_global_pos: Vector3, selected_tar
     var aim_location: Vector3 = selected_target_global_pos + selected_target_velocity * time_to_target
     return aim_location
 
+
+func generate_random_unit_vector() -> Vector3:
+    var temp_x: float = randf_range(-1, 1)
+    var temp_y: float = randf_range(-1, 1)
+    var temp_z: float = randf_range(-1, 1)
+    return Vector3(temp_x, temp_y, temp_z).normalized()
+
+
 func get_level_root() -> Node:
     var children: Array[Node] = get_tree().root.get_children()
     for child in children:
@@ -62,9 +70,10 @@ func get_level_root() -> Node:
     # root not found
     return null
 
+# Returns a point inside given area relative to given area's origin
 func get_random_point_in_area(area: Area3D) -> Vector3:
-    var shape_owner = area.shape_find_owner(0)
-    var shape_node: Shape3D= area.shape_owner_get_shape(shape_owner, 0)
+    var shape_owner: int = area.shape_find_owner(0)
+    var shape_node: Shape3D = area.shape_owner_get_shape(shape_owner, 0)
     var return_val: Vector3 = Vector3.ZERO
     
     if shape_node is BoxShape3D:
@@ -72,6 +81,13 @@ func get_random_point_in_area(area: Area3D) -> Vector3:
         var temp_y: float = randf_range(-shape_node.size.y/2, shape_node.size.y/2)
         var temp_z: float = randf_range(-shape_node.size.z/2, shape_node.size.z/2)
         return_val = Vector3(temp_x, temp_y, temp_z)
+    elif shape_node is SphereShape3D:
+        var temp_horizontal_angle_rad: float = randf_range(0, 2*PI)
+        var temp_vertical_angle_rad: float = randf_range(0, 2*PI)
+        var length: float = randf_range(0, shape_node.radius)
+        return_val = spherical_coords_to_rectangular(length, 
+                                                     temp_horizontal_angle_rad, 
+                                                     temp_vertical_angle_rad)
 
     return return_val
 
@@ -83,6 +99,15 @@ func read_json_file(file_path: String) -> Dictionary:
     else:
         # TODO: Retrun error dict
         return Dictionary()
+
+
+func spherical_coords_to_rectangular(r: float, theta: float, phi: float) -> Vector3:
+    var x: float = r * sin(theta) * cos(phi)
+    var y: float = r * sin(theta) * sin(phi)
+    var z: float = r * cos(theta)
+    
+    return Vector3(x, y, z)
+
 
 func transform_to_hud_space(world_space: Vector3, camera: Camera3D) -> Vector2:
     var screen_space: Vector2 = camera.unproject_position(world_space)

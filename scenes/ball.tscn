@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://b3qe65pdbip4k"]
+[gd_scene format=3 uid="uid://cjggeo45brder"]
 
-[ext_resource type="Texture2D" uid="uid://o6lcnwrc4rai" path="res://Assets/kenney_prototype-textures/PNG/Orange/texture_01.png" id="1_d60mj"]
+[ext_resource type="Texture2D" uid="uid://o6lcnwrc4rai" path="res://assets/kenney_prototype-textures/PNG/Orange/texture_01.png" id="1_d60mj"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_25osk"]
 
@@ -10,13 +10,13 @@ albedo_texture = ExtResource("1_d60mj")
 [sub_resource type="SphereMesh" id="SphereMesh_376qj"]
 material = SubResource("StandardMaterial3D_ij5cq")
 
-[node name="Ball" type="RigidBody3D" groups=["ball", "targetable"]]
+[node name="Ball" type="RigidBody3D" unique_id=1873251308 groups=["ball", "targetable"]]
 collision_layer = 8
 collision_mask = 15
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=449845327]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 shape = SubResource("SphereShape3D_25osk")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D" unique_id=17866843]
 mesh = SubResource("SphereMesh_376qj")

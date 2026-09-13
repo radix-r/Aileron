@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://crab6e4cijvhx"]
+
+[ext_resource type="PackedScene" uid="uid://nk0bu0kgfvkk" path="res://assets/Blender/ObstacleArena0.glb" id="1_36p3o"]
+
+[node name="ObstacleArena0" unique_id=1311362062 instance=ExtResource("1_36p3o")]

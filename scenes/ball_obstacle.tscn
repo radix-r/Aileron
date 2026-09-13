@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://cq0r3qo7avlf2"]
+
+[ext_resource type="Texture2D" uid="uid://o6lcnwrc4rai" path="res://assets/kenney_prototype-textures/PNG/Orange/texture_01.png" id="1_6btcu"]
+[ext_resource type="Texture2D" uid="uid://cf5bx3kukdkei" path="res://assets/kenney_prototype-textures/PNG/Red/texture_09.png" id="1_ix2ek"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ix2ek"]
+bounce = 0.57
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_25osk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pxt5s"]
+albedo_texture = ExtResource("1_ix2ek")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ij5cq"]
+albedo_texture = ExtResource("1_6btcu")
+
+[sub_resource type="SphereMesh" id="SphereMesh_376qj"]
+material = SubResource("StandardMaterial3D_ij5cq")
+
+[node name="Ball" type="RigidBody3D" unique_id=1873251308 groups=["ball", "targetable"]]
+collision_layer = 8
+collision_mask = 15
+physics_material_override = SubResource("PhysicsMaterial_ix2ek")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=449845327]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+shape = SubResource("SphereShape3D_25osk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D" unique_id=17866843]
+material_override = SubResource("StandardMaterial3D_pxt5s")
+mesh = SubResource("SphereMesh_376qj")

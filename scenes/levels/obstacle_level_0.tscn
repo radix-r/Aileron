@@ -1,0 +1,107 @@
+[gd_scene format=3 uid="uid://hjudsqw4t4sj"]
+
+[ext_resource type="PackedScene" uid="uid://nk0bu0kgfvkk" path="res://assets/Blender/ObstacleArena0.glb" id="2_bdus1"]
+[ext_resource type="Script" uid="uid://bcg8wh7x4ypqo" path="res://scripts/hud_logic.gd" id="3_2f0ax"]
+[ext_resource type="PackedScene" uid="uid://02fnp0f17n3v" path="res://scenes/levels/obstacle_arena_1_collision.tscn" id="3_2n7lf"]
+[ext_resource type="Script" uid="uid://ca3eqn77ys17i" path="res://scripts/obstacle_level_logic_0.gd" id="3_gplme"]
+[ext_resource type="Script" uid="uid://6rb762xkbnv" path="res://scripts/input_handler.gd" id="4_28a3u"]
+[ext_resource type="PackedScene" uid="uid://b6ab04h32aky1" path="res://scenes/hud/hud_anchor.tscn" id="5_8wsx0"]
+[ext_resource type="Script" uid="uid://cqsj6qbsjcc6a" path="res://scripts/targeting_logic.gd" id="6_e6iff"]
+[ext_resource type="Script" uid="uid://b6wnx1n5hlqi" path="res://scripts/combat_logic.gd" id="7_buruh"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_paxhc"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_you74"]
+sky_material = SubResource("ProceduralSkyMaterial_paxhc")
+
+[sub_resource type="Environment" id="Environment_2lh4p"]
+background_mode = 2
+sky = SubResource("Sky_you74")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_buruh"]
+radius = 80.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_buruh"]
+height = 10.0
+radius = 123.52051
+
+[node name="LevelRoot" type="Node3D" unique_id=1799566132]
+
+[node name="Actors" type="Node3D" parent="." unique_id=300470515]
+
+[node name="Environment" type="Node3D" parent="." unique_id=839644912]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=1853054371]
+transform = Transform3D(1, 0, 0, 0, 0.96252626, 0.27118847, 0, -0.27118847, 0.96252626, 0, 0, 0)
+visible = false
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=564484969]
+environment = SubResource("Environment_2lh4p")
+
+[node name="ObstacleArena0" parent="Environment" unique_id=808732510 instance=ExtResource("2_bdus1")]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+visible = false
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Environment" unique_id=611530457]
+light_color = Color(1, 0.6155507, 1, 1)
+light_energy = 16.0
+light_size = 1.0
+omni_range = 289.832
+
+[node name="BallSpawnLocation" type="Area3D" parent="Environment" unique_id=183199735]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1215.9058, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/BallSpawnLocation" unique_id=802097221]
+shape = SubResource("SphereShape3D_buruh")
+
+[node name="ObstacleArena1" parent="Environment" unique_id=1311362062 instance=ExtResource("3_2n7lf")]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+
+[node name="BallDespawnLocation" type="Area3D" parent="Environment" unique_id=612759029]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/BallDespawnLocation" unique_id=1287376673]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 83.85585, 0)
+shape = SubResource("CylinderShape3D_buruh")
+
+[node name="Services" type="Node3D" parent="." unique_id=1759050323]
+
+[node name="LevelLogic" type="Node3D" parent="Services" unique_id=2095652860 node_paths=PackedStringArray("combat_logic", "actors_root", "env_root", "ball_spawn_location", "targeting_logic", "hud_logic", "hud_anchor")]
+script = ExtResource("3_gplme")
+combat_logic = NodePath("../CombatLogic")
+actors_root = NodePath("../../Actors")
+env_root = NodePath("../../Environment")
+ball_spawn_location = NodePath("../../Environment/BallSpawnLocation")
+targeting_logic = NodePath("../TargetingLogic")
+hud_logic = NodePath("../HudLogic")
+hud_anchor = NodePath("../../UI/HudAnchor")
+
+[node name="HudLogic" type="Node3D" parent="Services" unique_id=1089522420 node_paths=PackedStringArray("hud_anchor")]
+script = ExtResource("3_2f0ax")
+hud_anchor = NodePath("../../UI/HudAnchor")
+
+[node name="InputHandler" type="Control" parent="Services" unique_id=609854931]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("4_28a3u")
+
+[node name="TargetingLogic" type="Node3D" parent="Services" unique_id=22352411 node_paths=PackedStringArray("hud_anchor")]
+script = ExtResource("6_e6iff")
+hud_anchor = NodePath("../../UI/HudAnchor")
+
+[node name="CombatLogic" type="Node3D" parent="Services" unique_id=1338532687 node_paths=PackedStringArray("level_logic")]
+script = ExtResource("7_buruh")
+level_logic = NodePath("../LevelLogic")
+
+[node name="UI" type="Node3D" parent="." unique_id=1530612322]
+
+[node name="HudAnchor" parent="UI" unique_id=533581652 instance=ExtResource("5_8wsx0")]
+metadata/_edit_use_anchors_ = true
+
+[connection signal="body_entered" from="Environment/BallDespawnLocation" to="Services/LevelLogic" method="_on_ball_despawn_location_body_entered"]

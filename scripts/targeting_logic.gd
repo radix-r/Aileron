@@ -8,23 +8,23 @@ class_name TargetingLogic extends Node3D
 
 ## Key: Node reff, Value: Node refference
 ## Dict of all targetable nodes in scene
-var all_targetable_array: Array = []
+var all_targetable_array: Array[Node] = []
 
 ## Key: Node reff, Value: Array of targetable nodes
-var node_targetable_dict: Dictionary = {}
+var node_targetable_dict: Dictionary[Node, Array] = {}
 
 ## Key: Node reff, Value: Currently selected target node reff
-var node_selected_target_dict: Dictionary = {}
+var node_selected_target_dict: Dictionary[Node, Node] = {}
 
 ## Key: Node, Value: Team node is on. 
 ## Node can only be on one team for now
-var node_team_dict: Dictionary = {}
+var node_team_dict: Dictionary[Node, String] = {}
 
 ## Key: Team name, Value: Array of nodes on that team
-var team_node_dict: Dictionary = {}
+var team_node_dict: Dictionary[String, Array] = {}
 
 ## Key: Team, Value: Array of team names given team can target
-var team_targetability_dict: Dictionary = {}
+var team_targetability_dict: Dictionary[String, Array] = {}
 
 # TODO dont go directly. interface through level logic
 @export var hud_anchor: HudAnchor = null #$"../../UI/HudAnchor"
@@ -89,6 +89,9 @@ func get_targetable(node: Node3D) -> Array:
     var targets: Array = []
     if node_targetable_dict.has(node):
         targets = node_targetable_dict[node]
+        for target in targets:
+            if target == null:
+                targets.erase(target)
     return targets        
     
 
@@ -114,9 +117,6 @@ func get_closest_target(targeter_node: Node3D) -> Node3D:
     return closest_target
 
 
-
-
-
 func get_next_closest_target(targeter_node: Node3D) -> Node3D:
     # TODO
     # sort nodes by closest
@@ -131,6 +131,7 @@ func get_selected_target(targeter_node: Node3D) -> Node3D:
         return_value = node_selected_target_dict[targeter_node]
     return return_value
 
+
 ## returns true if both node are on the same team
 ## also returns true if both nodes are on no team
 func is_same_team(node_a: Node3D, node_b: Node3D) -> bool:
@@ -139,11 +140,25 @@ func is_same_team(node_a: Node3D, node_b: Node3D) -> bool:
     
     return node_a_team == node_b_team
 
+
 # TODO go throught level logic?
 func remove_targetable_node(node: Node3D) -> void:
     hud_anchor.remove_target_indicator(node)
     # TODO remove from target dicts
-    # level_logic.update_target_indicators 
+    all_targetable_array.erase(node)
+    node_targetable_dict.erase(node)
+    
+    node_selected_target_dict.erase(node)
+    # Remove if it is being targeted by anything
+    for key in node_selected_target_dict:
+        if node_selected_target_dict[key] == node:
+            node_selected_target_dict[key] = null
+            
+    # Get team
+    var team = node_team_dict[node]
+    team_node_dict[team].erase(node)
+    
+    hud_anchor.remove_target_indicator(node)
 
 ## Attempts to set given targeter's selected target. 
 ## @returns 0 on sucess returns -1 on failure

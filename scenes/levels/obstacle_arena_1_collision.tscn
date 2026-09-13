@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://02fnp0f17n3v"]
+
+[ext_resource type="PackedScene" uid="uid://nk0bu0kgfvkk" path="res://assets/Blender/ObstacleArena0.glb" id="1_3mogy"]
+[ext_resource type="Texture2D" uid="uid://b8s4of7biwvkd" path="res://assets/kenney_prototype-textures/PNG/Purple/texture_05.png" id="2_8p8kg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jfwp6"]
+albedo_texture = ExtResource("2_8p8kg")
+
+[node name="ObstacleArena0" unique_id=1311362062 instance=ExtResource("1_3mogy")]
+
+[node name="Arena" parent="." index="0" unique_id=1064248388]
+material_override = SubResource("StandardMaterial3D_jfwp6")
+
+[node name="StaticBody3D" parent="Arena" index="0" unique_id=1969253466]
+collision_layer = 8
+collision_mask = 15
