@@ -14,7 +14,8 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="Aileron"
+config/name="Aileron (4.6)"
+config/version="0.0.0"
 run/main_scene="res://scenes/opening/opening.tscn"
 config/features=PackedStringArray("4.6")
 config/icon="res://icon.png"
@@ -207,6 +208,7 @@ locale/translations=PackedStringArray("res://addons/maaacks_game_template/base/t
 3d_physics/layer_2="player_projectiles"
 3d_physics/layer_3="enemy_projectiles"
 3d_physics/layer_4="environment"
+3d_physics/layer_5="npc"
 
 [maaacks_game_template]
 

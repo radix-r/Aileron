@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bu0c6futlsxm5"]
+[gd_scene format=3 uid="uid://bu0c6futlsxm5"]
 
 [ext_resource type="PackedScene" uid="uid://druys8o1mxq1o" path="res://scenes/actors/base_physics_actor_nav.tscn" id="1_6r4h8"]
 [ext_resource type="PackedScene" uid="uid://cxq3gebh28avn" path="res://scenes/levels/arena_0_base.tscn" id="1_arsgv"]
@@ -54,58 +54,58 @@ sky = SubResource("Sky_you74")
 tonemap_mode = 2
 glow_enabled = true
 
-[node name="LevelRoot" type="Node3D"]
+[node name="LevelRoot" type="Node3D" unique_id=1324581561]
 
-[node name="Actors" type="Node3D" parent="."]
+[node name="Actors" type="Node3D" parent="." unique_id=1782097129]
 
-[node name="Environment" type="Node3D" parent="."]
+[node name="Environment" type="Node3D" parent="." unique_id=1840755378]
 
-[node name="Arena2" parent="Environment" instance=ExtResource("1_arsgv")]
+[node name="Arena2" parent="Environment" unique_id=175009563 instance=ExtResource("1_arsgv")]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Environment/Arena2"]
+[node name="OmniLight3D" type="OmniLight3D" parent="Environment/Arena2" unique_id=787916566]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 78.32895, 0)
 light_color = Color(1, 0.85490197, 0.9764706, 1)
 light_energy = 16.0
 omni_range = 540.592
 omni_attenuation = 0.5
 
-[node name="SpawnArea1" type="Area3D" parent="Environment/Arena2"]
+[node name="SpawnArea1" type="Area3D" parent="Environment/Arena2" unique_id=185524614]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.938242, -143.3736)
 collision_layer = 0
 collision_mask = 0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Arena2/SpawnArea1"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Arena2/SpawnArea1" unique_id=756473680]
 shape = SubResource("BoxShape3D_ux2jd")
 
-[node name="SpawnArea2" type="Area3D" parent="Environment/Arena2"]
+[node name="SpawnArea2" type="Area3D" parent="Environment/Arena2" unique_id=26414289]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15.861271, 141.36871)
 collision_layer = 0
 collision_mask = 0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Arena2/SpawnArea2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Arena2/SpawnArea2" unique_id=997615889]
 shape = SubResource("BoxShape3D_ux2jd")
 
-[node name="NavigationRegion3D" type="NavigationRegion3D" parent="Environment/Arena2"]
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="Environment/Arena2" unique_id=2105000352]
 navigation_mesh = SubResource("NavigationMesh_ux2jd")
 
-[node name="RigidBody3D" type="RigidBody3D" parent="Environment/Arena2/NavigationRegion3D"]
+[node name="RigidBody3D" type="RigidBody3D" parent="Environment/Arena2/NavigationRegion3D" unique_id=140407788]
 transform = Transform3D(0.8054527, 0.59266007, 0, -0.59266007, 0.8054527, 0, 0, 0, 1, -18.85865, -11.075325, 48.036278)
 collision_layer = 8
 collision_mask = 15
 mass = 20.0
 gravity_scale = 0.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Arena2/NavigationRegion3D/RigidBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Arena2/NavigationRegion3D/RigidBody3D" unique_id=1760663465]
 shape = SubResource("CapsuleShape3D_ux2jd")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/RigidBody3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/RigidBody3D" unique_id=360411907]
 mesh = SubResource("CapsuleMesh_6r4h8")
 
-[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="Environment/Arena2/NavigationRegion3D/RigidBody3D"]
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="Environment/Arena2/NavigationRegion3D/RigidBody3D" unique_id=1917645417]
 radius = 50.0
 use_3d_avoidance = true
 
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="Environment/Arena2/NavigationRegion3D/RigidBody3D"]
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="Environment/Arena2/NavigationRegion3D/RigidBody3D" unique_id=973021406]
 avoidance_enabled = true
 height = 50.0
 radius = 50.0
@@ -113,464 +113,464 @@ neighbor_distance = 100.0
 time_horizon_agents = 5.0
 use_3d_avoidance = true
 
-[node name="BasePhysicsActorNav" parent="Environment/Arena2/NavigationRegion3D" instance=ExtResource("1_6r4h8")]
+[node name="BasePhysicsActorNav" parent="Environment/Arena2/NavigationRegion3D" unique_id=1263604063 instance=ExtResource("1_6r4h8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.406, 0, 147.283)
 gravity_scale = 0.0
 
-[node name="Meshes" type="Node3D" parent="Environment/Arena2/NavigationRegion3D"]
+[node name="Meshes" type="Node3D" parent="Environment/Arena2/NavigationRegion3D" unique_id=316518215]
 
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes"]
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes" unique_id=2133772697]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0)
 mesh = SubResource("PlaneMesh_6r4h8")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes" unique_id=317238769]
 mesh = SubResource("PlaneMesh_ux2jd")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes"]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes" unique_id=925582827]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
 mesh = SubResource("PlaneMesh_ux2jd")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes"]
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes" unique_id=788910667]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
 mesh = SubResource("PlaneMesh_ux2jd")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes"]
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes" unique_id=1096429571]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 0)
 mesh = SubResource("PlaneMesh_ux2jd")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D6" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes"]
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes" unique_id=2008913697]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0)
 mesh = SubResource("PlaneMesh_ux2jd")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D7" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes"]
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes" unique_id=511612207]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 25, 0)
 mesh = SubResource("PlaneMesh_ux2jd")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D8" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes"]
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes" unique_id=122725119]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30, 0)
 mesh = SubResource("PlaneMesh_ux2jd")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D9" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes"]
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes" unique_id=1626945095]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 35, 0)
 mesh = SubResource("PlaneMesh_ux2jd")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D10" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes"]
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes" unique_id=365185872]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)
 mesh = SubResource("PlaneMesh_ux2jd")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D11" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes"]
+[node name="MeshInstance3D11" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes" unique_id=1008313444]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 45, 0)
 mesh = SubResource("PlaneMesh_ux2jd")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D12" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes"]
+[node name="MeshInstance3D12" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes" unique_id=1644359544]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
 mesh = SubResource("PlaneMesh_ux2jd")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D13" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes"]
+[node name="MeshInstance3D13" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes" unique_id=446326170]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 55, 0)
 mesh = SubResource("PlaneMesh_ux2jd")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D14" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes"]
+[node name="MeshInstance3D14" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes" unique_id=2076363826]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 60, 0)
 mesh = SubResource("PlaneMesh_ux2jd")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D15" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes"]
+[node name="MeshInstance3D15" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes" unique_id=1844432035]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 65, 0)
 mesh = SubResource("PlaneMesh_ux2jd")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D16" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes"]
+[node name="MeshInstance3D16" type="MeshInstance3D" parent="Environment/Arena2/NavigationRegion3D/Meshes" unique_id=441161601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 70, 0)
 mesh = SubResource("PlaneMesh_ux2jd")
 skeleton = NodePath("../..")
 
-[node name="Links" type="Node3D" parent="Environment/Arena2/NavigationRegion3D"]
+[node name="Links" type="Node3D" parent="Environment/Arena2/NavigationRegion3D" unique_id=1143437085]
 
-[node name="NavigationLink3D" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1112737093]
 transform = Transform3D(150, 0, 0, 0, 1, 0, 0, 0, 150, 0, -2.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D2" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D2" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1909284791]
 transform = Transform3D(150, 0, 0, 0, 1, 0, 0, 0, 150, 0, -2.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D3" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D3" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1291581601]
 transform = Transform3D(150, 0, 0, 0, 1, 0, 0, 0, 150, 0, 7.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D4" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D4" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=2007363208]
 transform = Transform3D(150, 0, 0, 0, 1, 0, 0, 0, 150, 0, 7.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D5" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D5" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1286221762]
 transform = Transform3D(150, 0, 0, 0, 1, 0, 0, 0, 150, 0, 17.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D6" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D6" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=2091095868]
 transform = Transform3D(150, 0, 0, 0, 1, 0, 0, 0, 150, 0, 17.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D7" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D7" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=960996047]
 transform = Transform3D(150, 0, 0, 0, 1, 0, 0, 0, 150, 0, 27.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D8" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D8" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1581503278]
 transform = Transform3D(150, 0, 0, 0, 1, 0, 0, 0, 150, 0, 27.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D9" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D9" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=461225320]
 transform = Transform3D(150, 0, 0, 0, 1, 0, 0, 0, 150, 0, 37.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D10" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D10" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=702057549]
 transform = Transform3D(150, 0, 0, 0, 1, 0, 0, 0, 150, 0, 37.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D11" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D11" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1822389252]
 transform = Transform3D(150, 0, 0, 0, 1, 0, 0, 0, 150, 0, 47.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D12" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D12" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1564319568]
 transform = Transform3D(150, 0, 0, 0, 1, 0, 0, 0, 150, 0, 47.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D13" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D13" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=500614191]
 transform = Transform3D(150, 0, 0, 0, 1, 0, 0, 0, 150, 0, 57.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D14" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D14" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1299454767]
 transform = Transform3D(150, 0, 0, 0, 1, 0, 0, 0, 150, 0, 57.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D15" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D15" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=331962106]
 transform = Transform3D(150, 0, 0, 0, 1, 0, 0, 0, 150, 0, 67.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D16" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D16" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1988979255]
 transform = Transform3D(150, 0, 0, 0, 1, 0, 0, 0, 150, 0, 67.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D17" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D17" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=340831083]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -2.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D18" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D18" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1334688291]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -2.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D19" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D19" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=372217055]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 7.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D20" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D20" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1378428109]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 7.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D21" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D21" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=290391270]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 17.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D22" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D22" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=383420141]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 17.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D23" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D23" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=252777822]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 27.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D24" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D24" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=448436638]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 27.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D25" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D25" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=994061423]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 37.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D26" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D26" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=346149320]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 37.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D27" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D27" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=642249813]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 47.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D28" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D28" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=2052524020]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 47.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D29" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D29" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1297264665]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 57.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D30" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D30" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=806583124]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 57.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D31" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D31" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1532584362]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 67.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D32" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D32" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=952484784]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 67.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D33" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D33" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=19352705]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, -2.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D34" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D34" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=54712619]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, -2.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D35" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D35" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=996760374]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 7.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D36" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D36" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1943233523]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 7.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D37" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D37" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1528347483]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 17.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D38" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D38" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1018598572]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 17.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D39" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D39" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1187907051]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 27.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D40" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D40" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1527443196]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 27.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D41" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D41" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1367316097]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 37.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D42" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D42" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=2117632468]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 37.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D43" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D43" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1949256302]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 47.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D44" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D44" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1243820172]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 47.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D45" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D45" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1497682024]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 57.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D46" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D46" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=272254425]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 57.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D47" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D47" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=406855261]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 67.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D48" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D48" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=278025292]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 67.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D49" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D49" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=38630134]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, -2.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D50" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D50" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=261077699]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, -2.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D51" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D51" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=41737117]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 7.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D52" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D52" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=388238950]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 7.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D53" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D53" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=800146673]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 17.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D54" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D54" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=2040205789]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 17.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D55" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D55" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1096163113]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 27.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D56" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D56" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1957037185]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 27.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D57" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D57" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1474550834]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 37.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D58" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D58" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1905257044]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 37.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D59" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D59" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1646673032]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 47.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D60" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D60" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=181320875]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 47.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D61" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D61" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=4573930]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 57.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D62" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D62" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=66890386]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 57.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D63" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D63" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=146231483]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 67.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D64" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D64" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1072956355]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 67.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D65" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D65" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=331679671]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -2.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D66" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D66" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=384510609]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -2.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D67" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D67" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=888758931]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 7.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D68" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D68" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=299584308]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 7.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D69" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D69" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=429357698]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 17.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D70" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D70" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1843328975]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 17.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D71" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D71" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=152283795]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 27.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D72" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D72" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1583226044]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 27.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D73" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D73" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1855912869]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 37.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D74" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D74" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1859890238]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 37.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D75" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D75" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=831241121]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 47.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D76" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D76" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=745788736]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 47.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D77" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D77" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=15747315]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 57.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D78" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D78" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=506318004]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 57.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="NavigationLink3D79" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D79" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=165091157]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 67.5, 0)
 end_position = Vector3(0, 5, 0)
 
-[node name="NavigationLink3D80" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links"]
+[node name="NavigationLink3D80" type="NavigationLink3D" parent="Environment/Arena2/NavigationRegion3D/Links" unique_id=1818989911]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 67.5, 0)
 start_position = Vector3(0, 5, 0)
 end_position = Vector3(0, 10, 0)
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=585255879]
 transform = Transform3D(0.839432, -0.245678, -0.484765, 0.133262, -0.771708, 0.621859, -0.526874, -0.586609, -0.615056, 0, 0, 0)
 visible = false
 shadow_enabled = true
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=1722938790]
 environment = SubResource("Environment_2lh4p")
 
-[node name="Services" type="Node3D" parent="."]
+[node name="Services" type="Node3D" parent="." unique_id=1548873661]
 
-[node name="LevelLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("ai_logic", "targeting_logic", "hud_logic", "combat_logic", "hud_anchor", "actors_root", "env_root")]
+[node name="LevelLogic" type="Node3D" parent="Services" unique_id=1421683933 node_paths=PackedStringArray("ai_logic", "targeting_logic", "hud_logic", "combat_logic", "hud_anchor", "actors_root", "env_root")]
 script = ExtResource("2_ux2jd")
 ai_logic = NodePath("../AiLogic")
 targeting_logic = NodePath("../TargetingLogic")
@@ -580,28 +580,28 @@ hud_anchor = NodePath("../../UI/HudAnchor")
 actors_root = NodePath("../../Actors")
 env_root = NodePath("../../Environment")
 
-[node name="TargetingLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("hud_anchor")]
+[node name="TargetingLogic" type="Node3D" parent="Services" unique_id=27213767 node_paths=PackedStringArray("hud_anchor")]
 script = ExtResource("5_q8m87")
 hud_anchor = NodePath("../../UI/HudAnchor")
 
-[node name="HudLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("hud_anchor")]
+[node name="HudLogic" type="Node3D" parent="Services" unique_id=1239158434 node_paths=PackedStringArray("hud_anchor")]
 script = ExtResource("6_o8xmn")
 hud_anchor = NodePath("../../UI/HudAnchor")
 
-[node name="InputHandler" type="Control" parent="Services"]
+[node name="InputHandler" type="Control" parent="Services" unique_id=2024275062]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("7_n17vu")
 
-[node name="AiLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("level_logic")]
+[node name="AiLogic" type="Node3D" parent="Services" unique_id=210289319 node_paths=PackedStringArray("level_logic")]
 script = ExtResource("6_ux2jd")
 level_logic = NodePath("../LevelLogic")
 
-[node name="CombatLogic" type="Node3D" parent="Services" node_paths=PackedStringArray("level_logic")]
+[node name="CombatLogic" type="Node3D" parent="Services" unique_id=939923371 node_paths=PackedStringArray("level_logic")]
 script = ExtResource("9_a66wu")
 level_logic = NodePath("../LevelLogic")
 
-[node name="UI" type="Node3D" parent="."]
+[node name="UI" type="Node3D" parent="." unique_id=2061780099]
 
-[node name="HudAnchor" parent="UI" instance=ExtResource("10_qwysy")]
+[node name="HudAnchor" parent="UI" unique_id=804756161 instance=ExtResource("10_qwysy")]
 metadata/_edit_use_anchors_ = true
