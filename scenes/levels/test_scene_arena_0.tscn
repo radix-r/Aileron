@@ -8,11 +8,11 @@
 [ext_resource type="Script" uid="uid://cqsj6qbsjcc6a" path="res://scripts/targeting_logic.gd" id="6_d2txi"]
 [ext_resource type="PackedScene" uid="uid://b6ab04h32aky1" path="res://scenes/hud/hud_anchor.tscn" id="6_eyewj"]
 [ext_resource type="Script" uid="uid://6rb762xkbnv" path="res://scripts/input_handler.gd" id="6_siku3"]
-[ext_resource type="Script" uid="uid://ywo2am01wgck" path="res://scripts/ai_logic.gd" id="8_e1dyn"]
+[ext_resource type="Script" uid="uid://ywo2am01wgck" path="res://scripts/ai_arena_ball_logic.gd" id="8_e1dyn"]
 [ext_resource type="Script" uid="uid://b6wnx1n5hlqi" path="res://scripts/combat_logic.gd" id="9_ohmka"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_u7hmd"]
-height = 20.0
+height = 39.946777
 radius = 130.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_d2txi"]
@@ -48,11 +48,11 @@ omni_attenuation = 0.5
 
 [node name="ForceField" type="Area3D" parent="Environment/Arena2" unique_id=456350880]
 collision_layer = 8
-collision_mask = 15
+collision_mask = 31
 script = ExtResource("3_sknsq")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Arena2/ForceField" unique_id=1774634748]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -79.55515, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -81.02805, 0)
 shape = SubResource("CylinderShape3D_u7hmd")
 
 [node name="Goal1" type="Node3D" parent="Environment/Arena2" unique_id=602178657]
