@@ -1,13 +1,13 @@
-[gd_scene load_steps=15 format=3 uid="uid://csvp1gxkngosx"]
+[gd_scene format=3 uid="uid://csvp1gxkngosx"]
 
 [ext_resource type="PackedScene" uid="uid://cxq3gebh28avn" path="res://scenes/levels/arena_0_base.tscn" id="1_8cixe"]
 [ext_resource type="Script" path="res://scripts/force_field.gd" id="2_nuuv1"]
 [ext_resource type="Script" uid="uid://dx0ves6s5tivi" path="res://scripts/goal.gd" id="3_bbjts"]
 [ext_resource type="Script" uid="uid://cish1ai34pm5i" path="res://scripts/arena_0_level_logic.gd" id="4_jj4bn"]
-[ext_resource type="Script" path="res://scripts/targeting_logic.gd" id="5_kilcg"]
-[ext_resource type="Script" path="res://scripts/hud_logic.gd" id="6_ssb10"]
-[ext_resource type="Script" path="res://scripts/input_handler.gd" id="7_ciban"]
-[ext_resource type="Script" path="res://scripts/ai_logic.gd" id="8_nnam1"]
+[ext_resource type="Script" uid="uid://cqsj6qbsjcc6a" path="res://scripts/targeting_logic.gd" id="5_kilcg"]
+[ext_resource type="Script" uid="uid://bcg8wh7x4ypqo" path="res://scripts/hud_logic.gd" id="6_ssb10"]
+[ext_resource type="Script" uid="uid://6rb762xkbnv" path="res://scripts/input_handler.gd" id="7_ciban"]
+[ext_resource type="Script" uid="uid://ywo2am01wgck" path="res://scripts/ai_arena_ball_logic.gd" id="8_nnam1"]
 [ext_resource type="PackedScene" uid="uid://b6ab04h32aky1" path="res://scenes/hud/hud_anchor.tscn" id="9_s1kkt"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_u7hmd"]

@@ -2,7 +2,7 @@ class_name ArenaBallLevelLogic extends BaseLevelLogic
 
 # TODO orginize varables. make private?
 @onready var objects_in_force_field: Dictionary = {}
-@onready var foce_field_force_newtons: float = 1000
+@onready var foce_field_force_newtons: float = 40000
 
 ## How long actor shoots for
 @onready var burst_duration_timer: Timer = Timer.new()
@@ -25,7 +25,7 @@ class_name ArenaBallLevelLogic extends BaseLevelLogic
 @onready var ball_scene: PackedScene = preload("res://scenes/ball.tscn") 
 @onready var opponent_scene: PackedScene = preload("res://scenes/actors/base_physics_actor.tscn")
 
-@export var ai_logic: AiLogic = null
+@export var ai_logic: AiArenaBallLogic = null
 # targeting_logic defined in base class
 #@export var hud_logic: HudLogic = null
 @export var combat_logic: CombatLogic = null
@@ -112,7 +112,7 @@ func _ready() -> void:
     actors_ready_to_fire.append(opponent_node)
     _on_burst_cooldown_timeout(opponent_node)
     
-    arena_reset_timer.wait_time = 4
+    arena_reset_timer.wait_time = 4 # TODO data driven
     arena_reset_timer.one_shot = true
     add_child(arena_reset_timer)
     arena_reset_timer.timeout.connect(_on_arena_reset_timer_timeout)

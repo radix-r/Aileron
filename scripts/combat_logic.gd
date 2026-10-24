@@ -22,7 +22,7 @@ func _ready() -> void:
     SignalManager.hit_by_projectile.connect(_on_hit_by_projectile)
 
 func _on_hit_by_projectile(hit_node: Node3D, projectile: Projectile) -> void:
-    # print_debug(hit_node.name + " hit by " + projectile.name)
+    print_debug(hit_node.name + " hit by " + projectile.name)
     var hp_damage: float = projectile.hp_damage
     var stability_damage: float = projectile.stability_damage
     if hit_node in actorts_destabilized:

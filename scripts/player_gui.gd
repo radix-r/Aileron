@@ -123,7 +123,7 @@ func update_stability_bar(fraction_full: float, target: Node3D) -> void:
 
 func update_target_indicators(camera: Camera3D, target_list: Array) -> void:
     for target in target_list:
-        if !camera.is_position_behind(target.global_position):
+        if target and !camera.is_position_behind(target.global_position):
             var hud_pos: Vector2 = Utilities.transform_to_hud_space(target.global_position,camera)
             target_ui_element_dict[target].position = hud_pos
             target_ui_element_dict[target].hide_selected_indicator()

@@ -4,7 +4,11 @@ extends Resource
 const STATE_NAME : String = "GameState"
 const FILE_PATH = "res://scripts/game_state.gd"
 
-@export var level_states : Dictionary = {}
+# TODO data not saving across closing the game
+@export var level_states : Dictionary[String, LevelState] = {
+    "res://scenes/levels/obstacle_level_0.tscn": ObstacleLevelState.new(),
+    "res://scenes/levels/test_scene_arena_0.tscn": LevelState.new()
+}
 @export var current_level_path : String
 @export var continue_level_path : String
 @export var total_games_played : int
@@ -14,7 +18,7 @@ const FILE_PATH = "res://scripts/game_state.gd"
 static func get_level_state(level_state_key : String) -> LevelState:
     if not has_game_state(): 
         return
-    var game_state := get_or_create_state()
+    var game_state: GameState = get_or_create_state()
     if level_state_key.is_empty() : return
     if level_state_key in game_state.level_states:
         return game_state.level_states[level_state_key] 
@@ -66,7 +70,9 @@ static func continue_game() -> void:
 
 static func reset() -> void:
     var game_state := get_or_create_state()
-    game_state.level_states = {}
+    game_state.level_states = {"res://scenes/levels/obstacle_level_0.tscn": ObstacleLevelState.new()}
+    level_reached("res://scenes/levels/test_scene_arena_0.tscn")
+    level_reached("res://scenes/levels/obstacle_level_0.tscn")
     game_state.current_level_path = ""
     game_state.continue_level_path = ""
     game_state.play_time = 0

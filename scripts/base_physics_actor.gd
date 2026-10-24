@@ -42,10 +42,9 @@ var input_dir_local: Vector3 = Vector3.ZERO
 @onready var up_point: Node3D = $PitchPoint/UpPoint
 @onready var up_relative: Vector3 = Vector3()
 
+@onready var unit_name = "ShipPhysics"
 @onready var thrust_vector: Node3D = $ThrustVector
-
 @onready var contact_point: Vector3 = Vector3.ZERO
-
 @onready var boost_factor: float = 1
 @onready var spark_speed_coeficent: float = 0
 @onready var spark_amount_ratio_coeficent: float = 0
@@ -53,14 +52,15 @@ var input_dir_local: Vector3 = Vector3.ZERO
 @onready var rotation_speed: float = 0
 @onready var thrust_strength: float = 2000
 @onready var boosting: bool = false
-
 @onready var max_hp: float = 0
 @onready var max_stability: float = 0
 @onready var stability_regen: float = 0
 
+@onready var player_controled: bool
 
 func _ready() -> void:
     _default_init()
+    weapon.platform = self
 
 
 func _apply_flight_effects(delta: float):
@@ -122,7 +122,7 @@ func _default_init():
     contact_monitor = true
     max_contacts_reported = 1
     
-    var unit_name = "ShipPhysics"
+    
     
     rotation_speed = Utilities.data_dict[unit_name]["rotation_speed"]
 
@@ -177,6 +177,10 @@ func set_boosting(boosting_: bool):
 
 func set_input_direction(direction_normal: Vector3):
     input_dir_local = direction_normal
+
+
+func set_player_control(_player_controled: bool):
+    player_controled = _player_controled
 
 
 func rotate_with_input(rotation_input: Vector2):

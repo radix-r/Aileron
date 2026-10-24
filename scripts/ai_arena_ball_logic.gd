@@ -1,5 +1,5 @@
 ## Script to control AI arena opponent 
-class_name AiLogic extends Node3D
+class_name AiArenaBallLogic extends Node3D
 
 enum BehaviorMode{
     OFFENSE,

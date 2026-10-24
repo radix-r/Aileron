@@ -48,8 +48,8 @@ func _on_target_select_input():
     
     # find target closest to center screen
     var closest_target: Node3D = get_closest_target_to_boresight(player_node, player_node.camera)
-    var result: int = targeting_logic.set_selected_target(player_node, closest_target)
-    if 0 != result:
+    var result: bool = targeting_logic.set_selected_target(player_node, closest_target)
+    if !result:
         print_debug("Failed to select next player target")
     
 

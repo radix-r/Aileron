@@ -7,7 +7,7 @@
         
     },
     "ArenaCombat0": {
-    	"game_time": 3,
+        "game_time": 3,
     },
     "Ship1": {
         "speed_default": 10,
@@ -27,6 +27,18 @@
         "camera_chase": 0.05,
         "boost_factor": 2,
         "thrust_strength": 200000,
+        "max_hp": 10,
+        "max_stability": 10,
+        "stability_regen": 0.5,
+    },
+    "AaGun": {
+        "rotation_speed": 0.1,
+        "spark_speed_coeficent": 0,
+        "spark_amount_ratio_coeficent": 0,
+        "spark_lifetime_coeficent": 0.001,
+        "camera_chase": 0.05,
+        "boost_factor": 0,
+        "thrust_strength": 0,
         "max_hp": 10,
         "max_stability": 10,
         "stability_regen": 0.5,

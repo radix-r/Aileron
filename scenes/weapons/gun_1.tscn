@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://ddwwwgrt4hast"]
+
+[ext_resource type="Script" uid="uid://cis08mftfnn2u" path="res://scripts/gun2.gd" id="1_027ej"]
+[ext_resource type="PackedScene" path="res://scenes/muzzle_flash_1.tscn" id="2_4nar0"]
+
+[node name="Gun1" type="Node3D" unique_id=1329929811]
+script = ExtResource("1_027ej")
+
+[node name="FirePoint" type="Node3D" parent="." unique_id=485902553]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="MuzzleFlash1" parent="FirePoint" unique_id=151166549 instance=ExtResource("2_4nar0")]

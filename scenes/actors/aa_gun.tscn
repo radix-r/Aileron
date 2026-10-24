@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://bjko7u6mgcgxr"]
+
+[ext_resource type="Script" uid="uid://ctugvaq61ywvw" path="res://scripts/actors/aa_gun.gd" id="1_qf7wb"]
+[ext_resource type="PackedScene" uid="uid://ddwwwgrt4hast" path="res://scenes/weapons/gun_1.tscn" id="2_4lawj"]
+[ext_resource type="PackedScene" uid="uid://qbw10p6vdl3e" path="res://scenes/weapons/bullet_enemy.tscn" id="3_3h7gs"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qf7wb"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_4lawj"]
+
+[node name="AA_gun" type="RigidBody3D" unique_id=78910618 node_paths=PackedStringArray("weapon")]
+collision_layer = 16
+collision_mask = 27
+mass = 100.0
+script = ExtResource("1_qf7wb")
+weapon = NodePath("PitchPoint/Gun1")
+metadata/_custom_type_script = "uid://c6t65fo1rg5k"
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1347376455]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=949635590]
+shape = SubResource("BoxShape3D_qf7wb")
+debug_color = Color(0, 0.6, 0.701961, 1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2021122747]
+mesh = SubResource("BoxMesh_4lawj")
+skeleton = NodePath("../../CollisionShape3D")
+
+[node name="PitchPoint" type="Node3D" parent="." unique_id=223326868]
+
+[node name="ForwardPoint" type="Node3D" parent="PitchPoint" unique_id=895308297]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="UpPoint" type="Node3D" parent="PitchPoint" unique_id=1822754477]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Gun1" parent="PitchPoint" unique_id=1329929811 node_paths=PackedStringArray("platform") instance=ExtResource("2_4lawj")]
+bullet_scene = ExtResource("3_3h7gs")
+platform = NodePath("../..")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

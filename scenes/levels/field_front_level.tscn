@@ -1,0 +1,104 @@
+[gd_scene format=3 uid="uid://bshof42af0mc2"]
+
+[ext_resource type="Script" uid="uid://bcg8wh7x4ypqo" path="res://scripts/hud_logic.gd" id="1_5vp5b"]
+[ext_resource type="Texture2D" uid="uid://b7p64amtx7qmy" path="res://assets/kenney_prototype-textures/PNG/Green/texture_08.png" id="1_sboce"]
+[ext_resource type="Script" uid="uid://6rb762xkbnv" path="res://scripts/input_handler.gd" id="2_sboce"]
+[ext_resource type="Script" uid="uid://cqsj6qbsjcc6a" path="res://scripts/targeting_logic.gd" id="3_ce7mv"]
+[ext_resource type="Script" uid="uid://b6y2o0iq8wqlq" path="res://scripts/level_logic/field_front_level_logic.gd" id="3_jrubr"]
+[ext_resource type="Script" uid="uid://b6wnx1n5hlqi" path="res://scripts/combat_logic.gd" id="4_jrubr"]
+[ext_resource type="PackedScene" uid="uid://b6ab04h32aky1" path="res://scenes/hud/hud_anchor.tscn" id="5_0xuae"]
+[ext_resource type="Script" uid="uid://xjbny6bcva7o" path="res://scripts/ai/ai_field_front_logic.gd" id="7_jrubr"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3ffcj"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_you74"]
+sky_material = SubResource("ProceduralSkyMaterial_3ffcj")
+
+[sub_resource type="Environment" id="Environment_h88bl"]
+background_mode = 2
+sky = SubResource("Sky_you74")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_ce7mv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_htkx7"]
+size = Vector3(1000, 1, 1000)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ce7mv"]
+albedo_texture = ExtResource("1_sboce")
+uv1_scale = Vector3(0.1, 0.1, 0.1)
+uv1_triplanar = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_ce7mv"]
+size = Vector2(1000, 1000)
+orientation = 1
+
+[node name="FieldFrontLevel" type="Node3D" unique_id=892079162]
+
+[node name="Actors" type="Node3D" parent="." unique_id=1546076171]
+
+[node name="Environment" type="Node3D" parent="." unique_id=623782384]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=391981428]
+transform = Transform3D(1, 0, 0, 0, 0.96252626, 0.27118847, 0, -0.27118847, 0.96252626, 0, 0, 0)
+visible = false
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=2136683575]
+environment = SubResource("Environment_h88bl")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="Environment" unique_id=1102899538]
+navigation_mesh = SubResource("NavigationMesh_ce7mv")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Environment/NavigationRegion3D" unique_id=866489439]
+collision_layer = 8
+collision_mask = 16777215
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/NavigationRegion3D/StaticBody3D" unique_id=1582367586]
+shape = SubResource("BoxShape3D_htkx7")
+debug_color = Color(0, 0.60038817, 0.70000815, 1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/NavigationRegion3D/StaticBody3D" unique_id=1889717189]
+material_override = SubResource("StandardMaterial3D_ce7mv")
+mesh = SubResource("QuadMesh_ce7mv")
+
+[node name="Services" type="Node3D" parent="." unique_id=418195822]
+
+[node name="LevelLogic" type="Node3D" parent="Services" unique_id=1000140690 node_paths=PackedStringArray("combat_logic", "actors_root", "env_root", "ai_logic", "targeting_logic", "hud_logic", "hud_anchor")]
+script = ExtResource("3_jrubr")
+combat_logic = NodePath("../CombatLogic")
+actors_root = NodePath("../../Actors")
+env_root = NodePath("../../Environment")
+ai_logic = NodePath("../AiLogic")
+targeting_logic = NodePath("../TargetingLogic")
+hud_logic = NodePath("../HudLogic")
+hud_anchor = NodePath("../../UI/HudAnchor")
+
+[node name="HudLogic" type="Node3D" parent="Services" unique_id=537375634 node_paths=PackedStringArray("hud_anchor")]
+script = ExtResource("1_5vp5b")
+hud_anchor = NodePath("../../UI/HudAnchor")
+
+[node name="InputHandler" type="Control" parent="Services" unique_id=1249602049]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("2_sboce")
+
+[node name="TargetingLogic" type="Node3D" parent="Services" unique_id=314707703 node_paths=PackedStringArray("hud_anchor")]
+script = ExtResource("3_ce7mv")
+hud_anchor = NodePath("../../UI/HudAnchor")
+
+[node name="CombatLogic" type="Node3D" parent="Services" unique_id=137097519 node_paths=PackedStringArray("level_logic")]
+script = ExtResource("4_jrubr")
+level_logic = NodePath("../LevelLogic")
+
+[node name="AiLogic" type="Node3D" parent="Services" unique_id=1427412338 node_paths=PackedStringArray("level_logic")]
+script = ExtResource("7_jrubr")
+level_logic = NodePath("../LevelLogic")
+
+[node name="UI" type="Node3D" parent="." unique_id=358325051]
+
+[node name="HudAnchor" parent="UI" unique_id=113538857 instance=ExtResource("5_0xuae")]
+metadata/_edit_use_anchors_ = true

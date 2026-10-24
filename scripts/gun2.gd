@@ -12,11 +12,10 @@ class_name Weapon extends Node3D
 #####################################
 # EXPORT VARIABLES
 #####################################
-
+@export var bullet_scene: PackedScene = preload("res://scenes/bullet_2.tscn")
 #####################################
 # PUBLIC VARIABLES
 #####################################
-var bullet_scene: PackedScene = preload("res://scenes/bullet_2.tscn")
 
 #####################################
 # PRIVATE VARIABLES
@@ -28,7 +27,7 @@ var bullet_scene: PackedScene = preload("res://scenes/bullet_2.tscn")
 @onready var fire_cooldown: float = 0
 @onready var projectile_speed: float = 0
 @onready var can_fire: bool = true
-@onready var platform: PhysicsBody3D = $"../.."
+@export var platform: PhysicsBody3D
 @onready var fire_point: Node3D = $FirePoint
 @onready var muzzel_flash: Node3D = $FirePoint/MuzzleFlash1
 @onready var cooldown: Timer = Timer.new()

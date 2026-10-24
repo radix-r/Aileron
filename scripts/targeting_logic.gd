@@ -161,13 +161,13 @@ func remove_targetable_node(node: Node3D) -> void:
     hud_anchor.remove_target_indicator(node)
 
 ## Attempts to set given targeter's selected target. 
-## @returns 0 on sucess returns -1 on failure
-func set_selected_target(targeter_node: Node3D, selected_target_node: Node3D) -> int:
-    var return_val = -1
+## @returns true on sucess returns false on failure
+func set_selected_target(targeter_node: Node3D, selected_target_node: Node3D) -> bool:
+    var return_val = false
     if node_targetable_dict.has(targeter_node) && \
             node_targetable_dict[targeter_node].has(selected_target_node):
         node_selected_target_dict[targeter_node] = selected_target_node
-        return_val = 0
+        return_val = true
         #print_debug(targeter_name + "'s selected target is " + selected_target_name)
     return return_val
 
